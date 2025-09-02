@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
+use function Pest\Laravel\json;
+
 class PermissionController extends Controller
 {
     //This method displays the permissions page
@@ -53,9 +55,21 @@ class PermissionController extends Controller
     }
 
 
-         public function destroy()
+         public function destroy( Request $request)
     {
-        return view('backend.permissions.index');
+        $id = $request->input('id');
+        $permission = Permission::findOrFail($id);
+        if($permission ===  null){
+         session()->flash('error', 'Permission not found');
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+        $permission->delete();
+        session()->flash('success', 'Permission deleted successfully');
+        return response()->json([
+            'status' => true,
+        ]);
     }
 
 }
