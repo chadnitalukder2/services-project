@@ -12,12 +12,12 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::orderBy('created_at', 'desc')->paginate(4);
-        return view('permissions.list', compact('permissions'));
+        return view('backend.permissions.list', compact('permissions'));
     }
 
      public function create()
     {
-        return view('permissions.create');
+        return view('backend.permissions.create');
     }
 
      public function store(Request $request)
@@ -36,7 +36,7 @@ class PermissionController extends Controller
      public function edit($id)
     {
         $permission = Permission::findOrFail($id);
-        return view('permissions.edit', compact('permission'));
+        return view('backend.permissions.edit', compact('permission'));
     }
          public function update($id, Request $request)
     {
@@ -55,7 +55,7 @@ class PermissionController extends Controller
 
          public function destroy()
     {
-        return view('permissions.index');
+        return view('backend.permissions.index');
     }
 
 }
