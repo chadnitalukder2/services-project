@@ -17,10 +17,15 @@
                         @csrf
                         <!-- Name -->
                         <div>
-                            <x-input-label for="name" :value="__('Permission Name')" />
-                            <x-text-input placeholder="Enter Name" id="name" class="my-3 block mt-1 w-1/2" type="text" name="name"
-                                :value="old('name')" autofocus />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                            <label for="name" class="text-lg font-medium">Name</label>
+                            <div class="my-3">
+                                <input placeholder="Enter Name" id="name" class="block mt-1 w-1/2 border-gray-300 rounded-md shadow-sm"
+                                    type="text" name="name" :value="old('name')" autofocus />
+
+                                    @error('name')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
+                            </div>
 
                                 <button class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white">
                                     Submit
