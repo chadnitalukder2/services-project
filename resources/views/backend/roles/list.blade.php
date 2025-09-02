@@ -35,8 +35,8 @@
                                 </td>
                                 <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
                                 <td class="px-6 py-3 text-center">
-                                    {{-- <a href="{{ route('roles.edit', $role->id) }}" class="bg-slate-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Edit</a>
-                                    <a href="javascript:void()" onclick="deleteRole({{ $role->id }})" class="bg-red-700 text-sm rounded-md text-white px-3 py-2 hover:bg-red-600">Delete</a> --}}
+                                    <a href="{{ route('roles.edit', $role->id) }}" class="bg-slate-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Edit</a>
+                                    <a href="javascript:void()" onclick="deleteRole({{ $role->id }})" class="bg-red-700 text-sm rounded-md text-white px-3 py-2 hover:bg-red-600">Delete</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -53,28 +53,28 @@
 
     <x-slot name="script">
         <script type="text/javascript">
-//    function deletePermission(id){
-//     if(confirm('Are you sure you want to delete this permission?')){
-//         $.ajax({
-//             url: '{{ route("permissions.destroy") }}',
-//             type: 'DELETE',
-//             data: {
-//                 id: id,
-//             },
-//             dataType: 'json',
-//             headers: {
-//                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-//             },
-//             success: function(response) {
-//                 if(response.status) {
-//                     location.reload();
-//                 } else {
-//                     alert('Permission not found');
-//                 }
-//             }
-//         });
-//     }
-//    }
+   function deleteRole(id){
+    if(confirm('Are you sure you want to delete this role?')){
+        $.ajax({
+            url: '{{ route("roles.destroy") }}',
+            type: 'DELETE',
+            data: {
+                id: id,
+            },
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if(response.status) {
+                    location.reload();
+                } else {
+                    alert('Role not found');
+                }
+            }
+        });
+    }
+   }
 </script>
     </x-slot>
 </x-app-layout>

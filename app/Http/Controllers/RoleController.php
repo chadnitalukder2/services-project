@@ -45,23 +45,57 @@ class RoleController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $hasPermissions = $role->permissions->pluck('name');
+        $permissions = Permission::orderBy('name', 'asc')->get();
+        return view('backend.roles.edit', [
+            'role' => $role,
+            'permissions' => $permissions,
+            'hasPermissions' => $hasPermissions
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        //
+        $role = Role::findOrFail($id);
+        
+         $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:roles,name,' . $id . ',id|min:3',
+        ]);
+        if($validator->passes()){
+     
+            $role->name = $request->name;
+            $role->save();
+
+            if(!empty($request->permissions)){
+              $role->syncPermissions($request->permissions);
+            }else{
+                $role->syncPermissions([]);
+            }
+
+            return redirect()->route('roles.index')->with('success', 'Role updated successfully');
+        }else{
+            return redirect()->route('roles.edit', $id)->withErrors($validator)->withInput();
+        }
+        
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->input('id');
+        $role = Role::findOrFail($id);
+        if($role ===  null){
+            session()->flash('error', 'Role not found');
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+        $role->delete();
+        session()->flash('success', 'Role deleted successfully');
+        return response()->json([
+            'status' => true,
+        ]);
     }
 }
