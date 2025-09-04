@@ -33,10 +33,16 @@
                                 <td class="px-6 py-3 text-left">{{ $service->name }}</td>
                                 <td class="px-6 py-3 text-left">{{ $service->unit_price }}</td>
                                 <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($service->created_at)->format('d M, Y') }}</td>
+                               @canany(['edit services', 'delete services'])
                                 <td class="px-6 py-3 text-center">
-                                    <a href="{{ route('services.edit', $service->id) }}" class="bg-slate-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Edit</a>
-                                    <a href="javascript:void()" onclick="deleteService({{ $service->id }})" class="bg-red-700 text-sm rounded-md text-white px-3 py-2 hover:bg-red-600">Delete</a>
+                                    @can('edit services')
+                                        <a href="{{ route('services.edit', $service->id) }}" class="bg-slate-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Edit</a>
+                                    @endcan
+                                    @can('delete services')
+                                        <a href="javascript:void()" onclick="deleteService({{ $service->id }})" class="bg-red-700 text-sm rounded-md text-white px-3 py-2 hover:bg-red-600">Delete</a>
+                                    @endcan
                                 </td>
+                                @endcanany
                             </tr>
                         @endforeach
                     @endif
