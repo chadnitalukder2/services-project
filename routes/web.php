@@ -3,6 +3,7 @@
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ServicesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,6 +34,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
     Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    //services
+    Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
+    Route::get('/services/create', [ServicesController::class, 'create'])->name('services.create');
+    Route::post('/services/store', [ServicesController::class, 'store'])->name('services.store');
+    Route::get('/services/{id}/edit', [ServicesController::class, 'edit'])->name('services.edit');
+    Route::post('/services/{id}', [ServicesController::class, 'update'])->name('services.update');
+    Route::delete('/services', [ServicesController::class, 'destroy'])->name('services.destroy');
 
 });
 
