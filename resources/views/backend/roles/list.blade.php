@@ -4,8 +4,10 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Roles') }}
             </h2>
-            <a href="{{ route('roles.create') }}"
-                class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white">Create</a>
+            @can('create roles')
+                <a href="{{ route('roles.create') }}"
+                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white">Create</a>
+            @endcan
         </div>
 
     </x-slot>
@@ -21,7 +23,9 @@
                         <th class="px-6 py-3 text-left">Name</th>
                         <th class="px-6 py-3 text-left">Permissions</th>
                         <th class="px-6 py-3 text-left" width="180">Created</th>
+                        @canany(['edit roles', 'delete roles'])
                         <th class="px-6 py-3 text-center" width="180">Actions</th>
+                        @endcanany
                     </tr>
                 </thead>
 

@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Users') }}
             </h2>
-            <a href="{{ route('users.create') }}" class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white">Create</a>
+            {{-- <a href="{{ route('users.create') }}" class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white">Create</a> --}}
         </div>
 
     </x-slot>
