@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -20,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-     //users
+    //users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
@@ -44,6 +47,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 
+    //customers
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
+    Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::post('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::delete('/customers', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
     //services
     Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
     Route::get('/services/create', [ServicesController::class, 'create'])->name('services.create');
@@ -52,6 +63,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/services/{id}', [ServicesController::class, 'update'])->name('services.update');
     Route::delete('/services', [ServicesController::class, 'destroy'])->name('services.destroy');
 
+    //expense_categories 
+    Route::get('/expense_categories', [ExpenseCategoryController::class, 'index'])->name('expense_categories.index');
+    Route::get('/expense_categories/create', [ExpenseCategoryController::class, 'create'])->name('expense_categories.create');
+    Route::post('/expense_categories/store', [ExpenseCategoryController::class, 'store'])->name('expense_categories.store');
+    Route::get('/expense_categories/{id}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_categories.edit');
+    Route::post('/expense_categories/{id}', [ExpenseCategoryController::class, 'update'])->name('expense_categories.update');
+    Route::delete('/expense_categories', [ExpenseCategoryController::class, 'destroy'])->name('expense_categories.destroy');
+
+    //expenses
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+    Route::post('/expenses/store', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::get('/expenses/{id}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
+    Route::post('/expenses/{id}', [ExpenseController::class, 'update'])->name('expenses.update');
+    Route::delete('/expenses', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

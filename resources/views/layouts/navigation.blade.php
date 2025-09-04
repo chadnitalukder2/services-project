@@ -46,6 +46,30 @@
                 </div>
                 @endcan
 
+                  @can('view customers')
+                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.index')">
+                        {{ __('Customers') }}
+                    </x-nav-link>
+                </div>
+                @endcan
+
+                @can('view expense categories')
+                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('expense_categories.index')" :active="request()->routeIs('expense_categories.index')">
+                        {{ __('Expense Categories') }}
+                    </x-nav-link>
+                </div>
+                @endcan
+
+                 @can('view expenses')
+                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
+                        {{ __('Expenses') }}
+                    </x-nav-link>
+                </div>
+                @endcan
+
             </div>
 
             <!-- Settings Dropdown -->

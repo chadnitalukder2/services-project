@@ -14,7 +14,7 @@ class ServicesController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
       return [
-        new Middleware('permission:view services', only: ['index']),
+        new Middleware('permission:view services', only: ['index', 'show']),
         new Middleware('permission:create services', only: ['create', 'store']),
         new Middleware('permission:edit services', only: ['edit', 'update']),
         new Middleware('permission:delete services', only: ['destroy']),
