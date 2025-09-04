@@ -6,10 +6,20 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
-
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view users', only: ['index']),
+            // new Middleware('permission:create users', only: ['create', 'store']),
+            new Middleware('permission:edit users', only: ['edit', 'update']),
+            // new Middleware('permission:delete users', only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -17,7 +27,7 @@ class UserController extends Controller
     {
         $users = User::latest()->paginate(10);
         return view('backend.users.list', compact('users'));
-      }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -61,9 +71,9 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
-            'email' => 'required|email|unique:users,email,' . $id.',id',
+            'email' => 'required|email|unique:users,email,' . $id . ',id',
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->route('users.edit', $id)->withErrors($validator)->withInput();
         }
         $user = User::findOrFail($id);

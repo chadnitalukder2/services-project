@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ServicesController extends Controller
+class ServicesController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+      return [
+        new Middleware('permission:view services', only: ['index']),
+        new Middleware('permission:create services', only: ['create', 'store']),
+        new Middleware('permission:edit services', only: ['edit', 'update']),
+        new Middleware('permission:delete services', only: ['destroy']),
+      ];
+    }
     /**
      * Display a listing of the resource.
      */
