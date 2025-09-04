@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
+            $table->integer('category_id');
             $table->date('date');
             $table->string('description')->nullable();
             $table->decimal('amount', 15, 2);
