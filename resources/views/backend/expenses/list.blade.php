@@ -34,8 +34,8 @@
                     @if ($expenses->isNotEmpty())
                         @foreach ($expenses as $expense)
                             <tr class="border-b">
-                                <td class="px-6 py-3 text-left">{{ $expense->id }}</td>
-                                         <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}</td>
+                                <td class="px-6 py-3 text-left">{{ ($expenses->total() - (($expenses->currentPage() - 1) * $expenses->perPage()) - $loop->index) }}</td>
+                                <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}</td>
                                 <td class="px-6 py-3 text-left">{{ $expense->category->name }}</td>
                                 <td class="px-6 py-3 text-left">{{ $expense->amount }}</td>
                        

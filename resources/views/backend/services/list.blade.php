@@ -33,7 +33,7 @@
                     @if ($services->isNotEmpty())
                         @foreach ($services as $service)
                             <tr class="border-b">
-                                <td class="px-6 py-3 text-left">{{ $service->id }}</td>
+                                <td class="px-6 py-3 text-left">{{ ($services->total() - (($services->currentPage() - 1) * $services->perPage()) - $loop->index) }}</td>
                                 <td class="px-6 py-3 text-left">{{ $service->name }}</td>
                                 <td class="px-6 py-3 text-left">{{ $service->unit_price }}</td>
                                 <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($service->created_at)->format('d M, Y') }}</td>

@@ -9,14 +9,24 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class ExpenseController extends Controller
+class ExpenseController extends Controller implements HasMiddleware
 {
+
+     public static function middleware(): array
+    {
+      return [
+        new Middleware('permission:view expenses', only: ['index', 'show']),
+        new Middleware('permission:create expenses', only: ['create', 'store']),
+        new Middleware('permission:edit expenses', only: ['edit', 'update']),
+        new Middleware('permission:delete expenses', only: ['destroy']),
+      ];
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $expenses = Expense::orderBy('name', 'asc')->paginate(10);
+        $expenses = Expense::orderBy('created_at', 'desc')->paginate(10);
         return view('backend.expenses.list', compact('expenses'));
     }
 
@@ -67,11 +77,12 @@ class ExpenseController extends Controller
      */
     public function edit( $id)
     {
-        $category = Expense::find($id);
-        if ($category) {
-            return view('backend.expense_categories.edit', compact('category'));
+        $expense = Expense::find($id);
+        $expenseCategories = ExpenseCategory::orderBy('created_at', 'asc')->get();
+        if ($expense) {
+            return view('backend.expenses.edit', compact('expense', 'expenseCategories'));
         } else {
-            return redirect()->route('expense_categories.index')->with('error', 'Category not found');
+            return redirect()->route('expenses.index')->with('error', 'Expense not found');
         }
     }
 
@@ -83,16 +94,22 @@ class ExpenseController extends Controller
          $category = Expense::findOrFail($id);
 
          $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:expense_categories,name,' . $id . ',id|min:3',
+            'category_id' => 'required|exists:expense_categories,id',
+            'amount' => 'required|numeric|min:0',
+            'date' => 'required|date',
+            'description' => 'nullable|string|max:255',
         ]);
         if($validator->passes()){
-     
-            $category->name = $request->name;
+
+            $category->category_id = $request->category_id;
+            $category->amount = $request->amount;
+            $category->date = $request->date;
+            $category->description = $request->description;
             $category->save();
 
-            return redirect()->route('expense_categories.index')->with('success', 'Expense Category updated successfully');
+            return redirect()->route('expenses.index')->with('success', 'Expense updated successfully');
         }else{
-            return redirect()->route('expense_categories.edit', $id)->withErrors($validator)->withInput();
+            return redirect()->route('expenses.edit', $id)->withErrors($validator)->withInput();
         }
     }
 
@@ -101,12 +118,12 @@ class ExpenseController extends Controller
      */
     public function destroy(Request $request)
     {
-          $category = Expense::find($request->id);
-        if ($category) {
-            $category->delete();
-            return response()->json(['status' => true, 'message' => 'Expense Category deleted successfully']);
+          $expense = Expense::find($request->id);
+        if ($expense) {
+            $expense->delete();
+            return response()->json(['status' => true, 'message' => 'Expense deleted successfully']);
         } else {
-            return response()->json(['status' => false, 'message' => 'Expense Category not found']);
+            return response()->json(['status' => false, 'message' => 'Expense not found']);
         }
     }
 }

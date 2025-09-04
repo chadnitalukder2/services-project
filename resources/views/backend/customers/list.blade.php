@@ -36,7 +36,7 @@
                     @if ($customers->isNotEmpty())
                         @foreach ($customers as $customer)
                             <tr class="border-b">
-                                <td class="px-6 py-3 text-left">{{ $customer->id }}</td>
+                                <td class="px-6 py-3 text-left">{{ ($customers->total() - (($customers->currentPage() - 1) * $customers->perPage()) - $loop->index) }}</td>
                                 <td class="px-6 py-3 text-left">{{ $customer->name }}</td>
                                 <td class="px-6 py-3 text-left">{{ $customer->email }}</td>
                                 <td class="px-6 py-3 text-left">{{ $customer->phone }}</td>

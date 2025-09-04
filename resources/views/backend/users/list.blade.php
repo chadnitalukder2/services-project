@@ -34,7 +34,7 @@
                     @if ($users->isNotEmpty())
                         @foreach ($users as $user)
                             <tr class="border-b">
-                                <td class="px-6 py-3 text-left">{{ $user->id }}</td>
+                                <td class="px-6 py-3 text-left">{{ ($users->total() - (($users->currentPage() - 1) * $users->perPage()) - $loop->index) }}</td>
                                 <td class="px-6 py-3 text-left">{{ $user->name }}</td>
                                 <td class="px-6 py-3 text-left">{{ $user->email }}</td>
                                 <td class="px-6 py-3 text-left">{{ $user->roles->pluck('name')->implode(', ') }}</td>

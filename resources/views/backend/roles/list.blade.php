@@ -33,7 +33,7 @@
                     @if ($roles->isNotEmpty())
                         @foreach ($roles as $role)
                             <tr class="border-b">
-                                <td class="px-6 py-3 text-left">{{ $role->id }}</td>
+                                <td class="px-6 py-3 text-left">{{ ($roles->total() - (($roles->currentPage() - 1) * $roles->perPage()) - $loop->index) }}</td>
                                 <td class="px-6 py-3 text-left">{{ $role->name }}</td>
                                 <td class="px-6 py-3 text-left"> {{ $role->permissions->pluck('name')->implode(', ') }}
                                 </td>

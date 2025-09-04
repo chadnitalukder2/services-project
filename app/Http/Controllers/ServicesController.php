@@ -25,7 +25,7 @@ class ServicesController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $services = Services::paginate(10);
+        $services = Services::orderBy('created_at', 'desc')->paginate(10);
         return view('backend.services.list', compact('services'));
     }
 

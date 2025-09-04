@@ -22,7 +22,7 @@ class RoleController extends Controller implements HasMiddleware
     }
     public function index()
     {
-        $roles = Role::orderBy('name', 'asc')->paginate(10);
+        $roles = Role::orderBy('created_at', 'desc')->paginate(10);
         return view('backend.roles.list', [
             'roles' => $roles
         ]);

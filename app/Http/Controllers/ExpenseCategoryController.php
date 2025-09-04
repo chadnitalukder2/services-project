@@ -8,14 +8,23 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class ExpenseCategoryController extends Controller
+class ExpenseCategoryController extends Controller implements HasMiddleware
 {
+     public static function middleware(): array
+    {
+      return [
+        new Middleware('permission:view expense categories', only: ['index', 'show']),
+        new Middleware('permission:create expense categories', only: ['create', 'store']),
+        new Middleware('permission:edit expense categories', only: ['edit', 'update']),
+        new Middleware('permission:delete expense categories', only: ['destroy']),
+      ];
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $expenseCategories = ExpenseCategory::orderBy('name', 'asc')->paginate(10);
+        $expenseCategories = ExpenseCategory::orderBy('created_at', 'desc')->paginate(10);
         return view('backend.expense_categories.list', compact('expenseCategories'));
     }
 

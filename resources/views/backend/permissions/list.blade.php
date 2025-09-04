@@ -32,7 +32,7 @@
                     @if ($permissions->isNotEmpty())
                         @foreach ($permissions as $permission)
                             <tr class="border-b">
-                                <td class="px-6 py-3 text-left">{{ $permission->id }}</td>
+                                <td class="px-6 py-3 text-left">{{ ($permissions->total() - (($permissions->currentPage() - 1) * $permissions->perPage()) - $loop->index) }}</td>
                                 <td class="px-6 py-3 text-left">{{ $permission->name }}</td>
                                 <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
                                 @canany(['edit permissions', 'delete permissions'])
