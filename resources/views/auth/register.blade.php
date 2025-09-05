@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <h4 style="font-size: 24px; font-weight: 600; text-align: center; padding-bottom: 20px;">Sign Up</h4>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -29,7 +30,7 @@
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4">
+        <div class="mt-4" style="margin-bottom: 30px;">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
@@ -40,13 +41,16 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <x-primary-button class="ms-4" style="display: flex;margin: 0 auto; width: 100%; justify-content: center;">
+                {{ __('Sign Up') }}
+            </x-primary-button>
+        </div>
+
+        <div class="flex items-center space-x-4 justify-center "
+            style="margin-top: 10px; padding-top:8px; padding-bottom:10px;">
+              <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:border-none focus:ring-0 focus:shadow-none focus:ring-offset-0" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
         </div>
     </form>
 </x-guest-layout>
