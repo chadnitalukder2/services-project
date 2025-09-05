@@ -10,5 +10,6 @@ class Services extends Model
         'name',
         'unit_price',
         'description',
+        'status',
     ];
 }

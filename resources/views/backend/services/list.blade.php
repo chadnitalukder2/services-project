@@ -25,7 +25,7 @@
                         <input type="text" 
                                name="search" 
                                id="search"
-                               placeholder="Search by service name..." 
+                               placeholder="Search by service name and status..." 
                                value="{{ request('search') }}"
                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     </div>
@@ -62,6 +62,8 @@
                         <select name="sort" id="sort" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First</option>
                             <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
+                             <option value="active" {{ request('sort') == 'active' ? 'selected' : '' }}>Active Services</option>
+                             <option value="inactive" {{ request('sort') == 'inactive' ? 'selected' : '' }}>Inactive Services</option>
                         </select>
                     </div>
 
@@ -107,6 +109,7 @@
                             <th class="px-6 py-3 text-left " width="60">#</th>
                             <th class="px-6 py-3 text-left">Service Name</th>
                             <th class="px-6 py-3 text-left">Price</th>
+                            <th class="px-6 py-3 text-left">Status</th>
                             <th class="px-6 py-3 text-left" width="180">Created</th>
                             @canany(['edit services', 'delete services'])
                             <th class="px-6 py-3 text-center" width="180">Actions</th>
@@ -128,6 +131,17 @@
                                     </td>
                                     <td class="px-6 py-3 text-left">
                                        {{ number_format($service->unit_price, 2) }}
+                                    </td>
+                                    <td class="px-6 py-3 text-left">
+                                        @if($service->status == 'active')
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        @else
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                Inactive
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($service->created_at)->format('d M, Y') }}</td>
                                     @canany(['edit services', 'delete services'])

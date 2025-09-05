@@ -38,6 +38,24 @@
                                 @enderror
                             </div>
 
+                            <label for="status" class="text-lg font-medium">Status</label>
+                            <div class="my-3">
+                                <select id="status" name="status"
+                                    class="block mt-1 w-1/2 border-gray-300 rounded-md shadow-sm">
+                                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                </select>
+
+                                @error('status')
+                                    <p class="text-red-400 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                                @error('unit_price')
+                                    <p class="text-red-400 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+
                         <div>
                             <label for="description" class="text-lg font-medium">Description</label>
                             <div class="my-3">
