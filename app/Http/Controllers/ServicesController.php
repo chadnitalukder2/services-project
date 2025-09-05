@@ -13,19 +13,42 @@ class ServicesController extends Controller implements HasMiddleware
 
     public static function middleware(): array
     {
-      return [
-        new Middleware('permission:view services', only: ['index', 'show']),
-        new Middleware('permission:create services', only: ['create', 'store']),
-        new Middleware('permission:edit services', only: ['edit', 'update']),
-        new Middleware('permission:delete services', only: ['destroy']),
-      ];
+        return [
+            new Middleware('permission:view services', only: ['index', 'show']),
+            new Middleware('permission:create services', only: ['create', 'store']),
+            new Middleware('permission:edit services', only: ['edit', 'update']),
+            new Middleware('permission:delete services', only: ['destroy']),
+        ];
     }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $services = Services::orderBy('created_at', 'desc')->paginate(10);
+        $query = Services::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+
+        if ($request->filled('price_min')) {
+            $query->where('unit_price', '>=', $request->price_min);
+        }
+
+        if ($request->filled('price_max')) {
+            $query->where('unit_price', '<=', $request->price_max);
+        }
+
+        $sortOrder = $request->get('sort', 'desc');
+        if (in_array($sortOrder, ['asc', 'desc'])) {
+            $query->orderBy('created_at', $sortOrder);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $services = $query->paginate(15)->appends($request->query());
+
         return view('backend.services.list', compact('services'));
     }
 
@@ -121,5 +144,4 @@ class ServicesController extends Controller implements HasMiddleware
             return response()->json(['status' => false, 'message' => 'Service not found']);
         }
     }
- 
 }
