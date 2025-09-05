@@ -12,19 +12,40 @@ class CustomerController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
-      return [
-        new Middleware('permission:view customers', only: ['index', 'show']),
-        new Middleware('permission:create customers', only: ['create', 'store']),
-        new Middleware('permission:edit customers', only: ['edit', 'update']),
-        new Middleware('permission:delete customers', only: ['destroy']),
-      ];
+        return [
+            new Middleware('permission:view customers', only: ['index', 'show']),
+            new Middleware('permission:create customers', only: ['create', 'store']),
+            new Middleware('permission:edit customers', only: ['edit', 'update']),
+            new Middleware('permission:delete customers', only: ['destroy']),
+        ];
     }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $customers = Customer::orderBy('created_at', 'desc')->paginate(10);
+        $query = Customer::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('phone', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('address', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('company', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        $sortOrder = $request->get('sort', 'desc');
+        if (in_array($sortOrder, ['asc', 'desc'])) {
+            $query->orderBy('created_at', $sortOrder);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+        $customers = $query->paginate(15)->appends($request->query());
+
         return view('backend.customers.list', compact('customers'));
     }
 
@@ -41,7 +62,7 @@ class CustomerController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-            $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|unique:customers,email',
             'phone' => 'required|numeric|min:0',
@@ -61,7 +82,6 @@ class CustomerController extends Controller implements HasMiddleware
         } else {
             return redirect()->route('customers.create')->withErrors($validator)->withInput();
         }
-
     }
 
     /**
@@ -121,7 +141,7 @@ class CustomerController extends Controller implements HasMiddleware
      */
     public function destroy(Request $request)
     {
-        $customer = Customer::findOrFail($request->id); 
+        $customer = Customer::findOrFail($request->id);
         if ($customer) {
             $customer->delete();
             return response()->json(['status' => true, 'message' => 'Customer deleted successfully']);
