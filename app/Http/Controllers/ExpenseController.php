@@ -24,10 +24,17 @@ class ExpenseController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expenses = Expense::orderBy('created_at', 'desc')->paginate(10);
-        return view('backend.expenses.list', compact('expenses'));
+        $expenses = Expense::with('category')
+                          ->filter($request->only(['category_id', 'date_from', 'date_to', 'expense_date_from', 'expense_date_to']))
+                          ->orderBy('created_at', 'desc')
+                          ->paginate(15)
+                          ->appends($request->query());
+
+        $categories = ExpenseCategory::orderBy('created_at', 'asc')->get();
+
+        return view('backend.expenses.list', compact('expenses', 'categories'));
     }
 
     /**
