@@ -17,10 +17,10 @@ class PermissionSeeder extends Seeder
             'delete users',
 
             //Permissions
-            'create permissions',
-            'edit permissions',
             'view permissions',
-            'delete permissions',
+            // 'create permissions',
+            // 'edit permissions',
+            // 'delete permissions',
 
              //Services
             'create services',
