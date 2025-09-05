@@ -48,21 +48,6 @@
                 </form>
             </div>
 
-            <!-- Results Summary -->
-            @if(request()->hasAny(['search', 'sort']))
-                <div class="bg-blue-50 border border-blue-200 rounded-md p-3 mb-4">
-                    <p class="text-sm text-blue-800">
-                        @if(request('search'))
-                            Showing results for "<strong>{{ request('search') }}</strong>"
-                        @else
-                            Showing all customers
-                        @endif
-                        - sorted by {{ request('sort') == 'asc' ? 'oldest first' : 'newest first' }}
-                        ({{ $customers->total() }} {{ Str::plural('result', $customers->total()) }} found)
-                    </p>
-                </div>
-            @endif
-
             <div class="bg-white overflow-hidden shadow-md rounded-lg">
                 <table class="w-full">
                     <thead class="bg-gray-50">

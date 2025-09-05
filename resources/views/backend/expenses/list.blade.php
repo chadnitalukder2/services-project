@@ -67,24 +67,6 @@
                 </form>
             </div>
 
-            <!-- Results Summary -->
-            @if(request()->hasAny(['category_id', 'date_from', 'date_to', 'expense_date_from', 'expense_date_to']))
-                <div class="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
-                    <p class="text-sm text-blue-800">
-                        Showing filtered results 
-                        @if(request('category_id'))
-                            for category "{{ $categories->find(request('category_id'))->name ?? 'Unknown' }}"
-                        @endif
-                        @if(request('date_from') || request('date_to'))
-                            created between 
-                            {{ request('date_from') ? \Carbon\Carbon::parse(request('date_from'))->format('M d, Y') : 'beginning' }}
-                            and 
-                            {{ request('date_to') ? \Carbon\Carbon::parse(request('date_to'))->format('M d, Y') : 'now' }}
-                        @endif
-                    </p>
-                </div>
-            @endif
-
             <table class="w-full">
                 <thead class="bg-gray-50">
                     <tr class="border-b">

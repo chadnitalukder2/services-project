@@ -11,6 +11,9 @@
         </div>
     </x-slot>
 
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
@@ -62,8 +65,8 @@
                         <select name="sort" id="sort" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First</option>
                             <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
-                             <option value="active" {{ request('sort') == 'active' ? 'selected' : '' }}>Active Services</option>
-                             <option value="inactive" {{ request('sort') == 'inactive' ? 'selected' : '' }}>Inactive Services</option>
+                            <option value="active" {{ request('sort') == 'active' ? 'selected' : '' }}>Active Services</option>
+                            <option value="inactive" {{ request('sort') == 'inactive' ? 'selected' : '' }}>Inactive Services</option>
                         </select>
                     </div>
 
@@ -78,29 +81,6 @@
                     </div>
                 </form>
             </div>
-
-            <!-- Results Summary -->
-            @if(request()->hasAny(['search', 'price_min', 'price_max', 'sort']))
-                <div class="bg-blue-50 border border-blue-200 rounded-md p-3 mb-4">
-                    <p class="text-sm text-blue-800">
-                        @if(request('search'))
-                            Search results for "<strong>{{ request('search') }}</strong>"
-                        @else
-                            Showing all services
-                        @endif
-                        
-                        @if(request('price_min') || request('price_max'))
-                            - Price range: 
-                            {{ request('price_min') ? '$'.number_format(request('price_min'), 2) : '$0.00' }} 
-                            to 
-                            {{ request('price_max') ? '$'.number_format(request('price_max'), 2) : '∞' }}
-                        @endif
-                        
-                        - Sorted by {{ request('sort') == 'asc' ? 'oldest first' : 'newest first' }}
-                        ({{ $services->total() }} {{ Str::plural('result', $services->total()) }} found)
-                    </p>
-                </div>
-            @endif
 
             <div class="bg-white overflow-hidden shadow-md rounded-lg">
                 <table class="w-full">
@@ -120,7 +100,7 @@
                     <tbody class="bg-white">
                         @if ($services->isNotEmpty())
                             @foreach ($services as $service)
-                                <tr class="border-b hover:bg-gray-50">
+                                <tr class="border-b hover:bg-gray-50" id="service-row-{{ $service->id }}">
                                     <td class="px-6 py-3 text-left">{{ ($services->total() - (($services->currentPage() - 1) * $services->perPage()) - $loop->index) }}</td>
                                     <td class="px-6 py-3 text-left">
                                         @if(request('search'))
@@ -158,7 +138,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                <td colspan="6" class="px-6 py-8 text-center text-gray-500">
                                     @if(request()->hasAny(['search', 'price_min', 'price_max']))
                                         No services found matching your search criteria.
                                     @else
@@ -179,8 +159,48 @@
 
     <x-slot name="script">
         <script type="text/javascript">
-            function deleteService(id){
-                if(confirm('Are you sure you want to delete this service?')){
+            // Toast notification function
+            function showToast(message, type = 'success') {
+                const toastContainer = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                
+                const bgColor = type === 'success' ? 'bg-green-400' : 'bg-red-200';
+                const icon = type === 'success' ? '✓' : '✗';
+                
+                toast.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 transform translate-x-full transition-transform duration-300 ease-in-out`;
+                toast.innerHTML = `
+                    <span class="text-lg font-bold">${icon}</span>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                        <span class="text-lg">&times;</span>
+                    </button>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Slide in animation
+                setTimeout(() => {
+                    toast.classList.remove('translate-x-full');
+                }, 100);
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (toast.parentElement) {
+                            toast.remove();
+                        }
+                    }, 300);
+                }, 4000);
+            }
+
+            function deleteService(id) {
+                if(confirm('Are you sure you want to delete this service?')) {
+                    // Show loading state
+                    const row = document.getElementById(`service-row-${id}`);
+                    if (row) {
+                        row.style.opacity = '0.5';
+                    }
+                    
                     $.ajax({
                         url: '{{ route("services.destroy") }}',
                         type: 'DELETE',
@@ -193,9 +213,28 @@
                         },
                         success: function(response) {
                             if(response.status) {
-                                location.reload();
+                                showToast(response.message || 'Service deleted successfully!', 'success');
+                                // Fade out and remove the row
+                                if (row) {
+                                    row.style.transition = 'opacity 0.5s';
+                                    row.style.opacity = '0';
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 3000);
+                                } else {
+                                    setTimeout(() => location.reload(), 1000);
+                                }
                             } else {
-                                alert('Service not found');
+                                showToast(response.message || 'Service not found!', 'error');
+                                if (row) {
+                                    row.style.opacity = '1';
+                                }
+                            }
+                        },
+                        error: function() {
+                            showToast('An error occurred while deleting the service!', 'error');
+                            if (row) {
+                                row.style.opacity = '1';
                             }
                         }
                     });
@@ -218,7 +257,7 @@
                 const maxPrice = parseFloat(maxPriceField.value);
                 
                 if (minPrice && maxPrice && minPrice > maxPrice) {
-                    alert('Minimum price cannot be greater than maximum price');
+                    showToast('Minimum price cannot be greater than maximum price!', 'error');
                     this.value = '';
                 }
             });
@@ -229,7 +268,7 @@
                 const minPrice = parseFloat(minPriceField.value);
                 
                 if (minPrice && maxPrice && maxPrice < minPrice) {
-                    alert('Maximum price cannot be less than minimum price');
+                    showToast('Maximum price cannot be less than minimum price!', 'error');
                     this.value = '';
                 }
             });
