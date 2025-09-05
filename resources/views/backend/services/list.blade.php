@@ -66,11 +66,11 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="lg:col-span-5 flex gap-2">
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-200">
+                    <div class="gap-2" style="display: block; margin:0 auto; margin-top: 24px;" >
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-200" >
                             Search
                         </button>
-                        <a href="{{ route('services.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                        <a href="{{ route('services.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600" style="padding: 10px 18px;">
                             Clear
                         </a>
                     </div>
