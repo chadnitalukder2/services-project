@@ -110,15 +110,16 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                @can('view permissions')
-                                    <x-dropdown-link :href="route('permissions.index')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
+
+                                   @can('view users')
+                                    <x-dropdown-link :href="route('users.index')" :class="request()->routeIs('users.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
-                                            {{ __('Permissions') }}
+                                            {{ __('Users') }}
                                         </div>
                                     </x-dropdown-link>
                                 @endcan
 
-                                @can('view roles')
+                                 @can('view roles')
                                     <x-dropdown-link :href="route('roles.index')" :class="request()->routeIs('roles.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Roles') }}
@@ -126,13 +127,14 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                @can('view users')
-                                    <x-dropdown-link :href="route('users.index')" :class="request()->routeIs('users.*') ? 'bg-gray-100' : ''">
+                                @can('view permissions')
+                                    <x-dropdown-link :href="route('permissions.index')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
-                                            {{ __('Users') }}
+                                            {{ __('Permissions') }}
                                         </div>
                                     </x-dropdown-link>
                                 @endcan
+                                
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -217,7 +219,7 @@
 
                             <x-slot name="content">
                                 @can('view expense categories')
-                                    <x-dropdown-link :href="route('expense_categories.index')" :class="request()->routeIs('expense_categories.*') ? 'bg-gray-100' : ''">
+                                    <x-dropdown-link :href="route('orders.index')" :class="request()->routeIs('orders.index.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Orders') }}
                                         </div>
@@ -225,7 +227,7 @@
                                 @endcan
 
                                 @can('view expenses')
-                                    <x-dropdown-link :href="route('expenses.index')" :class="request()->routeIs('expenses.*') ? 'bg-gray-100' : ''">
+                                    <x-dropdown-link :href="route('invoices.index')" :class="request()->routeIs('invoices.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Invoices') }}
                                         </div>
