@@ -14,13 +14,13 @@ class OrderItems extends Model
         'subtotal',
     ];
 
+    public function service()
+    {
+        return $this->belongsTo(Services::class, 'service_id');
+    }
+
     public function order()
     {
         return $this->belongsTo(Order::class);
-    }
-
-    public function service()
-    {
-        return $this->belongsTo(Services::class);
     }
 }

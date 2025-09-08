@@ -27,7 +27,7 @@ class OrderController extends Controller
     public function create()
     {
         $customers = Customer::all();
-        $services = Services::all();
+        $services = Services::where('status', 'active')->get();
 
         return view('backend.orders.create', compact('customers', 'services'));
     }
@@ -82,5 +82,102 @@ class OrderController extends Controller
         } else {
             return redirect()->route('orders.create')->withErrors($validator)->withInput();
         }
+    }
+
+    public function edit($id)
+    {
+        $order = Order::with(['orderItems.service', 'invoice'])->findOrFail($id);
+        $customers = Customer::all();
+        $services = Services::where('status', 'active')->get();
+
+        return view('backend.orders.edit', compact('order', 'customers', 'services'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::with('orderItems', 'invoice')->findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'required|integer',
+            'order_date' => 'required|date',
+            'delivery_date' => 'required|date|after:order_date',
+            'status' => 'required|in:pending,approved,cancelled,done',
+            'total_amount' => 'required|numeric|min:0',
+            'notes' => 'nullable|string|max:255',
+
+            'services' => 'required|array|min:1',
+            'services.*.id' => 'required|integer|exists:services,id',
+            'services.*.quantity' => 'required|integer|min:1',
+            'services.*.unit_price' => 'required|numeric|min:0',
+            'services.*.subtotal' => 'required|numeric|min:0',
+
+            'payment_method' => 'required|string|in:card,bkash,nagad,rocket,upay,cash_on_delivery',
+            'payment_status' => 'required|string|in:pending,paid,partial_paid,due,failed,refunded',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Update order
+        $order->update([
+            'customer_id' => $request->customer_id,
+            'order_date' => $request->order_date,
+            'delivery_date' => $request->delivery_date,
+            'status' => $request->status,
+            'total_amount' => $request->total_amount,
+            'notes' => $request->notes,
+        ]);
+
+        $existingItemIds = $order->orderItems->pluck('service_id')->toArray();
+        $newItemIds = array_column($request->services, 'id');
+
+        // Delete removed services
+        foreach ($existingItemIds as $existingId) {
+            if (!in_array($existingId, $newItemIds)) {
+                $order->orderItems()->where('service_id', $existingId)->delete();
+            }
+        }
+
+        // Add or update services
+        foreach ($request->services as $service) {
+            $orderItem = $order->orderItems()->where('service_id', $service['id'])->first();
+
+            if ($orderItem) {
+                $orderItem->update([
+                    'quantity' => $service['quantity'],
+                    'unit_price' => $service['unit_price'],
+                    'subtotal' => $service['subtotal'],
+                ]);
+            } else {
+                $order->orderItems()->create([
+                    'service_id' => $service['id'],
+                    'quantity' => $service['quantity'],
+                    'unit_price' => $service['unit_price'],
+                    'subtotal' => $service['subtotal'],
+                ]);
+            }
+        }
+
+        // Update or create invoice
+        $invoice = $order->invoice;
+        if ($invoice) {
+            $invoice->update([
+                'customer_id' => $request->customer_id,
+                'amount' => $request->total_amount,
+                'status' => $request->payment_status,
+                'payment_method' => $request->payment_method,
+            ]);
+        } else {
+            Invoice::create([
+                'order_id' => $order->id,
+                'customer_id' => $request->customer_id,
+                'amount' => $request->total_amount,
+                'status' => $request->payment_status,
+                'payment_method' => $request->payment_method,
+            ]);
+        }
+
+        return redirect()->route('orders.index')->with('success', 'Order updated successfully');
     }
 }

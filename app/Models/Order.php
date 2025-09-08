@@ -18,13 +18,18 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    public function service()
+    {
+        return $this->belongsTo(Services::class);
+    }
+
     public function orderItems()
     {
         return $this->hasMany(OrderItems::class);
     }
 
-    public function service()
+    public function invoice()
     {
-        return $this->belongsTo(Services::class);
+        return $this->hasOne(Invoice::class);
     }
 }
