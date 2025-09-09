@@ -115,7 +115,7 @@
                                     @foreach ($services as $service)
                                         <option value="{{ $service->id }}" data-name="{{ $service->name }}"
                                             data-unit_price="{{ $service->unit_price }}">
-                                            {{ $service->name }} -  ৳ {{ number_format($service->unit_price, 2) }}
+                                            {{ $service->name }} -  {{ number_format($service->unit_price, 2) }}
                                         </option>
                                     @endforeach
                                 </select>

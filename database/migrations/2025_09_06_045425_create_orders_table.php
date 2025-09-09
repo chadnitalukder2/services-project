@@ -17,10 +17,10 @@ return new class extends Migration
             $table->date('order_date');
             $table->date('delivery_date')->nullable();
             $table->string('status')->nullable();
-            $table->decimal('total_amount', 10, 2)->default(0);
+            $table->decimal('total_amount', 10, 2)->nullable();
             $table->string('discount_type')->nullable();
-            $table->decimal('discount_value', 10, 2)->default(0);
-             $table->decimal('discount_amount', 10, 2)->default(0);
+            $table->decimal('discount_value', 10, 2)->nullable();
+             $table->decimal('discount_amount', 10, 2)->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

@@ -48,7 +48,7 @@
                                     {{ \Carbon\Carbon::parse($order->order_date)->format('d M, Y') }}</td>
                                 <td class="px-6 py-3 text-left">
                                     {{ \Carbon\Carbon::parse($order->delivery_date)->format('d M, Y') }}</td>
-                                <td class="px-6 py-3 text-left">${{ number_format($order->total_amount, 2) }}</td>
+                                <td class="px-6 py-3 text-left">{{ number_format($order->total_amount, 2) }}</td>
                                 <td class="px-6 py-3 text-left">
                                     <span
                                         class="px-2 py-1 text-xs rounded-full 
@@ -164,9 +164,13 @@
                                 <!-- Items will be loaded here -->
                             </tbody>
                             <tfoot class="bg-gray-50">
+                                 <tr>
+                                    <td colspan="3" class="px-4 py-3 text-right font-semibold">Discount :</td>
+                                    <td class="px-4 py-3 text-right font-bold text-lg" id="modalDiscount">- 0.00</td>
+                                </tr>
                                 <tr>
                                     <td colspan="3" class="px-4 py-3 text-right font-semibold">Total Amount:</td>
-                                    <td class="px-4 py-3 text-right font-bold text-lg" id="modalTotalAmount">$0.00</td>
+                                    <td class="px-4 py-3 text-right font-bold text-lg" id="modalTotalAmount">0.00</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -206,6 +210,7 @@
             "delivery_date": "{{ $order->delivery_date }}",
             "status": "{{ $order->status }}",
             "total_amount": "{{ $order->total_amount }}",
+            "discount_amount": "{{ $order->discount_amount }}",
             "notes": "{{ $order->notes ?? '' }}",
             "order_items": [
                 @foreach ($order->orderItems as $item)
@@ -257,7 +262,8 @@
                 document.getElementById('modalDeliveryDate').textContent = formatDate(order.delivery_date);
                 document.getElementById('modalStatus').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(
                     1);
-                document.getElementById('modalTotalAmount').textContent = `$${parseFloat(order.total_amount).toFixed(2)}`;
+                document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)}`;
+                document.getElementById('modalDiscount').textContent = `- ${parseFloat(order.discount_amount).toFixed(2)}`;
 
                 // Populate order items
                 const tbody = document.getElementById('orderItemsTableBody');
@@ -267,9 +273,9 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="px-4 py-3 text-sm text-gray-900">${item.service.name}</td>
-                        <td class="px-4 py-3 text-sm text-gray-900 text-right">$${parseFloat(item.unit_price).toFixed(2)}</td>
+                        <td class="px-4 py-3 text-sm text-gray-900 text-right">${parseFloat(item.unit_price).toFixed(2)}</td>
                         <td class="px-4 py-3 text-sm text-gray-900 text-center">${item.quantity}</td>
-                        <td class="px-4 py-3 text-sm text-gray-900 text-right">$${parseFloat(item.subtotal).toFixed(2)}</td>
+                        <td class="px-4 py-3 text-sm text-gray-900 text-right">${parseFloat(item.subtotal).toFixed(2)}</td>
                     `;
                     tbody.appendChild(row);
                 });

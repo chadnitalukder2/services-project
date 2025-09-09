@@ -112,10 +112,17 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required|integer',
             'order_date' => 'required|date',
-            'delivery_date' => 'required|date|after:order_date',
-            'status' => 'required|in:pending,approved,cancelled,done',
-            'total_amount' => 'required|numeric|min:0',
+            'delivery_date' => 'nullable|date|after:order_date',
+            'status' => 'nullable|string',
+            'total_amount' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string|max:255',
+
+            'discount_type' => 'nullable|string',
+            'discount_value' => 'nullable|numeric|min:0',
+            'discount_amount' => 'nullable|numeric|min:0',
+
+            'paid_amount' => 'nullable|numeric|min:0',
+            'due_amount' => 'nullable|numeric|min:0',
 
             'services' => 'required|array|min:1',
             'services.*.id' => 'required|integer|exists:services,id',
@@ -123,8 +130,8 @@ class OrderController extends Controller
             'services.*.unit_price' => 'required|numeric|min:0',
             'services.*.subtotal' => 'required|numeric|min:0',
 
-            'payment_method' => 'required|string|in:card,bkash,nagad,rocket,upay,cash_on_delivery',
-            'payment_status' => 'required|string|in:pending,paid,partial_paid,due,failed,refunded',
+            'payment_method' => 'nullable|string',
+            'payment_status' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -138,6 +145,9 @@ class OrderController extends Controller
             'delivery_date' => $request->delivery_date,
             'status' => $request->status,
             'total_amount' => $request->total_amount,
+            'discount_type' => $request->discount_type,
+            'discount_value' => $request->discount_value,
+            'discount_amount' => $request->discount_amount,
             'notes' => $request->notes,
         ]);
 
@@ -157,12 +167,7 @@ class OrderController extends Controller
 
             if ($orderItem) {
                 $orderItem->update([
-                    'quantity' => $service['quantity'],
-                    'unit_price' => $service['unit_price'],
-                    'subtotal' => $service['subtotal'],
-                ]);
-            } else {
-                $order->orderItems()->create([
+                    'order_id' => $order->id,
                     'service_id' => $service['id'],
                     'quantity' => $service['quantity'],
                     'unit_price' => $service['unit_price'],
@@ -175,15 +180,10 @@ class OrderController extends Controller
         $invoice = $order->invoice;
         if ($invoice) {
             $invoice->update([
-                'customer_id' => $request->customer_id,
-                'amount' => $request->total_amount,
-                'status' => $request->payment_status,
-                'payment_method' => $request->payment_method,
-            ]);
-        } else {
-            Invoice::create([
                 'order_id' => $order->id,
                 'customer_id' => $request->customer_id,
+                'paid_amount' => $request->paid_amount,
+                'due_amount' => $request->due_amount,
                 'amount' => $request->total_amount,
                 'status' => $request->payment_status,
                 'payment_method' => $request->payment_method,
