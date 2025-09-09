@@ -10,6 +10,8 @@ class Invoice extends Model
         'order_id',
         'customer_id',
         'amount',
+        'paid_amount',
+        'due_amount',
         'status',
         'payment_method',
     ];

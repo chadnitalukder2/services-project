@@ -12,6 +12,9 @@ class Order extends Model
         'delivery_date',
         'status',
         'total_amount',
+        'discount_type',
+        'discount_value',
+        'discount_amount',
         'notes',
     ];
     public function customer()

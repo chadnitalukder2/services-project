@@ -27,6 +27,8 @@
                         <th class="px-6 py-3 text-left">Order Id</th>
                         <th class="px-6 py-3 text-left">Customer Name</th>
                         <th class="px-6 py-3 text-left">Amount</th>
+                        <th class="px-6 py-3 text-left">Paid Amount</th>
+                        <th class="px-6 py-3 text-left">Due Amount</th>
                         <th class="px-6 py-3 text-left">Payment Status</th>
                         <th class="px-6 py-3 text-left">Payment Method</th>
                         <th class="px-6 py-3 text-left" width="180">Created</th>
@@ -45,6 +47,8 @@
                                 <td class="px-6 py-3 text-left">{{ $invoice->order_id }}</td>
                                 <td class="px-6 py-3 text-left">{{ $invoice->customer->name }}</td>
                                 <td class="px-6 py-3 text-left">{{ $invoice->amount }}</td>
+                                <td class="px-6 py-3 text-left">{{ $invoice->paid_amount }}</td>
+                                <td class="px-6 py-3 text-left">{{ $invoice->due_amount }}</td>
                                 <td class="px-6 py-3 text-left">{{ $invoice->status }}</td>
                                 <td class="px-6 py-3 text-left">{{ $invoice->payment_method }}</td>
                                 <td class="px-6 py-3 text-left">

@@ -16,8 +16,11 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->date('order_date');
             $table->date('delivery_date')->nullable();
-            $table->enum('status', ['pending', 'approved', 'cancelled', 'done'])->default('pending');
+            $table->string('status')->nullable();
             $table->decimal('total_amount', 10, 2)->default(0);
+            $table->string('discount_type')->nullable();
+            $table->decimal('discount_value', 10, 2)->default(0);
+             $table->decimal('discount_amount', 10, 2)->default(0);
             $table->text('notes')->nullable();
             $table->timestamps();
         });

@@ -38,9 +38,16 @@ class OrderController extends Controller
             'customer_id' => 'required|integer',
             'order_date' => 'required|date',
             'delivery_date' => 'required|date|after:order_date',
-            'status' => 'required|in:pending,approved,cancelled,done',
+            'status' => 'nullable|string',
             'total_amount' => 'required|numeric|min:0',
             'notes' => 'nullable|string|max:255',
+
+            'discount_type' => 'nullable|string',
+            'discount_value' => 'nullable|numeric|min:0',
+            'discount_amount' => 'nullable|numeric|min:0',
+
+            'paid_amount' => 'nullable|numeric|min:0',
+            'due_amount' => 'nullable|numeric|min:0',
 
             'services' => 'required|array|min:1',
             'services.*.id' => 'required|integer|exists:services,id',
@@ -48,8 +55,8 @@ class OrderController extends Controller
             'services.*.unit_price' => 'required|numeric|min:0',
             'services.*.subtotal' => 'required|numeric|min:0',
 
-            'payment_method' => 'required|string|in:card,bkash,nagad,rocket,upay,cash_on_delivery',
-            'payment_status' => 'required|string|in:pending,partial_paid,due,failed,refunded',
+            'payment_method' => 'nullable|string',
+            'payment_status' => 'nullable|string',
         ]);
         if ($validator->passes()) {
             $order = Order::create([
@@ -58,6 +65,9 @@ class OrderController extends Controller
                 'delivery_date' => $request->delivery_date,
                 'status' => $request->status,
                 'total_amount' => $request->total_amount,
+                'discount_type' => $request->discount_type,
+                'discount_value' => $request->discount_value,
+                'discount_amount' => $request->discount_amount,
                 'notes' => $request->notes,
             ]);
             foreach ($request->services as $service) {
@@ -74,6 +84,8 @@ class OrderController extends Controller
                 'order_id' => $order->id,
                 'customer_id' => $request->customer_id,
                 'amount' => $request->total_amount,
+                'paid_amount' => $request->paid_amount,
+                'due_amount' => $request->due_amount,
                 'status' => $request->payment_status,
                 'payment_method' => $request->payment_method,
             ]);

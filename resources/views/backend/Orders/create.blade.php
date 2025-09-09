@@ -108,14 +108,14 @@
 
                         <!-- Service Selection -->
                         <div class="mb-6">
-                            <label for="service_select" class="text-lg font-medium">Add Services</label>
+                            <label for="service_select" class="text-lg font-medium">Add Services</label>৳
                             <div class="my-3 flex gap-3">
                                 <select id="service_select" class="block w-1/3 border-gray-300 rounded-md shadow-sm">
                                     <option value="">Select a service to add</option>
                                     @foreach ($services as $service)
                                         <option value="{{ $service->id }}" data-name="{{ $service->name }}"
                                             data-unit_price="{{ $service->unit_price }}">
-                                            {{ $service->name }} - ${{ number_format($service->unit_price, 2) }}
+                                            {{ $service->name }} -  ৳ {{ number_format($service->unit_price, 2) }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -146,7 +146,7 @@
                                     <tfoot class="bg-gray-50">
                                         <tr>
                                             <td colspan="3" class="px-4 py-2 text-right text-lg font-bold">Subtotal:</td>
-                                            <td class="px-4 py-2 text-lg font-bold" id="subtotal">$0.00</td>
+                                            <td class="px-4 py-2 text-lg font-bold" id="subtotal">0.00</td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -170,7 +170,7 @@
                                             class="block w-full border-gray-300 rounded-md shadow-sm">
                                             <option value="none">No Discount</option>
                                             <option value="percentage">Percentage (%)</option>
-                                            <option value="fixed">Fixed Amount ($)</option>
+                                            <option value="fixed">Fixed Amount (৳)</option>
                                         </select>
                                         @error('discount_type')
                                             <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -200,9 +200,9 @@
                                         <div class="py-1 text-xl border-t border-gray-300"><strong>Total Amount:</strong></div>
                                     </div>
                                     <div>
-                                        <div class="py-1" id="display_subtotal">$0.00</div>
-                                        <div class="py-1" id="display_discount">$0.00</div>
-                                        <div class="py-1 text-xl border-t border-gray-300" id="display_total">$0.00</div>
+                                        <div class="py-1" id="display_subtotal">0.00</div>
+                                        <div class="py-1" id="display_discount">0.00</div>
+                                        <div class="py-1 text-xl border-t border-gray-300" id="display_total">0.00</div>
                                     </div>
                                 </div>
                             </div>
@@ -226,12 +226,12 @@
                                 </div>
 
                                 <!-- Payment Status (Auto-calculated) -->
-                                <div>
+                                <div style="display: none;">
                                     <label for="payment_status" class="text-md font-medium">Payment Status</label>
                                     <div class="my-2">
                                         <select id="payment_status" name="payment_status"
-                                            class="block w-full border-gray-300 rounded-md shadow-sm" disabled>
-                                            <option value="unpaid">Unpaid</option>
+                                             class="block w-full border-gray-300 rounded-md shadow-sm bg-gray-50 pointer-events-none" >
+                                            <option value="due">Due</option>
                                             <option value="partial">Partial</option>
                                             <option value="paid">Paid</option>
                                         </select>
@@ -245,7 +245,7 @@
                                 <div>
                                     <label class="text-md font-medium">Due Amount</label>
                                     <div class="my-2">
-                                        <div class="block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 bg-gray-50" id="due_amount_display">$0.00</div>
+                                        <div class="block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 bg-gray-50" id="due_amount_display"> 0.00</div>
                                     </div>
                                 </div>
                             </div>
@@ -337,10 +337,12 @@
                 const totalAmount = subtotal - discountAmount;
 
                 // Update displays
-                document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-                document.getElementById('display_subtotal').textContent = `$${subtotal.toFixed(2)}`;
-                document.getElementById('display_discount').textContent = `-$${discountAmount.toFixed(2)}`;
-                document.getElementById('display_total').textContent = `$${totalAmount.toFixed(2)}`;
+                document.getElementById('subtotal').textContent = `${subtotal.toFixed(2)}`;
+                document.getElementById('display_subtotal').textContent = `${subtotal.toFixed(2)}`;
+                document.getElementById('display_discount').textContent = `- ${discountAmount.toFixed(2)}`;
+                document.getElementById('display_total').textContent = `${totalAmount.toFixed(2)}`;
+                document.getElementById('paid_amount').value = totalAmount.toFixed(2);
+
 
                 // Calculate payment status and due amount
                 calculatePaymentStatus();
@@ -372,12 +374,12 @@
                 const due = totalAmount - paid;
 
                 // Update due amount display
-                document.getElementById('due_amount_display').textContent = `$${Math.max(0, due).toFixed(2)}`;
+                document.getElementById('due_amount_display').textContent = `${Math.max(0, due).toFixed(2)}`;
                 document.getElementById('hidden_due_amount').value = Math.max(0, due).toFixed(2);
 
                 // Update payment status
                 if (paid <= 0) {
-                    paymentStatus.value = 'unpaid';
+                    paymentStatus.value = 'due';
                 } else if (paid >= totalAmount) {
                     paymentStatus.value = 'paid';
                 } else {
@@ -443,7 +445,7 @@
                                class="w-20 border-gray-300 rounded-md text-center quantity-input" 
                                data-service-counter="${service.counter}">
                     </td>
-                    <td class="px-4 py-2 border-b service-total">$${(service.unit_price * service.quantity).toFixed(2)}</td>
+                    <td class="px-4 py-2 border-b service-total">${(service.unit_price * service.quantity).toFixed(2)}</td>
                     <td class="px-4 py-2 border-b">
                         <button type="button" class="bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded remove-service" 
                                 data-service-counter="${service.counter}">
@@ -466,7 +468,7 @@
 
                         // Update row total
                         const serviceTotal = row.querySelector('.service-total');
-                        serviceTotal.textContent = `$${(selectedServices[serviceIndex].unit_price * quantity).toFixed(2)}`;
+                        serviceTotal.textContent = `${(selectedServices[serviceIndex].unit_price * quantity).toFixed(2)}`;
 
                         // Update totals
                         calculateTotals();
@@ -484,7 +486,7 @@
 
                         // Update row total
                         const serviceTotal = row.querySelector('.service-total');
-                        serviceTotal.textContent = `$${(unitPrice * selectedServices[serviceIndex].quantity).toFixed(2)}`;
+                        serviceTotal.textContent = `${(unitPrice * selectedServices[serviceIndex].quantity).toFixed(2)}`;
 
                         calculateTotals();
                     }
