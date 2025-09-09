@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
@@ -105,28 +106,6 @@
                             </div>
                         </div>
 
-                        <!-- payment status -->
-                        <div class="mb-6">
-                            <label for="payment_status" class="text-lg font-medium">Payment Status</label>
-                            <div class="my-3">
-                                <select id="payment_status" name="payment_status"
-                                    class="block mt-1 w-1/2 border-gray-300 rounded-md shadow-sm">
-                                    <option value="">Select a status</option>
-                                    <option value="pending" selected>Pending</option>
-                                    <option value="partial_paid">Partial Paid</option>
-                                    <option value="paid">Paid</option>
-                                    <option value="due">Due</option>
-                                    <option value="failed">Failed</option>
-                                    <option value="cancelled">Cancelled</option>
-                                    <option value="refunded">Refunded</option>
-                                </select>
-
-                                @error('payment_status')
-                                    <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
                         <!-- Service Selection -->
                         <div class="mb-6">
                             <label for="service_select" class="text-lg font-medium">Add Services</label>
@@ -154,17 +133,11 @@
                                 <table class="min-w-full bg-white border border-gray-200" id="services_table">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Service
-                                                Name</th>
-                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Unit
-                                                Price
-                                            </th>
-                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Quantity
-                                            </th>
-                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Total
-                                            </th>
-                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Action
-                                            </th>
+                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Service Name</th>
+                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Unit Price</th>
+                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Quantity</th>
+                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Total</th>
+                                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="services_tbody">
@@ -172,9 +145,8 @@
                                     </tbody>
                                     <tfoot class="bg-gray-50">
                                         <tr>
-                                            <td colspan="3" class="px-4 py-2 text-right text-lg font-bold">Total
-                                                Amount:</td>
-                                            <td class="px-4 py-2 text-lg font-bold" id="grand_total">$0.00</td>
+                                            <td colspan="3" class="px-4 py-2 text-right text-lg font-bold">Subtotal:</td>
+                                            <td class="px-4 py-2 text-lg font-bold" id="subtotal">$0.00</td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -185,7 +157,99 @@
                             </div>
                         </div>
 
+                        <!-- Discount Section -->
+                        <div class="mb-6 border-t pt-6">
+                            <h3 class="text-lg font-medium mb-4">Discount & Total Calculation</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Discount Type -->
+                                <div>
+                                    <label for="discount_type" class="text-md font-medium">Discount Type</label>
+                                    <div class="my-2">
+                                        <select id="discount_type" name="discount_type"
+                                            class="block w-full border-gray-300 rounded-md shadow-sm">
+                                            <option value="none">No Discount</option>
+                                            <option value="percentage">Percentage (%)</option>
+                                            <option value="fixed">Fixed Amount ($)</option>
+                                        </select>
+                                        @error('discount_type')
+                                            <p class="text-red-400 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
 
+                                <!-- Discount Value -->
+                                <div>
+                                    <label for="discount_value" class="text-md font-medium">Discount Value</label>
+                                    <div class="my-2">
+                                        <input type="number" step="0.01" min="0" id="discount_value" name="discount_value"
+                                            class="block w-full border-gray-300 rounded-md shadow-sm" value="0" disabled />
+                                        @error('discount_value')
+                                            <p class="text-red-400 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Total Calculation Display -->
+                            <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="text-right">
+                                        <div class="py-1"><strong>Subtotal:</strong></div>
+                                        <div class="py-1"><strong>Discount:</strong></div>
+                                        <div class="py-1 text-xl border-t border-gray-300"><strong>Total Amount:</strong></div>
+                                    </div>
+                                    <div>
+                                        <div class="py-1" id="display_subtotal">$0.00</div>
+                                        <div class="py-1" id="display_discount">$0.00</div>
+                                        <div class="py-1 text-xl border-t border-gray-300" id="display_total">$0.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Information Section -->
+                        <div class="mb-6 border-t pt-6">
+                            <h3 class="text-lg font-medium mb-4">Payment Information</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Paid Amount -->
+                                <div>
+                                    <label for="paid_amount" class="text-md font-medium">Paid Amount</label>
+                                    <div class="my-2">
+                                        <input type="number" step="0.01" min="0" id="paid_amount" name="paid_amount"
+                                            class="block w-full border-gray-300 rounded-md shadow-sm" value="0" />
+                                        @error('paid_amount')
+                                            <p class="text-red-400 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Payment Status (Auto-calculated) -->
+                                <div>
+                                    <label for="payment_status" class="text-md font-medium">Payment Status</label>
+                                    <div class="my-2">
+                                        <select id="payment_status" name="payment_status"
+                                            class="block w-full border-gray-300 rounded-md shadow-sm" disabled>
+                                            <option value="unpaid">Unpaid</option>
+                                            <option value="partial">Partial</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
+                                        @error('payment_status')
+                                            <p class="text-red-400 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Due Amount (Display only) -->
+                                <div>
+                                    <label class="text-md font-medium">Due Amount</label>
+                                    <div class="my-2">
+                                        <div class="block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 bg-gray-50" id="due_amount_display">$0.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Notes -->
                         <div class="mb-6">
@@ -200,8 +264,9 @@
                             </div>
                         </div>
 
-                        <!-- Hidden inputs for services -->
+                        <!-- Hidden inputs for services and calculations -->
                         <div id="hidden_services"></div>
+                        <input type="hidden" id="hidden_due_amount" name="due_amount" value="0">
 
                         <button type="submit"
                             class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white">
@@ -224,6 +289,101 @@
             const servicesTbody = document.getElementById('services_tbody');
             const noServicesDiv = document.getElementById('no_services');
             const hiddenServicesDiv = document.getElementById('hidden_services');
+            
+            // Discount and payment elements
+            const discountType = document.getElementById('discount_type');
+            const discountValue = document.getElementById('discount_value');
+            const paidAmount = document.getElementById('paid_amount');
+            const paymentStatus = document.getElementById('payment_status');
+
+            // Event listeners for discount and payment
+            discountType.addEventListener('change', handleDiscountTypeChange);
+            discountValue.addEventListener('input', calculateTotals);
+            paidAmount.addEventListener('input', calculatePaymentStatus);
+
+            function handleDiscountTypeChange() {
+                const discountValueInput = document.getElementById('discount_value');
+                
+                if (discountType.value === 'none') {
+                    discountValueInput.disabled = true;
+                    discountValueInput.value = 0;
+                } else {
+                    discountValueInput.disabled = false;
+                }
+                
+                calculateTotals();
+            }
+
+            function calculateTotals() {
+                const subtotal = selectedServices.reduce((sum, service) => {
+                    return sum + (service.unit_price * service.quantity);
+                }, 0);
+
+                let discountAmount = 0;
+                const discountVal = parseFloat(discountValue.value) || 0;
+
+                if (discountType.value === 'percentage') {
+                    discountAmount = (subtotal * discountVal) / 100;
+                } else if (discountType.value === 'fixed') {
+                    discountAmount = discountVal;
+                }
+
+                // Ensure discount doesn't exceed subtotal
+                if (discountAmount > subtotal) {
+                    discountAmount = subtotal;
+                    discountValue.value = discountType.value === 'percentage' ? 100 : subtotal;
+                }
+
+                const totalAmount = subtotal - discountAmount;
+
+                // Update displays
+                document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('display_subtotal').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('display_discount').textContent = `-$${discountAmount.toFixed(2)}`;
+                document.getElementById('display_total').textContent = `$${totalAmount.toFixed(2)}`;
+
+                // Calculate payment status and due amount
+                calculatePaymentStatus();
+                
+                // Update hidden inputs
+                updateHiddenInputs();
+            }
+
+            function calculatePaymentStatus() {
+                const subtotal = selectedServices.reduce((sum, service) => {
+                    return sum + (service.unit_price * service.quantity);
+                }, 0);
+
+                let discountAmount = 0;
+                const discountVal = parseFloat(discountValue.value) || 0;
+
+                if (discountType.value === 'percentage') {
+                    discountAmount = (subtotal * discountVal) / 100;
+                } else if (discountType.value === 'fixed') {
+                    discountAmount = discountVal;
+                }
+
+                if (discountAmount > subtotal) {
+                    discountAmount = subtotal;
+                }
+
+                const totalAmount = subtotal - discountAmount;
+                const paid = parseFloat(paidAmount.value) || 0;
+                const due = totalAmount - paid;
+
+                // Update due amount display
+                document.getElementById('due_amount_display').textContent = `$${Math.max(0, due).toFixed(2)}`;
+                document.getElementById('hidden_due_amount').value = Math.max(0, due).toFixed(2);
+
+                // Update payment status
+                if (paid <= 0) {
+                    paymentStatus.value = 'unpaid';
+                } else if (paid >= totalAmount) {
+                    paymentStatus.value = 'paid';
+                } else {
+                    paymentStatus.value = 'partial';
+                }
+            }
 
             addServiceBtn.addEventListener('click', function() {
                 const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
@@ -256,8 +416,8 @@
                 // Add to table
                 addServiceToTable(service);
 
-                // Update total
-                updateTotal();
+                // Update totals
+                calculateTotals();
 
                 // Show table, hide no services message
                 servicesTable.style.display = 'table';
@@ -265,35 +425,32 @@
 
                 // Reset select
                 serviceSelect.selectedIndex = 0;
-
-                // Update hidden inputs
-                updateHiddenInputs();
             });
 
             function addServiceToTable(service) {
                 const row = document.createElement('tr');
                 row.id = `service_row_${service.counter}`;
                 row.innerHTML = `
-            <td class="px-4 py-2 border-b">${service.name}</td>
-            <td class="px-4 py-2 border-b">
-            <input type="number" step="0.01" min="0" 
-                   class="w-24 border-gray-300 rounded-md shadow-sm px-2 py-1 unit-price-input" 
-                   data-service-counter="${service.counter}" 
-                   value="${service.unit_price}" />
-        </td>
-            <td class="px-4 py-2 border-b">
-                <input type="number" min="1" value="${service.quantity}" 
-                       class="w-20 border-gray-300 rounded-md text-center quantity-input" 
-                       data-service-counter="${service.counter}">
-            </td>
-            <td class="px-4 py-2 border-b service-total">$${(service.unit_price * service.quantity).toFixed(2)}</td>
-            <td class="px-4 py-2 border-b">
-                <button type="button" class="bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded remove-service" 
-                        data-service-counter="${service.counter}">
-                    Remove
-                </button>
-            </td>
-        `;
+                    <td class="px-4 py-2 border-b">${service.name}</td>
+                    <td class="px-4 py-2 border-b">
+                        <input type="number" step="0.01" min="0" 
+                               class="w-24 border-gray-300 rounded-md shadow-sm px-2 py-1 unit-price-input" 
+                               data-service-counter="${service.counter}" 
+                               value="${service.unit_price}" />
+                    </td>
+                    <td class="px-4 py-2 border-b">
+                        <input type="number" min="1" value="${service.quantity}" 
+                               class="w-20 border-gray-300 rounded-md text-center quantity-input" 
+                               data-service-counter="${service.counter}">
+                    </td>
+                    <td class="px-4 py-2 border-b service-total">$${(service.unit_price * service.quantity).toFixed(2)}</td>
+                    <td class="px-4 py-2 border-b">
+                        <button type="button" class="bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded remove-service" 
+                                data-service-counter="${service.counter}">
+                            Remove
+                        </button>
+                    </td>
+                `;
                 servicesTbody.appendChild(row);
 
                 // Add event listeners
@@ -309,15 +466,10 @@
 
                         // Update row total
                         const serviceTotal = row.querySelector('.service-total');
-                        serviceTotal.textContent =
+                        serviceTotal.textContent = `$${(selectedServices[serviceIndex].unit_price * quantity).toFixed(2)}`;
 
-                            `$${(selectedServices[serviceIndex].unit_price * quantity).toFixed(2)}`;
-
-                        // Update grand total
-                        updateTotal();
-
-                        // Update hidden inputs
-                        updateHiddenInputs();
+                        // Update totals
+                        calculateTotals();
                     }
                 });
 
@@ -330,12 +482,11 @@
                     if (serviceIndex !== -1) {
                         selectedServices[serviceIndex].unit_price = unitPrice;
 
+                        // Update row total
                         const serviceTotal = row.querySelector('.service-total');
-                        serviceTotal.textContent =
-                            `$${(unitPrice * selectedServices[serviceIndex].quantity).toFixed(2)}`;
+                        serviceTotal.textContent = `$${(unitPrice * selectedServices[serviceIndex].quantity).toFixed(2)}`;
 
-                        updateTotal();
-                        updateHiddenInputs();
+                        calculateTotals();
                     }
                 });
 
@@ -356,11 +507,8 @@
                     row.remove();
                 }
 
-                // Update total
-                updateTotal();
-
-                // Update hidden inputs
-                updateHiddenInputs();
+                // Update totals
+                calculateTotals();
 
                 // Show/hide table
                 if (selectedServices.length === 0) {
@@ -369,23 +517,41 @@
                 }
             }
 
-            function updateTotal() {
-                const total = selectedServices.reduce((sum, service) => {
-                    return sum + (service.unit_price * service.quantity);
-                }, 0);
-
-                document.getElementById('grand_total').textContent = `$${total.toFixed(2)}`;
-            }
-
             function updateHiddenInputs() {
                 hiddenServicesDiv.innerHTML = '';
 
-                // Calculate overall total amount
-                const totalAmount = selectedServices.reduce((sum, service) => {
+                const subtotal = selectedServices.reduce((sum, service) => {
                     return sum + (service.unit_price * service.quantity);
                 }, 0);
 
-                // Add total amount hidden input
+                let discountAmount = 0;
+                const discountVal = parseFloat(discountValue.value) || 0;
+
+                if (discountType.value === 'percentage') {
+                    discountAmount = (subtotal * discountVal) / 100;
+                } else if (discountType.value === 'fixed') {
+                    discountAmount = discountVal;
+                }
+
+                if (discountAmount > subtotal) {
+                    discountAmount = subtotal;
+                }
+
+                const totalAmount = subtotal - discountAmount;
+
+                // Add calculation hidden inputs
+                const subtotalInput = document.createElement('input');
+                subtotalInput.type = 'hidden';
+                subtotalInput.name = 'subtotal';
+                subtotalInput.value = subtotal.toFixed(2);
+                hiddenServicesDiv.appendChild(subtotalInput);
+
+                const discountAmountInput = document.createElement('input');
+                discountAmountInput.type = 'hidden';
+                discountAmountInput.name = 'discount_amount';
+                discountAmountInput.value = discountAmount.toFixed(2);
+                hiddenServicesDiv.appendChild(discountAmountInput);
+
                 const totalAmountInput = document.createElement('input');
                 totalAmountInput.type = 'hidden';
                 totalAmountInput.name = 'total_amount';
@@ -430,6 +596,9 @@
 
             // Initially hide the table
             servicesTable.style.display = 'none';
+            
+            // Initialize calculations
+            calculateTotals();
         });
     </script>
 </x-app-layout>

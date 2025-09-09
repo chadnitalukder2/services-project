@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
+            $table->decimal('paid_amount', 10, 2);
+            $table->decimal('due_amount', 10, 2);
             $table->string('status')->default('pending');
             $table->string('payment_method')->default('cash_on_delivery');
             $table->timestamps();
