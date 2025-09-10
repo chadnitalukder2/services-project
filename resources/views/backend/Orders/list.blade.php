@@ -349,52 +349,51 @@
                 if (e.key === 'Escape') {
                     closeModal();
                 }
+            });
 
-                function updateOrderStatus(orderId, status) {
-                    console.log('Updating order status:', orderId, status);
+            //===============updated status=================
+            function updateOrderStatus(orderId, status) {
+                // Show loading state (optional)
+                const selectElement = event.target;
+                const originalValue = selectElement.getAttribute('data-original-value') || selectElement.value;
+                selectElement.disabled = true;
 
-                    // Show loading state (optional)
-                    const selectElement = event.target;
-                    const originalValue = selectElement.getAttribute('data-original-value') || selectElement.value;
-                    selectElement.disabled = true;
+                $.ajax({
+                    url: `/orders/${orderId}/update-status`,
+                    type: 'PATCH',
+                    data: {
+                        status: status,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        // Re-enable the select
+                        selectElement.disabled = false;
 
-                    $.ajax({
-                        url: `/orders/${orderId}/update-status`,
-                        type: 'PATCH',
-                        data: {
-                            status: status,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            // Re-enable the select
-                            selectElement.disabled = false;
-
-                            if (response.status || response.success) {
-                                alert('Status updated successfully');
-                                selectElement.setAttribute('data-original-value', status);
-                            } else {
-                                alert('Error updating status: ' + (response.message || 'Unknown error'));
-                                selectElement.value = originalValue;
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            selectElement.disabled = false;
-
-                            console.error('Error updating status:', xhr.responseText);
-
-                            let errorMessage = 'Error updating status';
-                            if (xhr.responseJSON && xhr.responseJSON.message) {
-                                errorMessage = xhr.responseJSON.message;
-                            }
-
-                            alert(errorMessage);
-
+                        if (response.status || response.success) {
+                            alert('Status updated successfully');
+                            selectElement.setAttribute('data-original-value', status);
+                        } else {
+                            alert('Error updating status: ' + (response.message || 'Unknown error'));
                             selectElement.value = originalValue;
                         }
-                    });
-                }
-            });
+                    },
+                    error: function(xhr, status, error) {
+                        selectElement.disabled = false;
+
+                        console.error('Error updating status:', xhr.responseText);
+
+                        let errorMessage = 'Error updating status';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
+                        alert(errorMessage);
+
+                        selectElement.value = originalValue;
+                    }
+                });
+            }
         </script>
     </x-slot>
 </x-app-layout>

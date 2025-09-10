@@ -195,7 +195,6 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request, Order $order)
     {
-        // Validate the status
         $request->validate([
             'status' => 'nullable|string'
         ]);
