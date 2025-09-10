@@ -59,10 +59,7 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
-    {
-        //
-    }
+   
     public function processPayment(Request $request)
     {
         $id = $request->id ;
@@ -98,6 +95,17 @@ class InvoiceController extends Controller
             //return redirect()->route('invoices.edit', $invoice->id)->withErrors($validator)->withInput();
         }
 
+    }
+
+    public function destroy(Request $request)
+    {
+          $invoice = Invoice::findOrFail($request->id);
+        if ($invoice) {
+            $invoice->delete();
+            return response()->json(['status' => true, 'message' => 'Invoice deleted successfully']);
+        } else {
+            return response()->json(['status' => false, 'message' => 'Invoice not found']);
+        }
     }
 
    

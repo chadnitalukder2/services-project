@@ -220,4 +220,19 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    public function destroy(Request $request)
+    {
+        $order = Order::findOrFail($request->id);
+        if ($order) {
+            $order->orderItems()->delete();
+            if ($order->invoice) {
+                $order->invoice->delete();
+            }
+            $order->delete();
+            return response()->json(['status' => true, 'message' => 'Order deleted successfully']);
+        } else {
+            return response()->json(['status' => false, 'message' => 'Order not found']);
+        }
+    }
 }

@@ -108,8 +108,29 @@
     <x-payment-modal />
 
     <x-slot name="script">
-        <script type="text/javascript">
-       
+         <script type="text/javascript">
+            function deleteInvoice(id) {
+                if (confirm('Are you sure you want to delete this invoice?')) {
+                    $.ajax({
+                        url: '{{ route('invoices.destroy') }}',
+                        type: 'DELETE',
+                        data: {
+                            id: id,
+                        },
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status) {
+                                location.reload();
+                            } else {
+                                alert('Invoice not found');
+                            }
+                        }
+                    });
+                }
+            }
         </script>
     </x-slot>
 </x-app-layout>

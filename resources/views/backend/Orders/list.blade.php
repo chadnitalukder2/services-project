@@ -317,10 +317,10 @@
             function deleteOrder(id) {
                 if (confirm('Are you sure you want to delete this order?')) {
                     $.ajax({
-                        url: '{{ url('orders.destroy') }}/' + id,
+                        url: '{{ route('orders.destroy') }}',
                         type: 'DELETE',
                         data: {
-                            id: id
+                            id: id,
                         },
                         dataType: 'json',
                         headers: {
