@@ -314,7 +314,7 @@
                                 </button>
                             </div>
 
-                            <form  class="space-y-4">
+                            <form id="customer-form" class="space-y-4">
                                 <div class="grid grid-cols-1 gap-4">
                                     <!-- Name -->
                                     <div>
@@ -732,7 +732,7 @@
                 };
                 console.log(data, 'customer data');
                 $.ajax({
-                    url: '{{ route('customers.store') }}',
+                    url: '{{ route('customers.OrderCustomerStore') }}',
                     type: 'POST',
                     data: {
                         'name': customerForm.name.value,

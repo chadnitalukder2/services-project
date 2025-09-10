@@ -56,7 +56,7 @@
                                         {{ ucfirst($invoice->status) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-3 text-left">{{ $invoice->payment_method ?? 'N/A' }}</td>
+                                <td class="px-6 py-3 text-left capitalize">{{ $invoice->payment_method ?? 'N/A' }}</td>
                                 <td class="px-6 py-3 text-left">
                                     {{ \Carbon\Carbon::parse($invoice->created_at)->format('d M, Y') }}
                                 </td>

@@ -56,7 +56,7 @@
                         Amount</label>
                     <input type="number" id="paymentAmount" name="payment_amount" step="0.01" min="0"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter payment amount" required>
+                        placeholder="Enter payment amount" >
                     <div class="mt-1">
                         <button type="button" onclick="setFullPayment()"
                             class="text-xs text-blue-600 hover:text-blue-800">
