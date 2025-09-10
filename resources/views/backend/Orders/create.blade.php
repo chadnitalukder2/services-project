@@ -718,39 +718,51 @@
                 e.preventDefault();
                 clearCustomerFormErrors();
 
-                // Show loading state
                 saveCustomerBtn.disabled = true;
                 saveCustomerText.classList.add('hidden');
                 saveCustomerLoading.classList.remove('hidden');
 
                 const data = {
-                    'name': customerForm.name.value,
-                    'email': customerForm.email.value,
-                    'phone': customerForm.phone.value,
-                    'address': customerForm.address.value,
-                    'company': customerForm.company.value
+                    name: customerForm.name.value,
+                    email: customerForm.email.value,
+                    phone: customerForm.phone.value,
+                    address: customerForm.address.value,
+                    company: customerForm.company.value
                 };
-                console.log(data, 'customer data');
+
                 $.ajax({
                     url: '{{ route('customers.OrderCustomerStore') }}',
                     type: 'POST',
-                    data: {
-                        'name': customerForm.name.value,
-                        'email': customerForm.email.value,
-                        'phone': customerForm.phone.value,
-                        'address': customerForm.address.value,
-                        'company': customerForm.company.value
-                    },
-                    dataType: 'json',
+                    data: data,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     success: function(response) {
                         saveCustomerBtn.disabled = false;
-                        if (response.status) {
-                            location.reload();
+                        saveCustomerText.classList.remove('hidden');
+                        saveCustomerLoading.classList.add('hidden');
+
+                        if (response.status === true) {
+                            window.dispatchEvent(new CustomEvent('close-modal', { detail: 'create-customer' }));
+
+                            customerForm.reset();
+
+                            const customerSelect = document.getElementById('customer_id');
+                            const option = new Option(response.customer.name, response.customer
+                                .id, true, true);
+                            customerSelect.appendChild(option);
+                            customerSelect.value = response.customer.id;
+                        }
+                    },
+                    error: function(xhr) {
+                        saveCustomerBtn.disabled = false;
+                        saveCustomerText.classList.remove('hidden');
+                        saveCustomerLoading.classList.add('hidden');
+
+                        if (xhr.status === 422) {
+                            showCustomerFormErrors(xhr.responseJSON.errors);
                         } else {
-                            alert('Customer not found');
+                            alert('Something went wrong. Please try again.');
                         }
                     }
                 });

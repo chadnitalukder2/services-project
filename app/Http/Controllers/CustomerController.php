@@ -84,28 +84,37 @@ class CustomerController extends Controller implements HasMiddleware
         }
     }
 
-      public function OrderCustomerStore(Request $request)
+    public function OrderCustomerStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|unique:customers,email',
+            'email' => 'required|email',
             'phone' => 'required|numeric|min:0',
             'address' => 'required|string',
             'company' => 'nullable|string',
         ]);
-        if ($validator->passes()) {
-            $customer = Customer::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'company' => $request->company,
-            ]);
 
-            return redirect()->route('orders.create')->with('success', 'Customer created successfully');
-        } else {
-            
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
+
+        $customer = Customer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'company' => $request->company,
+        ]);
+
+        // Return the newly created customer so you can update the select in frontend
+        return response()->json([
+            'status' => true,
+            'customer' => $customer,
+            'message' => 'Customer added successfully'
+        ]);
     }
 
 
