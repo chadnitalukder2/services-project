@@ -63,4 +63,11 @@ class InvoiceController extends Controller
     {
         //
     }
+    public function processPayment(Request $request)
+    {
+        dd('hello');
+    }
+
+  
+   
 }

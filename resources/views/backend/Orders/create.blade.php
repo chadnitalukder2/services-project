@@ -25,18 +25,30 @@
                         <!-- Customer -->
                         <div class="mb-6">
                             <label for="customer_id" class="text-lg font-medium">Customer</label>
-                            <div class="my-3">
-                                <select id="customer_id" name="customer_id"
-                                    class="block mt-1 w-1/2 border-gray-300 rounded-md shadow-sm">
-                                    <option value="">Select a customer</option>
-                                    @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="my-3 flex gap-3 items-start">
+                                <div class="flex-1">
+                                    <select id="customer_id" name="customer_id"
+                                        class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                                        <option value="">Select a customer</option>
+                                        @foreach ($customers as $customer)
+                                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                        @endforeach
+                                    </select>
 
-                                @error('customer_id')
-                                    <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
+                                    @error('customer_id')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                
+                                <button type="button" 
+                                    x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'create-customer')"
+                                    class="bg-green-600 hover:bg-green-700 text-sm rounded-md px-4 py-2 text-white whitespace-nowrap mt-1 flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Add Customer
+                                </button>
                             </div>
                         </div>
 
@@ -97,7 +109,7 @@
                                     <option value="nagad">Nagad</option>
                                     <option value="rocket">Rocket</option>
                                     <option value="upay">Upay</option>
-                                    <option value="cash_on_delivery" selected>Cash on Delivery</option>
+                                    <option value="cash on delivery" selected>Cash on Delivery</option>
                                 </select>
 
                                 @error('payment_method')
@@ -273,6 +285,96 @@
                             Submit Order
                         </button>
                     </form>
+                       <!-- Customer Creation Modal -->
+                    <x-modal name="create-customer" :show="false" maxWidth="lg" focusable>
+                        <div class="px-6 py-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-lg font-medium text-gray-900">
+                                    Add New Customer
+                                </h2>
+                                <button type="button" 
+                                    x-on:click="$dispatch('close-modal', 'create-customer')"
+                                    class="text-gray-400 hover:text-gray-600">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <form id="customer-form" class="space-y-4">
+                                <div class="grid grid-cols-1 gap-4">
+                                    <!-- Name -->
+                                    <div>
+                                        <label for="customer_name" class="block text-sm font-medium text-gray-700">Name *</label>
+                                        <input type="text" 
+                                            id="customer_name" 
+                                            name="name" 
+                                            required
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                        <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div>
+                                        <label for="customer_email" class="block text-sm font-medium text-gray-700">Email *</label>
+                                        <input type="email" 
+                                            id="customer_email" 
+                                            name="email" 
+                                            required
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                        <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div>
+                                        <label for="customer_phone" class="block text-sm font-medium text-gray-700">Phone *</label>
+                                        <input type="tel" 
+                                            id="customer_phone" 
+                                            name="phone" 
+                                            required
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                        <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                    </div>
+
+                                    <!-- Address -->
+                                    <div>
+                                        <label for="customer_address" class="block text-sm font-medium text-gray-700">Address *</label>
+                                        <textarea 
+                                            id="customer_address" 
+                                            name="address" 
+                                            rows="3" 
+                                            required
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                        <div id="address-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                    </div>
+
+                                    <!-- Company (Optional) -->
+                                    <div>
+                                        <label for="customer_company" class="block text-sm font-medium text-gray-700">Company</label>
+                                        <input type="text" 
+                                            id="customer_company" 
+                                            name="company" 
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                        <div id="company-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+                                    <button type="button" 
+                                        x-on:click="$dispatch('close-modal', 'create-customer')"
+                                        class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" 
+                                        id="save-customer-btn"
+                                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition">
+                                        <span id="save-customer-text">Save Customer</span>
+                                        <span id="save-customer-loading" class="hidden">Saving...</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </x-modal>
                 </div>
             </div>
         </div>
@@ -601,6 +703,84 @@
             
             // Initialize calculations
             calculateTotals();
+
+            
+            // Customer Modal Form Handler
+            const customerForm = document.getElementById('customer-form');
+            const saveCustomerBtn = document.getElementById('save-customer-btn');
+            const saveCustomerText = document.getElementById('save-customer-text');
+            const saveCustomerLoading = document.getElementById('save-customer-loading');
+
+            customerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                clearCustomerFormErrors();
+                
+                // Show loading state
+                saveCustomerBtn.disabled = true;
+                saveCustomerText.classList.add('hidden');
+                saveCustomerLoading.classList.remove('hidden');
+
+                const data = {
+                    'name': customerForm.name.value,
+                    'email': customerForm.email.value,
+                    'phone': customerForm.phone.value,
+                    'address': customerForm.address.value,
+                    'company': customerForm.company.value
+                };
+                console.log(data, 'customer data');
+                $.ajax({
+                        url: '{{ url('customers.store') }}',
+                        type: 'POST',
+                        data: {
+                            'name': customerForm.name.value,
+                            'email': customerForm.email.value,
+                            'phone': customerForm.phone.value,
+                            'address': customerForm.address.value,
+                            'company': customerForm.company.value
+                        },
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status) {
+                                location.reload();
+                            } else {
+                                alert('Customer not found');
+                            }
+                        }
+                    });
+            });
+
+            function clearCustomerFormErrors() {
+                const errorElements = customerForm.querySelectorAll('.text-red-500');
+                errorElements.forEach(el => {
+                    el.classList.add('hidden');
+                    el.textContent = '';
+                });
+
+                const inputElements = customerForm.querySelectorAll('input, textarea');
+                inputElements.forEach(el => {
+                    el.classList.remove('border-red-500');
+                });
+            }
+
+            function showCustomerFormErrors(errors) {
+                Object.keys(errors).forEach(field => {
+                    const errorDiv = document.getElementById(`${field}-error`);
+                    const inputElement = document.querySelector(`#customer_${field}`);
+                    
+                    if (errorDiv) {
+                        errorDiv.textContent = errors[field][0];
+                        errorDiv.classList.remove('hidden');
+                    }
+                    
+                    if (inputElement) {
+                        inputElement.classList.add('border-red-500');
+                    }
+                });
+            }
+     
         });
     </script>
 </x-app-layout>

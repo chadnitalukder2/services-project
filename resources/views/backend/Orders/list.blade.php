@@ -50,14 +50,26 @@
                                     {{ \Carbon\Carbon::parse($order->delivery_date)->format('d M, Y') }}</td>
                                 <td class="px-6 py-3 text-left">{{ number_format($order->total_amount, 2) }}</td>
                                 <td class="px-6 py-3 text-left">
-                                    <span
+                                    <select onchange="updateOrderStatus({{ $order->id }}, this.value)"
+                                        data-original-value="{{ $order->status }}"
+                                        class="px-10-2 py-1 border rounded text-sm">
+                                        <option value="pending" @if ($order->status == 'pending') selected @endif>
+                                            Pending</option>
+                                        <option value="approved" @if ($order->status == 'approved') selected @endif>
+                                            Approved</option>
+                                        <option value="done" @if ($order->status == 'done') selected @endif>
+                                            Done</option>
+                                        <option value="canceled" @if ($order->status == 'canceled') selected @endif>
+                                            Canceled</option>
+                                    </select>
+                                    {{-- <span
                                         class="px-2 py-1 text-xs rounded-full 
                                         @if ($order->status == 'pending') bg-yellow-100 text-yellow-800
                                         @elseif($order->status == 'approved') bg-blue-100 text-blue-800
                                         @elseif($order->status == 'done') bg-green-100 text-green-800
                                         @else bg-red-100 text-red-800 @endif">
                                         {{ ucfirst($order->status) }}
-                                    </span>
+                                    </span> --}}
                                 </td>
                                 <td class="px-6 py-3 text-left">
                                     {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
@@ -133,7 +145,7 @@
                                 <span class="font-medium text-gray-600">Order Date:</span>
                                 <p id="modalOrderDate" class="text-gray-900"></p>
                             </div>
-                            
+
                             <div>
                                 <span class="font-medium text-gray-600">Delivery Date:</span>
                                 <p id="modalDeliveryDate" class="text-gray-900"></p>
@@ -164,7 +176,7 @@
                                 <!-- Items will be loaded here -->
                             </tbody>
                             <tfoot class="bg-gray-50">
-                                 <tr>
+                                <tr>
                                     <td colspan="3" class="px-4 py-3 text-right font-semibold">Discount :</td>
                                     <td class="px-4 py-3 text-right font-bold text-lg" id="modalDiscount">- 0.00</td>
                                 </tr>
@@ -258,7 +270,7 @@
                 document.getElementById('modalCustomer').textContent = order.customer.name;
                 document.getElementById('modalCustomerPhone').textContent = order.customer.phone;
                 document.getElementById('modalCustomerAddress').textContent = order.customer.address;
-                  document.getElementById('modalOrderDate').textContent = formatDate(order.order_date);
+                document.getElementById('modalOrderDate').textContent = formatDate(order.order_date);
                 document.getElementById('modalDeliveryDate').textContent = formatDate(order.delivery_date);
                 document.getElementById('modalStatus').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(
                     1);
@@ -336,6 +348,51 @@
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeModal();
+                }
+
+                function updateOrderStatus(orderId, status) {
+                    console.log('Updating order status:', orderId, status);
+
+                    // Show loading state (optional)
+                    const selectElement = event.target;
+                    const originalValue = selectElement.getAttribute('data-original-value') || selectElement.value;
+                    selectElement.disabled = true;
+
+                    $.ajax({
+                        url: `/orders/${orderId}/update-status`,
+                        type: 'PATCH',
+                        data: {
+                            status: status,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            // Re-enable the select
+                            selectElement.disabled = false;
+
+                            if (response.status || response.success) {
+                                alert('Status updated successfully');
+                                selectElement.setAttribute('data-original-value', status);
+                            } else {
+                                alert('Error updating status: ' + (response.message || 'Unknown error'));
+                                selectElement.value = originalValue;
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            selectElement.disabled = false;
+
+                            console.error('Error updating status:', xhr.responseText);
+
+                            let errorMessage = 'Error updating status';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+
+                            alert(errorMessage);
+
+                            selectElement.value = originalValue;
+                        }
+                    });
                 }
             });
         </script>

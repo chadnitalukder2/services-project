@@ -192,4 +192,33 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')->with('success', 'Order updated successfully');
     }
+
+    public function updateStatus(Request $request, Order $order)
+    {
+        // Validate the status
+        $request->validate([
+            'status' => 'nullable|string'
+        ]);
+
+        try {
+            $order->status = $request->status;
+            $order->save();
+
+            return response()->json([
+                'status' => true,
+                'success' => true,
+                'message' => 'Order status updated successfully',
+                'data' => [
+                    'order_id' => $order->id,
+                    'new_status' => $order->status
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'success' => false,
+                'message' => 'Failed to update order status'
+            ], 500);
+        }
+    }
 }

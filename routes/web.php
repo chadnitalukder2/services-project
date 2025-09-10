@@ -88,6 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
     Route::post('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::patch('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.update.status');
 
     //Invoice
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
@@ -96,6 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoices/{id}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
     Route::post('/invoices/{id}', [InvoiceController::class, 'update'])->name('invoices.update');
     Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
+    Route::post('/invoices/process-payment', [InvoiceController::class, 'processPayment'])->name('invoices.process-payment');
 
 });
 
