@@ -91,13 +91,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.update.status');
 
     //Invoice
+    Route::post('/invoices/process-payment', [InvoiceController::class, 'processPayment'])->name('invoices.process-payment');
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
     Route::post('/invoices/store', [InvoiceController::class, 'store'])->name('invoices.store');
     Route::get('/invoices/{id}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
     Route::post('/invoices/{id}', [InvoiceController::class, 'update'])->name('invoices.update');
     Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
-    Route::post('/invoices/process-payment', [InvoiceController::class, 'processPayment'])->name('invoices.process-payment');
+  
 
 });
 

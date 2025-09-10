@@ -155,14 +155,14 @@
         const newPaidAmount = currentPaidAmount + paymentAmount;
         const newDueAmount = totalAmount - newPaidAmount;
 
-        let newStatus = 'Due';
+        let newStatus = 'due';
         let statusColor = 'text-red-600';
 
         if (newDueAmount <= 0) {
-            newStatus = 'Paid';
+            newStatus = 'paid';
             statusColor = 'text-green-600';
         } else if (newPaidAmount > 0) {
-            newStatus = 'Partial';
+            newStatus = 'partial';
             statusColor = 'text-yellow-600';
         }
 
@@ -175,11 +175,11 @@
         const newDueAmount = totalAmount - newPaidAmount;
 
         if (newDueAmount <= 0) {
-            return 'Paid';
+            return 'paid';
         } else if (newPaidAmount > 0) {
-            return 'Partial';
+            return 'partial';
         } else {
-            return 'Due';
+            return 'due';
         }
     }
 
@@ -204,20 +204,21 @@
             const newStatus = calculateNewStatus(currentPaidAmount, paymentAmount, totalAmount);
 
             const data = {
-                id: currentInvoice.id,
-                order_id: currentInvoice.order_id,
-                customer_id: currentInvoice.customer_id,
-                amount: currentInvoice.amount,
-                paid_amount: currentPaidAmount + paymentAmount,
-                due_amount: totalAmount - (currentPaidAmount + paymentAmount),
+                id: currentInvoice.id ,
+                order_id: Number(currentInvoice.order_id),
+                customer_id: Number(currentInvoice.customer_id),
+                amount: Number(currentInvoice.amount),
+                paid_amount: Number(currentPaidAmount + paymentAmount),
+                due_amount: Number(totalAmount - (currentPaidAmount + paymentAmount)),
                 payment_method: document.getElementById('paymentMethod').value,
                 status: newStatus,
             };
-
+            console.log("Submitting data:", data);
             $.ajax({
                 url: '{{ route('invoices.process-payment') }}',
                 type: 'POST',
                 data: data,
+                // contentType: 'application/json',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
