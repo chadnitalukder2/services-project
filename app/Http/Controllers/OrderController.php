@@ -33,7 +33,7 @@ class OrderController extends Controller
     }
     public function store(Request $request)
     {
-       
+
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required|integer',
             'order_date' => 'required|date',
@@ -65,7 +65,7 @@ class OrderController extends Controller
             'payment_status' => 'nullable|string',
         ]);
 
-         $customFieldsData = null;
+        $customFieldsData = null;
         if ($request->custom_fields) {
             $customFieldsData = json_encode($request->custom_fields);
         }
@@ -80,10 +80,10 @@ class OrderController extends Controller
                 'discount_type' => $request->discount_type,
                 'discount_value' => $request->discount_value,
                 'discount_amount' => $request->discount_amount,
-                'custom_fields' => $customFieldsData, 
+                'custom_fields' => $customFieldsData,
                 'notes' => $request->notes,
             ]);
-    
+
 
             foreach ($request->services as $service) {
                 $order->orderItems()->create([
@@ -117,7 +117,13 @@ class OrderController extends Controller
         $customers = Customer::all();
         $services = Services::where('status', 'active')->get();
 
-        return view('backend.orders.edit', compact('order', 'customers', 'services'));
+        // Decode custom fields if they exist
+        $customFields = null;
+        if ($order->custom_fields) {
+            $customFields = json_decode($order->custom_fields, true);
+        }
+
+        return view('backend.orders.edit', compact('order', 'customers', 'services', 'customFields'));
     }
 
     public function update(Request $request, $id)
@@ -130,6 +136,7 @@ class OrderController extends Controller
             'delivery_date' => 'nullable|date|after:order_date',
             'status' => 'nullable|string',
             'total_amount' => 'nullable|numeric|min:0',
+            'custom_fields' => 'nullable|array',
             'notes' => 'nullable|string',
 
             'discount_type' => 'nullable|string',
@@ -152,7 +159,10 @@ class OrderController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
+        $customFieldsData = null;
+        if ($request->custom_fields) {
+            $customFieldsData = json_encode($request->custom_fields);
+        }
         // Update order
         $order->update([
             'customer_id' => $request->customer_id,
@@ -163,6 +173,7 @@ class OrderController extends Controller
             'discount_type' => $request->discount_type,
             'discount_value' => $request->discount_value,
             'discount_amount' => $request->discount_amount,
+            'custom_fields' => $customFieldsData,
             'notes' => $request->notes,
         ]);
 
