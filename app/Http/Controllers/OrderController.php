@@ -40,7 +40,7 @@ class OrderController extends Controller
             'delivery_date' => 'required|date|after:order_date',
             'status' => 'nullable|string',
             'total_amount' => 'required|numeric|min:0',
-            'notes' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
 
             'discount_type' => 'nullable|string',
             'discount_value' => 'nullable|numeric|min:0',
@@ -115,7 +115,7 @@ class OrderController extends Controller
             'delivery_date' => 'nullable|date|after:order_date',
             'status' => 'nullable|string',
             'total_amount' => 'nullable|numeric|min:0',
-            'notes' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
 
             'discount_type' => 'nullable|string',
             'discount_value' => 'nullable|numeric|min:0',
