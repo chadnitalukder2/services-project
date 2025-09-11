@@ -220,13 +220,13 @@
                                     <div class="text-right">
                                         <div class="py-1"><strong>Subtotal:</strong></div>
                                         <div class="py-1"><strong>Discount:</strong></div>
-                                        <div class="py-1 text-xl border-t border-gray-300"><strong>Total
+                                        <div class="py-1 text-lg border-t border-gray-300"><strong>Total
                                                 Amount:</strong></div>
                                     </div>
                                     <div>
                                         <div class="py-1 ml-2.5" id="display_subtotal"> 0.00</div>
                                         <div class="py-1" id="display_discount">0.00</div>
-                                        <div class="py-1 ml-2.5 text-xl border-t border-gray-300" id="display_total"> 0.00
+                                        <div class="py-1 ml-2.5 text-lg border-t border-gray-300" id="display_total"> 0.00
                                         </div>
                                     </div>
                                 </div>

@@ -201,12 +201,12 @@
                                     <div class="text-right">
                                         <div class="py-1"><strong>Subtotal:</strong></div>
                                         <div class="py-1"><strong>Discount:</strong></div>
-                                        <div class="py-1 text-xl border-t border-gray-300"><strong>Total Amount:</strong></div>
+                                        <div class="py-1 text-lg border-t border-gray-300"><strong class="text-lg">Total Amount:</strong></div>
                                     </div>
                                     <div>
                                         <div class="py-1" id="display_subtotal">{{ number_format($order->subtotal ?? 0, 2) }}</div>
                                         <div class="py-1" id="display_discount">{{ number_format($order->discount_amount ?? 0, 2) }}</div>
-                                        <div class="py-1 text-xl border-t border-gray-300" id="display_total">{{ number_format($order->total_amount ?? 0, 2) }}</div>
+                                        <div class="py-1 text-lg border-t border-gray-300" id="display_total">{{ number_format($order->total_amount ?? 0, 2) }}</div>
                                     </div>
                                 </div>
                             </div>
