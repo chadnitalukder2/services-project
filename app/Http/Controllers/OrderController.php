@@ -33,7 +33,7 @@ class OrderController extends Controller
     }
     public function store(Request $request)
     {
-
+       
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required|integer',
             'order_date' => 'required|date',
@@ -41,6 +41,12 @@ class OrderController extends Controller
             'status' => 'nullable|string',
             'total_amount' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
+
+            // Custom fields validation
+            'custom_fields' => 'nullable|array',
+            'custom_fields.*.event_name' => 'nullable|string',
+            'custom_fields.*.event_date' => 'nullable|date',
+            'custom_fields.*.event_time' => 'nullable',
 
             'discount_type' => 'nullable|string',
             'discount_value' => 'nullable|numeric|min:0',
@@ -58,6 +64,12 @@ class OrderController extends Controller
             'payment_method' => 'nullable|string',
             'payment_status' => 'nullable|string',
         ]);
+
+         $customFieldsData = null;
+        if ($request->custom_fields) {
+            $customFieldsData = json_encode($request->custom_fields);
+        }
+
         if ($validator->passes()) {
             $order = Order::create([
                 'customer_id' => $request->customer_id,
@@ -68,8 +80,11 @@ class OrderController extends Controller
                 'discount_type' => $request->discount_type,
                 'discount_value' => $request->discount_value,
                 'discount_amount' => $request->discount_amount,
+                'custom_fields' => $customFieldsData, 
                 'notes' => $request->notes,
             ]);
+    
+
             foreach ($request->services as $service) {
                 $order->orderItems()->create([
                     'order_id' => $order->id,

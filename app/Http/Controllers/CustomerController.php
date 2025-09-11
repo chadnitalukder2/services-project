@@ -64,9 +64,9 @@ class CustomerController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|unique:customers,email',
-            'phone' => 'required|numeric|min:0',
-            'address' => 'required|string',
+            'email' => 'nullable|email',
+            'phone' => 'required',
+            'address' => 'nullable|string',
             'company' => 'nullable|string',
         ]);
         if ($validator->passes()) {
@@ -88,9 +88,9 @@ class CustomerController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required|numeric|min:0',
-            'address' => 'required|string',
+            'email' => 'nullable|email',
+            'phone' => 'required',
+            'address' => 'nullable|string',
             'company' => 'nullable|string',
         ]);
 

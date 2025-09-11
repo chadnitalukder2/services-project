@@ -15,6 +15,7 @@ class Order extends Model
         'discount_type',
         'discount_value',
         'discount_amount',
+        'custom_fields',
         'notes',
     ];
     public function customer()
