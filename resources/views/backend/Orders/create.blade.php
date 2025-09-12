@@ -69,40 +69,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Status -->
-                            <div class="mb-6">
-                                <label for="status" class="text-base font-medium">Status *</label>
-                                <div class="my-3">
-                                    <select id="status" name="status"
-                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
-                                        <option value="">Select a status</option>
-                                        <option value="pending" selected>Pending</option>
-                                        <option value="approved">Approved</option>
-                                        <option value="cancelled">Cancelled</option>
-                                        <option value="done">Done</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Payment Method -->
-                            <div class="mb-6">
-                                <label for="payment_method" class="text-base font-medium">Payment Method *</label>
-                                <div class="my-3">
-                                    <select id="payment_method" name="payment_method"
-                                        class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
-                                        <option value="">Select a payment method</option>
-                                        <option value="card">Card</option>
-                                        <option value="bkash">bKash</option>
-                                        <option value="nagad">Nagad</option>
-                                        <option value="rocket">Rocket</option>
-                                        <option value="upay">Upay</option>
-                                        <option value="cash on delivery" selected>Cash on Delivery</option>
-                                    </select>
-
-                                </div>
-                            </div>
-                        </div>
+                       
 
                         <div class="mb-6">
                             <h3 class="text-base font-medium mb-4">Event Details</h3>
@@ -276,6 +243,41 @@
                             </div>
                         </div>
 
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Status -->
+                            <div class="mb-6">
+                                <label for="status" class="text-base font-medium">Status *</label>
+                                <div class="my-3">
+                                    <select id="status" name="status"
+                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="">Select a status</option>
+                                        <option value="pending" selected>Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="cancelled">Cancelled</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div class="mb-6">
+                                <label for="payment_method" class="text-base font-medium">Payment Method *</label>
+                                <div class="my-3">
+                                    <select id="payment_method" name="payment_method"
+                                        class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="">Select a payment method</option>
+                                        <option value="card">Card</option>
+                                        <option value="bkash">bKash</option>
+                                        <option value="nagad">Nagad</option>
+                                        <option value="rocket">Rocket</option>
+                                        <option value="upay">Upay</option>
+                                        <option value="cash on delivery" selected>Cash on Delivery</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Custom Fields Section -->
 
 
@@ -297,7 +299,7 @@
                         <div id="hidden_services"></div>
                         <input type="hidden" id="hidden_due_amount" name="due_amount" value="0">
 
-                        <div class="text-right pt-[23px]">
+                        <div class="text-right pt-[23px]" style="text-align: -webkit-right;">
                             <button type="submit" id="submit-order-btn"
                                 class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white flex items-center justify-center gap-2">
                                 <span id="submit-order-text">Submit Order</span>
@@ -848,7 +850,7 @@
         function removeCustomField(counter) {
             document.getElementById(`custom_field_${counter}`).remove();
         }
-        
+
         //validation=============================
         const orderForm = document.getElementById('order-form');
         const submitOrderBtn = document.getElementById('submit-order-btn');
