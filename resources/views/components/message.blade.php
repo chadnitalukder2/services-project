@@ -1,11 +1,31 @@
-            @if(Session::has('success'))
-            <div class="bg-green-200 border-green-600 p-4 mb-3 rounded-sm shadow-sm">
-                {{ Session::get('success') }}
-            </div>
-            @endif
+@if(Session::has('success'))
+    <script>
+        showNotification("{{ Session::get('success') }}", "success");
+    </script>
+@endif
 
-            @if(Session::has('error'))
-            <div class="bg-red-200 border-red-600 p-4 mb-3 rounded-sm shadow-sm">
-                {{ Session::get('error') }}
-            </div>
-            @endif
+@if(Session::has('error'))
+    <script>
+        showNotification("{{ Session::get('error') }}", "error");
+    </script>
+@endif
+<script>
+  function showNotification(message, type = "success") {
+    const notification = document.createElement('div');
+    notification.style.marginTop = "0.5rem";
+    notification.className = `fixed top-5 right-5 px-4 py-2 rounded shadow text-white z-50 transition-opacity duration-500 ${type === "success" ? "bg-green-500" : "bg-red-500"
+        }`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.opacity = "0";
+    }, 2000);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 2500);
+}
+
+</script>
