@@ -926,19 +926,17 @@
             }
 
             if (!valid) {
+                   e.preventDefault();
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
-                e.preventDefault();
-                // Reset button/loading state
                 submitOrderBtn.disabled = false;
                 submitOrderText.classList.remove('hidden');
                 submitOrderLoading.classList.add('hidden');
 
 
             } else {
-                // Show loading state
                 submitOrderBtn.disabled = true;
                 submitOrderText.classList.add('hidden');
                 submitOrderLoading.classList.remove('hidden');

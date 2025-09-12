@@ -71,41 +71,6 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Status -->
-                            <div class="mb-6">
-                                <label for="status" class="text-base font-medium">Status *</label>
-                                <div class="my-3">
-                                    <select id="status" name="status"
-                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
-                                        <option value="">Select a status</option>
-                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                        <option value="approved" {{ $order->status == 'approved' ? 'selected' : '' }}>Approved</option>
-                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                        <option value="done" {{ $order->status == 'done' ? 'selected' : '' }}>Done</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Payment Method -->
-                            <div class="mb-6">
-                                <label for="payment_method" class="text-base font-medium">Payment Method *</label>
-                                <div class="my-3">
-                                    @php $paymentMethod = old('payment_method', optional($order->invoice)->payment_method) @endphp
-                                    <select id="payment_method" name="payment_method"
-                                        class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
-                                        <option value="">Select a payment method</option>
-                                        <option value="card" {{ $paymentMethod == 'card' ? 'selected' : '' }}>Card</option>
-                                        <option value="bkash" {{ $paymentMethod == 'bkash' ? 'selected' : '' }}>bKash</option>
-                                        <option value="nagad" {{ $paymentMethod == 'nagad' ? 'selected' : '' }}>Nagad</option>
-                                        <option value="rocket" {{ $paymentMethod == 'rocket' ? 'selected' : '' }}>Rocket</option>
-                                        <option value="upay" {{ $paymentMethod == 'upay' ? 'selected' : '' }}>Upay</option>
-                                        <option value="cash on delivery" {{ $paymentMethod == 'cash on delivery' ? 'selected' : '' }}>Cash on Delivery</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Event Details Section -->
                         <div class="mb-6">
                             <h3 class="text-base font-medium mb-4">Event Details</h3>
@@ -267,6 +232,41 @@
                             </div>
                         </div>
 
+                           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Status -->
+                            <div class="mb-6">
+                                <label for="status" class="text-base font-medium">Status *</label>
+                                <div class="my-3">
+                                    <select id="status" name="status"
+                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="">Select a status</option>
+                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="approved" {{ $order->status == 'approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                        <option value="done" {{ $order->status == 'done' ? 'selected' : '' }}>Done</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div class="mb-6">
+                                <label for="payment_method" class="text-base font-medium">Payment Method *</label>
+                                <div class="my-3">
+                                    @php $paymentMethod = old('payment_method', optional($order->invoice)->payment_method) @endphp
+                                    <select id="payment_method" name="payment_method"
+                                        class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="">Select a payment method</option>
+                                        <option value="card" {{ $paymentMethod == 'card' ? 'selected' : '' }}>Card</option>
+                                        <option value="bkash" {{ $paymentMethod == 'bkash' ? 'selected' : '' }}>bKash</option>
+                                        <option value="nagad" {{ $paymentMethod == 'nagad' ? 'selected' : '' }}>Nagad</option>
+                                        <option value="rocket" {{ $paymentMethod == 'rocket' ? 'selected' : '' }}>Rocket</option>
+                                        <option value="upay" {{ $paymentMethod == 'upay' ? 'selected' : '' }}>Upay</option>
+                                        <option value="cash on delivery" {{ $paymentMethod == 'cash on delivery' ? 'selected' : '' }}>Cash on Delivery</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Notes -->
                         <div class="mb-6">
                             <label for="notes" class="text-base font-medium">Notes</label>
@@ -281,10 +281,11 @@
                         <div id="hidden_services"></div>
                         <input type="hidden" id="hidden_due_amount" name="due_amount" value="{{ $order->invoice->due_amount ?? 0 }}">
 
-                        <div class="text-right pt-[23px]">
-                            <button type="submit"
-                                class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white">
-                                Update Order
+                        <div class="text-right pt-[23px]" style="text-align: -webkit-right;">
+                            <button type="submit" id="submit-order-btn"
+                                class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white flex items-center justify-center gap-2">
+                                <span id="submit-order-text">Update Order</span>
+                                <span id="submit-order-loading" class="hidden">Updating...</span>
                             </button>
                         </div>
                     </form>
@@ -869,7 +870,11 @@
             document.getElementById(`custom_field_${counter}`).remove();
         }
 
-        // Form validation
+        // Form validation=======================================
+         const orderForm = document.getElementById('order-form');
+        const submitOrderBtn = document.getElementById('submit-order-btn');
+        const submitOrderText = document.getElementById('submit-order-text');
+        const submitOrderLoading = document.getElementById('submit-order-loading');
         document.getElementById('order-form').addEventListener('submit', function(e) {
             let valid = true;
 
@@ -937,12 +942,22 @@
                 serviceError.classList.add('hidden');
             }
 
-            if (!valid) {
-                e.preventDefault();
+             if (!valid) {
+                 e.preventDefault();
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
+               
+                submitOrderBtn.disabled = false;
+                submitOrderText.classList.remove('hidden');
+                submitOrderLoading.classList.add('hidden');
+
+
+            } else {
+                submitOrderBtn.disabled = true;
+                submitOrderText.classList.add('hidden');
+                submitOrderLoading.classList.remove('hidden');
             }
         });
     </script>
