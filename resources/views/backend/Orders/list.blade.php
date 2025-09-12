@@ -3,6 +3,115 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
+
+            <!-- Page Header -->
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Orders Management</h2>
+                <form id="filterForm" method="GET" action="{{ route('orders.index') }}">
+                    <!-- Order Statistics -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                                    <p class="text-3xl font-bold text-gray-900" id="totalOrders">
+                                        {{ $summary['total_orders'] }}</p>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart text-blue-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Pending Orders</p>
+                                    <p class="text-3xl font-bold text-yellow-600" id="pendingOrders">
+                                        {{ $summary['pending_orders'] }}</p>
+                                </div>
+                                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Completed Orders</p>
+                                    <p class="text-3xl font-bold text-green-600" id="completedOrders">
+                                        {{ $summary['completed_orders'] }}</p>
+                                </div>
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Total Revenue</p>
+                                    <p class="text-3xl font-bold text-blue-600" id="totalRevenue">
+                                        {{ $summary['total_revenue'] }}</p>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-bangladeshi-taka-sign text-blue-600 text-xl"></i>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filters & Search -->
+                    <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <select name="status"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">All Status</option>
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+                                        Pending</option>
+                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>
+                                        Approved</option>
+                                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>
+                                        Cancelled</option>
+                                    <option value="done" {{ request('status') == 'done' ? 'selected' : '' }}>Done
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
+                                <input type="date" name="from_date" value="{{ request('from_date') }}"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
+                                <input type="date" name="to_date" value="{{ request('to_date') }}"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="flex items-end gap-4 text-center">
+                                <button type="submit"
+                                    class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                                    Filter
+                                </button>
+                                <a href="{{ route('orders.index') }}" style=" padding: 10px;"
+                                    class="text-sm px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-800 text-white w-full">
+                                    Clear
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+
+
+
             {{-- order table --}}
             <div class="bg-white rounded-lg shadow-sm border">
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -128,7 +237,8 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No orders found</td>
+                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No orders found
+                                    </td>
                                 </tr>
                             @endif
                         </tbody>
@@ -297,6 +407,12 @@
                             </tfoot>
                         </table>
                     </div>
+                    {{-- customfield --}}
+                     {{-- @if($order->custom_fields)
+                        @foreach($order->custom_fields as $field)
+                            {{ $field['event_name'] ?? '' }} - {{ $field['event_date'] ?? '' }} <br>
+                        @endforeach
+                    @endif --}}
 
                     <!-- Notes Section -->
                     <div id="notesSection" class="mt-4 hidden">
@@ -563,6 +679,9 @@
                         if (response.status || response.success) {
                             showNotification('Status updated successfully', 'success');
                             selectElement.setAttribute('data-original-value', status);
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1000);
                         } else {
                             showNotification('Error updating status: ' + (response.message || 'Unknown error'),
                                 'error');
@@ -585,6 +704,18 @@
                     }
                 });
             }
+            //filter==============================================
+            document.addEventListener('DOMContentLoaded', function() {
+                const filterForm = document.getElementById('filterForm');
+                const clearBtn = document.getElementById('clearFilter');
+
+                if (clearBtn) {
+                    clearBtn.addEventListener('click', function() {
+                        filterForm.reset();
+                        filterForm.submit();
+                    });
+                }
+            });
         </script>
     </x-slot>
 </x-app-layout>

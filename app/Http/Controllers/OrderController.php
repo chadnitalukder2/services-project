@@ -15,13 +15,49 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class OrderController extends Controller
 {
-    public function index()
-    {
-        $orders = Order::with('customer', 'orderItems.service')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+    // public function index()
+    // {
+    //     $orders = Order::with('customer', 'orderItems.service')
+    //         ->orderBy('created_at', 'desc')
+    //         ->paginate(10);
 
-        return view('backend.orders.list', compact('orders'));
+    //     return view('backend.orders.list', compact('orders'));
+    // }
+
+    public function index(Request $request)
+    {
+        $query = Order::query();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+
+        // Get filtered orders
+        $orders = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        // Calculate summary statistics based on current filters
+        $totalOrders = (clone $query)->count();
+        $pendingOrders = (clone $query)->where('status', 'pending')->count();
+        $completedOrders = (clone $query)->whereIn('status', ['approved', 'done'])->count();
+
+        $totalRevenue = (clone $query)->whereIn('status', ['approved', 'done'])->sum('total_amount');
+
+        $summary = [
+            'total_orders' => $totalOrders,
+            'pending_orders' => $pendingOrders,
+            'completed_orders' => $completedOrders,
+            'total_revenue' => number_format($totalRevenue, 2)
+        ];
+
+        return view('backend.orders.list', compact('orders', 'summary'));
     }
 
     public function create()
