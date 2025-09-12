@@ -110,8 +110,6 @@
 
             </div>
 
-
-
             {{-- order table --}}
             <div class="bg-white rounded-lg shadow-sm border">
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -205,7 +203,7 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 text-left  whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ number_format($order->total_amount, 2) }} tk
+                                            {{ number_format($order->total_amount, 2) }} tk</td>
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
 

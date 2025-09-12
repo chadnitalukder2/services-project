@@ -1,29 +1,11 @@
 <x-app-layout>
-    <x-slot name="header">
-            <x-message />
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Services') }}
-            </h2>
-            @can('create services')
-                <a href="{{ route('services.create') }}"
-                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px" viewBox="0 0 640 640" fill="white">
-                        <path
-                            d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
-                    </svg>
-
-                    Create Service</a>
-            @endcan
-        </div>
-    </x-slot>
 
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      
+
 
             <!-- Search and Filter Form -->
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
@@ -86,88 +68,169 @@
                 </form>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-md rounded-lg">
-                <table class="w-full">
-                    <thead class="bg-gray-50">
-                        <tr class="border-b">
-                            <th class="px-6 py-3 text-left " width="60">#</th>
-                            <th class="px-6 py-3 text-left">Service Name</th>
-                            <th class="px-6 py-3 text-left">Price</th>
-                            <th class="px-6 py-3 text-left">Status</th>
-                            <th class="px-6 py-3 text-left" width="180">Created</th>
-                            @canany(['edit services', 'delete services'])
-                                <th class="px-6 py-3 text-center" width="180">Actions</th>
-                            @endcanany
-                        </tr>
-                    </thead>
+            {{-- service table --}}
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Service List</h3>
+                        <div class="flex space-x-2">
+                            @can('create services')
+                                <a href="{{ route('services.create') }}"
+                                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
+                                        viewBox="0 0 640 640" fill="white">
+                                        <path
+                                            d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
+                                    </svg>
+                                    Create Service</a>
+                            @endcan
+                        </div>
+                    </div>
+                </div>
 
-                    <tbody class="bg-white">
-                        @if ($services->isNotEmpty())
-                            @foreach ($services as $service)
-                                <tr class="border-b hover:bg-gray-50" id="service-row-{{ $service->id }}">
-                                    <td class="px-6 py-3 text-left">
-                                        {{ $services->total() - ($services->currentPage() - 1) * $services->perPage() - $loop->index }}
-                                    </td>
-                                    <td class="px-6 py-3 text-left">
-                                        @if (request('search'))
-                                            {!! str_ireplace(
-                                                request('search'),
-                                                '<mark class="bg-yellow-200">' . request('search') . '</mark>',
-                                                e($service->name),
-                                            ) !!}
-                                        @else
-                                            {{ $service->name }}
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-3 text-left">
-                                        {{ number_format($service->unit_price, 2) }}
-                                    </td>
-                                    <td class="px-6 py-3 text-left">
-                                        @if ($service->status == 'active')
-                                            <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                Active
-                                            </span>
-                                        @else
-                                            <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                Inactive
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-3 text-left">
-                                        {{ \Carbon\Carbon::parse($service->created_at)->format('d M, Y') }}</td>
-                                    @canany(['edit services', 'delete services'])
-                                        <td class="px-6 py-3 text-center">
-                                            @can('edit services')
-                                                <a href="{{ route('services.edit', $service->id) }}"
-                                                    class="bg-slate-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Edit</a>
-                                            @endcan
-                                            @can('delete services')
-                                                <a href="javascript:void()" onclick="deleteService({{ $service->id }})"
-                                                    class="bg-red-700 text-sm rounded-md text-white px-3 py-2 hover:bg-red-600">Delete</a>
-                                            @endcan
-                                        </td>
-                                    @endcanany
-                                </tr>
-                            @endforeach
-                        @else
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <td colspan="6" class="px-6 py-8 text-center text-gray-500">
-                                    @if (request()->hasAny(['search', 'price_min', 'price_max']))
-                                        No services found matching your search criteria.
-                                    @else
-                                        No services found.
-                                    @endif
-                                </td>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    # ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Service Name</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Price</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
                             </tr>
-                        @endif
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="servicesTableBody" class="bg-white divide-y divide-gray-200">
+                            @if ($services->isNotEmpty())
+                                @foreach ($services as $service)
+                                    <tr class="border-b" id="service-row-{{ $service->id }}">
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            #{{ str_pad($service->id, 5, '0', STR_PAD_LEFT) }}
+                                        </td>
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            {{ $service->name }}
+                                        </td>
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            {{ number_format($service->unit_price, 2) }} tk
+                                        </td>
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            @if ($service->status == 'active')
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    Active
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                    Inactive
+                                                </span>
+                                            @endif
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                            {{ \Carbon\Carbon::parse($service->created_at)->format('d M, Y') }}</td>
+
+                                        @canany(['edit services', 'delete services'])
+                                            <td
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
+                                                {{--  --}}
+
+                                                @can('edit services')
+                                                    <a href="{{ route('services.edit', $service->id) }}"
+                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit service">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('delete services')
+                                                    <a href="javascript:void(0)" onclick="deleteService({{ $service->id }})"
+                                                        class=" text-red-700 hover:text-red-600" title="Delate service">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </a>
+                                                @endcan
+                                            </td>
+                                        @endcanany
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No services found
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">{{ $services->firstItem() }}</span>
+                            to <span class="font-medium">{{ $services->lastItem() }}</span>
+                            of <span class="font-medium">{{ $services->total() }}</span> results
+                        </div>
+
+                        <!-- Pagination buttons -->
+                        <div class="flex space-x-2">
+                            <!-- Previous -->
+                            @if ($services->onFirstPage())
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Previous
+                                </button>
+                            @else
+                                <a href="{{ $services->previousPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Previous
+                                </a>
+                            @endif
+
+                            <!-- Page numbers -->
+                            @foreach ($services->getUrlRange(1, $services->lastPage()) as $page => $url)
+                                @if ($page == $services->currentPage())
+                                    <span
+                                        class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $url }}"
+                                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                        {{ $page }}
+                                    </a>
+                                @endif
+                            @endforeach
+
+                            <!-- Next -->
+                            @if ($services->hasMorePages())
+                                <a href="{{ $services->nextPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Next
+                                </a>
+                            @else
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Next
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Confirm Delete Modal -->
-            <x-modal name="confirm-delete"  maxWidth="sm" marginTop="20">
+            <x-modal name="confirm-delete" maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
                     <p class="mt-2 text-sm text-gray-600">
@@ -188,15 +251,11 @@
                 </div>
             </x-modal>
 
-            <div class="mt-4">
-                {{ $services->links() }}
-            </div>
         </div>
     </div>
 
     <x-slot name="script">
         <script type="text/javascript">
-
             let deleteId = null;
 
             function deleteService(id) {

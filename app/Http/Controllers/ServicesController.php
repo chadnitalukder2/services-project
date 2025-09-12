@@ -23,40 +23,40 @@ class ServicesController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-public function index(Request $request)
-{
-    $query = Services::query();
+    public function index(Request $request)
+    {
+        $query = Services::query();
 
-    if ($request->filled('search')) {
-        $searchTerm = $request->search;
-        $query->where('name', 'LIKE', "%{$searchTerm}%");
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+
+        if ($request->filled('price_min')) {
+            $query->where('unit_price', '>=', $request->price_min);
+        }
+
+        if ($request->filled('price_max')) {
+            $query->where('unit_price', '<=', $request->price_max);
+        }
+
+        // Handle sorting and status filtering
+        $sort = $request->get('sort', 'desc');
+
+        if ($sort === 'active') {
+            $query->where('status', 'active')->orderBy('created_at', 'desc');
+        } elseif ($sort === 'inactive') {
+            $query->where('status', 'inactive')->orderBy('created_at', 'desc');
+        } elseif (in_array($sort, ['asc', 'desc'])) {
+            $query->orderBy('created_at', $sort);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $services = $query->paginate(12)->appends($request->query());
+
+        return view('backend.services.list', compact('services'));
     }
-
-    if ($request->filled('price_min')) {
-        $query->where('unit_price', '>=', $request->price_min);
-    }
-
-    if ($request->filled('price_max')) {
-        $query->where('unit_price', '<=', $request->price_max);
-    }
-
-    // Handle sorting and status filtering
-    $sort = $request->get('sort', 'desc');
-    
-    if ($sort === 'active') {
-        $query->where('status', 'active')->orderBy('created_at', 'desc');
-    } elseif ($sort === 'inactive') {
-        $query->where('status', 'inactive')->orderBy('created_at', 'desc');
-    } elseif (in_array($sort, ['asc', 'desc'])) {
-        $query->orderBy('created_at', $sort);
-    } else {
-        $query->orderBy('created_at', 'desc');
-    }
-
-    $services = $query->paginate(15)->appends($request->query());
-
-    return view('backend.services.list', compact('services'));
-}
 
     /**
      * Show the form for creating a new resource.

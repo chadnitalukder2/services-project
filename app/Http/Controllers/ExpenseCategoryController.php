@@ -24,7 +24,7 @@ class ExpenseCategoryController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $expenseCategories = ExpenseCategory::orderBy('created_at', 'desc')->paginate(10);
+        $expenseCategories = ExpenseCategory::orderBy('created_at', 'desc')->paginate(12);
         return view('backend.expense_categories.list', compact('expenseCategories'));
     }
 

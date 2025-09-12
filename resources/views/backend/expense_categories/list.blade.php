@@ -1,70 +1,148 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Expense Categories') }}
-            </h2>
-            @can('create expense categories')
-                <a href="{{ route('expense_categories.create') }}"
-                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px" viewBox="0 0 640 640" fill="white">
-  <path d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"/>
-</svg>
-
-                    Create Expense Category</a>
-            @endcan
-        </div>
-
-    </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
 
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr class="border-b">
-                        <th class="px-6 py-3 text-left " width="60">#</th>
-                        <th class="px-6 py-3 text-left"> Name</th>
-                        <th class="px-6 py-3 text-left" width="180">Created</th>
-                        @canany(['edit expense categories', 'delete expense categories'])
-                            <th class="px-6 py-3 text-center" width="180">Actions</th>
-                        @endcanany
-                    </tr>
-                </thead>
+               {{-- Customer table --}}
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Expense Category List</h3>
+                        <div class="flex space-x-2">
+                            @can('create expense category')
+                                <a href="{{ route('expense_categories.create') }}"
+                                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
+                                        viewBox="0 0 640 640" fill="white">
+                                        <path
+                                            d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
+                                    </svg>
+                                    Create Category</a>
+                            @endcan
+                        </div>
+                    </div>
+                </div>
 
-                <tbody class="bg-white">
-                    @if ($expenseCategories->isNotEmpty())
-                        @foreach ($expenseCategories as $category)
-                            <tr class="border-b">
-                                <td class="px-6 py-3 text-left">
-                                    {{ $expenseCategories->total() - ($expenseCategories->currentPage() - 1) * $expenseCategories->perPage() - $loop->index }}
-                                </td>
-                                <td class="px-6 py-3 text-left">{{ $category->name }}</td>
-                                <td class="px-6 py-3 text-left">
-                                    {{ \Carbon\Carbon::parse($category->created_at)->format('d M, Y') }}</td>
-                                @canany(['edit expense categories', 'delete expense categories'])
-                                    <td class="px-6 py-3 text-center">
-                                        @can('edit expense categories')
-                                            <a href="{{ route('expense_categories.edit', $category->id) }}"
-                                                class="bg-slate-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Edit</a>
-                                        @endcan
-                                        @can('delete expense categories')
-                                            <a href="javascript:void()" onclick="deleteCategory({{ $category->id }})"
-                                                class="bg-red-700 text-sm rounded-md text-white px-3 py-2 hover:bg-red-600">Delete</a>
-                                        @endcan
-                                    </td>
-                                @endcanany
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    # ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name</th>
+                                    <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
                             </tr>
-                        @endforeach
-                    @endif
+                        </thead>
+                        <tbody id="expenseCategoriesTableBody" class="bg-white divide-y divide-gray-200">
+                            @if ($expenseCategories->isNotEmpty())
+                                @foreach ($expenseCategories as $category)
+                                    <tr class="border-b" id="category-row-{{ $category->id }}">
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            #{{ str_pad($category->id, 5, '0', STR_PAD_LEFT) }}
+                                        </td>
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            {{ $category->name }}
+                                        </td>
 
-                </tbody>
+                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                            {{ \Carbon\Carbon::parse($category->created_at)->format('d M, Y') }}</td>
 
-            </table>
-            <div class="mt-4">
-                {{ $expenseCategories->links() }}
+                                        @canany(['edit expenseCategories', 'delete expenseCategories'])
+                                            <td
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
+                                                {{--  --}}
+
+                                                @can('edit expense category')
+                                                    <a href="{{ route('expense_categories.edit', $category->id) }}"
+                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit Customer">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('delete expense category')
+                                                    <a href="javascript:void(0)" onclick="deleteCustomer({{ $category->id }})"
+                                                        class=" text-red-700 hover:text-red-600" title="Delate Customer">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </a>
+                                                @endcan
+                                            </td>
+                                        @endcanany
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No expenseCategories found
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">{{ $expenseCategories->firstItem() }}</span>
+                            to <span class="font-medium">{{ $expenseCategories->lastItem() }}</span>
+                            of <span class="font-medium">{{ $expenseCategories->total() }}</span> results
+                        </div>
+
+                        <!-- Pagination buttons -->
+                        <div class="flex space-x-2">
+                            <!-- Previous -->
+                            @if ($expenseCategories->onFirstPage())
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Previous
+                                </button>
+                            @else
+                                <a href="{{ $expenseCategories->previousPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Previous
+                                </a>
+                            @endif
+
+                            <!-- Page numbers -->
+                            @foreach ($expenseCategories->getUrlRange(1, $expenseCategories->lastPage()) as $page => $url)
+                                @if ($page == $expenseCategories->currentPage())
+                                    <span
+                                        class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $url }}"
+                                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                        {{ $page }}
+                                    </a>
+                                @endif
+                            @endforeach
+
+                            <!-- Next -->
+                            @if ($expenseCategories->hasMorePages())
+                                <a href="{{ $expenseCategories->nextPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Next
+                                </a>
+                            @else
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Next
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
+           
         </div>
     </div>
 
