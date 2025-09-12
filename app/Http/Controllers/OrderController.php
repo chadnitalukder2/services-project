@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $orders = Order::with('customer', 'orderItems.service')
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(10);
 
         return view('backend.orders.list', compact('orders'));
     }

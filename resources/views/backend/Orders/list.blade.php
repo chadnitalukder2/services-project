@@ -1,68 +1,91 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Orders') }}
-            </h2>
-            @can('create orders')
-                <a href="{{ route('orders.create') }}"
-                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px" viewBox="0 0 640 640" fill="white">
-                        <path
-                            d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
-                    </svg>
-                    Create Order</a>
-            @endcan
-        </div>
-    </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
+            {{-- order table --}}
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Orders List</h3>
+                        <div class="flex space-x-2">
+                            @can('create orders')
+                                <a href="{{ route('orders.create') }}"
+                                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
+                                        viewBox="0 0 640 640" fill="white">
+                                        <path
+                                            d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
+                                    </svg>
+                                    Create Order</a>
+                            @endcan
+                        </div>
+                    </div>
+                </div>
 
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr class="border-b">
-                        <th class="px-6 py-3 text-left " width="60">#</th>
-                        <th class="px-6 py-3 text-left">Customer name</th>
-                        <th class="px-6 py-3 text-left">Order Date</th>
-                        <th class="px-6 py-3 text-left">Delivery Date</th>
-                        <th class="px-6 py-3 text-left">Total Amount</th>
-                        <th class="px-6 py-3 text-left">Status</th>
-                        <th class="px-6 py-3 text-left" width="180">Created</th>
-                        @canany(['edit orders', 'delete orders'])
-                            <th class="px-6 py-3 text-center" width="250">Actions</th>
-                        @endcanany
-                    </tr>
-                </thead>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Order ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Customer</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Order Date</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Delivery Date</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Total Amount</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
+                            @if ($orders->isNotEmpty())
+                                @foreach ($orders as $order)
+                                    <tr class="border-b" id="order-row-{{ $order->id }}">
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            #{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
+                                        </td>
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            {{ $order->customer->name }}</td>
+                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                            {{ \Carbon\Carbon::parse($order->order_date)->format('d M, Y') }}</td>
+                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                            {{ \Carbon\Carbon::parse($order->delivery_date)->format('d M, Y') }}</td>
 
-                <tbody class="bg-white">
-                    @if ($orders->isNotEmpty())
-                        @foreach ($orders as $order)
-                            <tr class="border-b" id="order-row-{{ $order->id }}">
-                                <td class="px-6 py-3 text-left">
-                                    {{ $orders->total() - ($orders->currentPage() - 1) * $orders->perPage() - $loop->index }}
-                                </td>
-                                <td class="px-6 py-3 text-left">{{ $order->customer->name }}</td>
-                                <td class="px-6 py-3 text-left">
-                                    {{ \Carbon\Carbon::parse($order->order_date)->format('d M, Y') }}</td>
-                                <td class="px-6 py-3 text-left">
-                                    {{ \Carbon\Carbon::parse($order->delivery_date)->format('d M, Y') }}</td>
-                                <td class="px-6 py-3 text-left">{{ number_format($order->total_amount, 2) }}</td>
-                                <td class="px-6 py-3 text-left">
-                                    <select onchange="updateOrderStatus({{ $order->id }}, this.value)"
-                                        data-original-value="{{ $order->status }}"
-                                        class="px-10-2 py-1 border rounded text-sm">
-                                        <option value="pending" @if ($order->status == 'pending') selected @endif>
-                                            Pending</option>
-                                        <option value="approved" @if ($order->status == 'approved') selected @endif>
-                                            Approved</option>
-                                        <option value="done" @if ($order->status == 'done') selected @endif>
-                                            Done</option>
-                                        <option value="canceled" @if ($order->status == 'canceled') selected @endif>
-                                            Canceled</option>
-                                    </select>
-                                    {{-- <span
+                                        </td>
+                                        <td class="px-6 py-4 text-left">
+                                            <select onchange="updateOrderStatus({{ $order->id }}, this.value)"
+                                                data-original-value="{{ $order->status }}"
+                                                class="px-10-2 py-1 border rounded text-sm">
+                                                <option value="pending"
+                                                    @if ($order->status == 'pending') selected @endif>
+                                                    Pending</option>
+                                                <option value="approved"
+                                                    @if ($order->status == 'approved') selected @endif>
+                                                    Approved</option>
+                                                <option value="done"
+                                                    @if ($order->status == 'done') selected @endif>
+                                                    Done</option>
+                                                <option value="canceled"
+                                                    @if ($order->status == 'canceled') selected @endif>
+                                                    Canceled</option>
+                                            </select>
+                                            {{-- <span
                                         class="px-2 py-1 text-xs rounded-full 
                                         @if ($order->status == 'pending') bg-yellow-100 text-yellow-800
                                         @elseif($order->status == 'approved') bg-blue-100 text-blue-800
@@ -70,64 +93,129 @@
                                         @else bg-red-100 text-red-800 @endif">
                                         {{ ucfirst($order->status) }}
                                     </span> --}}
-                                </td>
-                                <td class="px-6 py-3 text-left">
-                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
+                                        </td>
+                                        <td
+                                            class="px-6 py-4 text-left  whitespace-nowrap text-sm font-medium text-gray-900">
+                                            {{ number_format($order->total_amount, 2) }}
+                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                            {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
 
-                                @canany(['edit orders', 'delete orders'])
-                                    <td class="px-6 py-3 text-center">
-                                        {{--  --}}
-                                        @can('view order item')
-                                            <button onclick="showOrderItems({{ $order->id }})"
-                                                class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded">
-                                                View
-                                            </button>
-                                        @endcan
-                                        @can('edit orders')
-                                            <a href="{{ route('orders.edit', $order->id) }}"
-                                                class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md text-white px-3 py-2">Edit</a>
-                                        @endcan
-                                        @can('delete orders')
-                                            <a href="javascript:void(0)"  onclick="deleteOrder({{ $order->id }})"
-                                                class="bg-red-700 text-sm rounded-md text-white px-3 py-2 hover:bg-red-600">Delete</a>
-                                        @endcan
-                                    </td>
-                                @endcanany
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="9" class="px-6 py-4 text-center text-gray-500">No orders found</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                                        @canany(['edit orders', 'delete orders'])
+                                            <td
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-2">
+                                                {{--  --}}
+                                                @can('view order item')
+                                                    <button onclick="showOrderItems({{ $order->id }})"
+                                                        class=" text-blue-600 hover:text-blue-900" title="View Details">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                @endcan
+                                                @can('edit orders')
+                                                    <a href="{{ route('orders.edit', $order->id) }}"
+                                                        class="text-yellow-600 hover:text-yellow-900" title="Edit Order">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('delete orders')
+                                                    <a href="javascript:void(0)" onclick="deleteOrder({{ $order->id }})"
+                                                        class=" text-red-700 hover:text-red-900" title="Delate Order">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </a>
+                                                @endcan
+                                            </td>
+                                        @endcanany
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No orders found</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
 
-              <!-- Confirm Delete Modal -->
-            <x-modal name="confirm-delete">
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">{{ $orders->firstItem() }}</span>
+                            to <span class="font-medium">{{ $orders->lastItem() }}</span>
+                            of <span class="font-medium">{{ $orders->total() }}</span> results
+                        </div>
+
+                        <!-- Pagination buttons -->
+                        <div class="flex space-x-2">
+                            <!-- Previous -->
+                            @if ($orders->onFirstPage())
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Previous
+                                </button>
+                            @else
+                                <a href="{{ $orders->previousPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Previous
+                                </a>
+                            @endif
+
+                            <!-- Page numbers -->
+                            @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
+                                @if ($page == $orders->currentPage())
+                                    <span
+                                        class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $url }}"
+                                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                        {{ $page }}
+                                    </a>
+                                @endif
+                            @endforeach
+
+                            <!-- Next -->
+                            @if ($orders->hasMorePages())
+                                <a href="{{ $orders->nextPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Next
+                                </a>
+                            @else
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Next
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Confirm Delete Modal ------------------------>
+            <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
                     <p class="mt-2 text-sm text-gray-600">
-                        Are you sure you want to delete this service? This action cannot be undone.
+                        Are you sure you want to delete this order?
+                        This will also delete all associated order items and invoices.
+                        This action cannot be undone.
                     </p>
 
                     <div class="mt-4 flex justify-end gap-3">
-                        <button type="button" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                        <button type="button" class="px-4 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
                             x-on:click="$dispatch('close-modal', 'confirm-delete')">
                             Cancel
                         </button>
 
                         <button type="button" id="confirmDeleteBtn"
-                            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                            class="px-4 py-1 text-sm bg-red-700 text-white rounded hover:bg-red-600">
                             Yes, Delete
                         </button>
                     </div>
                 </div>
             </x-modal>
 
-            <div class="mt-4">
-                {{ $orders->links() }}
-            </div>
         </div>
     </div>
 
@@ -264,12 +352,12 @@
 
     <x-slot name="script">
         <script type="text/javascript">
-        //show notification
+            //show notification
             // function showNotification(message, type = "success") {
             //     const notification = document.createElement('div');
             //     notification.style.marginTop = "0.5rem";
             //     notification.className = `fixed top-5 right-5 px-4 py-2 rounded shadow text-white z-50 transition-opacity duration-500 ${type === "success" ? "bg-green-500" : "bg-red-500"
-            //     }`;
+    //     }`;
             //     notification.textContent = message;
 
             //     document.body.appendChild(notification);
@@ -357,6 +445,7 @@
 
             //delete order=========================
             let deleteId = null;
+
             function deleteOrder(id) {
                 deleteId = id;
                 // Open your modal via Alpine dispatch
@@ -475,7 +564,8 @@
                             showNotification('Status updated successfully', 'success');
                             selectElement.setAttribute('data-original-value', status);
                         } else {
-                            showNotification('Error updating status: ' + (response.message || 'Unknown error'), 'error');
+                            showNotification('Error updating status: ' + (response.message || 'Unknown error'),
+                                'error');
                             selectElement.value = originalValue;
                         }
                     },

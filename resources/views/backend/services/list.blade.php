@@ -167,7 +167,7 @@
             </div>
 
             <!-- Confirm Delete Modal -->
-            <x-modal name="confirm-delete">
+            <x-modal name="confirm-delete"  maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
                     <p class="mt-2 text-sm text-gray-600">
@@ -175,13 +175,13 @@
                     </p>
 
                     <div class="mt-4 flex justify-end gap-3">
-                        <button type="button" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                        <button type="button" class="px-4 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
                             x-on:click="$dispatch('close-modal', 'confirm-delete')">
                             Cancel
                         </button>
 
                         <button type="button" id="confirmDeleteBtn"
-                            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                            class="px-4 py-1 text-sm bg-red-700 text-white rounded hover:bg-red-600">
                             Yes, Delete
                         </button>
                     </div>
