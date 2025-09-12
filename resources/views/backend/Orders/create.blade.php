@@ -226,7 +226,8 @@
                                     <div>
                                         <div class="py-1 ml-2.5" id="display_subtotal"> 0.00</div>
                                         <div class="py-1" id="display_discount">0.00</div>
-                                        <div class="py-1 ml-2.5 text-base  font-bold border-t border-gray-300" id="display_total"> 0.00
+                                        <div class="py-1 ml-2.5 text-base  font-bold border-t border-gray-300"
+                                            id="display_total"> 0.00
                                         </div>
                                     </div>
                                 </div>
@@ -297,9 +298,10 @@
                         <input type="hidden" id="hidden_due_amount" name="due_amount" value="0">
 
                         <div class="text-right pt-[23px]">
-                            <button type="submit"
-                                class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white">
-                                Submit Order
+                            <button type="submit" id="submit-order-btn"
+                                class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white flex items-center justify-center gap-2">
+                                <span id="submit-order-text">Submit Order</span>
+                                <span id="submit-order-loading" class="hidden">Submitting...</span>
                             </button>
                         </div>
 
@@ -327,7 +329,7 @@
                                         <label for="customer_name"
                                             class="block text-sm font-medium text-gray-700">Name *</label>
                                         <input type="text" id="customer_name" name="name"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
                                     <!-- Phone -->
@@ -335,7 +337,7 @@
                                         <label for="customer_phone"
                                             class="block text-sm font-medium text-gray-700">Phone *</label>
                                         <input type="tel" id="customer_phone" name="phone"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
 
@@ -344,7 +346,7 @@
                                         <label for="customer_email"
                                             class="block text-sm font-medium text-gray-700">Email</label>
                                         <input type="email" id="customer_email" name="email"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
 
@@ -353,7 +355,7 @@
                                         <label for="customer_address"
                                             class="block text-sm font-medium text-gray-700">Address</label>
                                         <textarea id="customer_address" name="address" rows="3"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                                         <div id="address-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
 
@@ -362,7 +364,7 @@
                                         <label for="customer_company"
                                             class="block text-sm font-medium text-gray-700">Company</label>
                                         <input type="text" id="customer_company" name="company"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <div id="company-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
                                 </div>
@@ -373,7 +375,7 @@
                                         Cancel
                                     </button>
                                     <button type="submit" id="save-customer-btn"
-                                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition">
+                                        class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
                                         <span id="save-customer-text">Save Customer</span>
                                         <span id="save-customer-loading" class="hidden">Saving...</span>
                                     </button>
@@ -846,7 +848,13 @@
         function removeCustomField(counter) {
             document.getElementById(`custom_field_${counter}`).remove();
         }
+        
         //validation=============================
+        const orderForm = document.getElementById('order-form');
+        const submitOrderBtn = document.getElementById('submit-order-btn');
+        const submitOrderText = document.getElementById('submit-order-text');
+        const submitOrderLoading = document.getElementById('submit-order-loading');
+
         document.getElementById('order-form').addEventListener('submit', function(e) {
             let valid = true;
 
@@ -867,7 +875,6 @@
                 valid = false;
             }
 
-            // 2. Order Date validation
             // Order Date
             const orderDate = document.getElementById('order_date');
             if (orderDate.value === '') {
@@ -917,11 +924,22 @@
             }
 
             if (!valid) {
-                e.preventDefault();
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
+                e.preventDefault();
+                // Reset button/loading state
+                submitOrderBtn.disabled = false;
+                submitOrderText.classList.remove('hidden');
+                submitOrderLoading.classList.add('hidden');
+
+
+            } else {
+                // Show loading state
+                submitOrderBtn.disabled = true;
+                submitOrderText.classList.add('hidden');
+                submitOrderLoading.classList.remove('hidden');
             }
         });
     </script>
