@@ -41,16 +41,13 @@ class OrderController extends Controller
             $query->whereDate('created_at', '<=', $request->to_date);
         }
 
-        // Get filtered orders
-        $orders = $query->orderBy('created_at', 'desc')->paginate(5);
+        $orders = $query->orderBy('created_at', 'desc')->paginate(12);
         $orders->getCollection()->transform(function ($order) {
-            // Check if custom_fields is not null
             if ($order->custom_fields) {
                 $order->custom_fields = json_decode($order->custom_fields, true); // decode JSON string to array
             } else {
-                $order->custom_fields = []; // make it an empty array if null
+                $order->custom_fields = [];
             }
-            // dd($order->custom_fields);
             return $order;
         });
        

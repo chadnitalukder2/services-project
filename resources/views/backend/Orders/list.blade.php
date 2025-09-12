@@ -205,7 +205,7 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 text-left  whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ number_format($order->total_amount, 2) }}
+                                            {{ number_format($order->total_amount, 2) }} tk
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
 
@@ -404,7 +404,7 @@
                                 <tr>
                                     <td colspan="3" class="px-4 text-sm text-right font-semibold"
                                         style="padding-top:5px; padding-bottom: 15px">Total Amount:</td>
-                                    <td class="px-4  text-right  font-bold text-sm" id="modalTotalAmount">0.00</td>
+                                    <td class="px-4  text-right  font-bold text-sm" id="modalTotalAmount">0.00 tk</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -557,7 +557,7 @@
                 document.getElementById('modalDeliveryDate').textContent = formatDate(order.delivery_date);
                 document.getElementById('modalStatus').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(
                     1);
-                document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)}`;
+                document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} tk`;
                 document.getElementById('modalDiscount').textContent = `- ${parseFloat(order.discount_amount).toFixed(2)}`;
 
                 // Populate order items
