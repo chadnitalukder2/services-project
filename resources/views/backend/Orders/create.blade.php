@@ -23,7 +23,7 @@
                         @csrf
                         <!-- Customer -->
                         <div class="mb-6">
-                            <label for="customer_id" class="text-base font-medium">Customer</label>
+                            <label for="customer_id" class="text-base font-medium">Customer *</label>
                             <div class="my-3 flex gap-3 items-start">
                                 <div class="flex-1">
                                     <select id="customer_id" name="customer_id"
@@ -52,7 +52,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Order Date -->
                             <div class="mb-6">
-                                <label for="order_date" class="text-base font-medium">Order Date</label>
+                                <label for="order_date" class="text-base font-medium">Order Date *</label>
                                 <div class="my-3">
                                     <input type="date" id="order_date" name="order_date" value="{{ date('Y-m-d') }}"
                                         class="block text-sm  p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
@@ -61,7 +61,7 @@
 
                             <!-- Delivery Date -->
                             <div class="mb-6">
-                                <label for="delivery_date" class="text-base font-medium">Delivery Date</label>
+                                <label for="delivery_date" class="text-base font-medium">Delivery Date *</label>
                                 <div class="my-3">
                                     <input type="date" id="delivery_date" name="delivery_date"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
@@ -72,7 +72,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Status -->
                             <div class="mb-6">
-                                <label for="status" class="text-base font-medium">Status</label>
+                                <label for="status" class="text-base font-medium">Status *</label>
                                 <div class="my-3">
                                     <select id="status" name="status"
                                         class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
@@ -87,7 +87,7 @@
 
                             <!-- Payment Method -->
                             <div class="mb-6">
-                                <label for="payment_method" class="text-base font-medium">Payment Method</label>
+                                <label for="payment_method" class="text-base font-medium">Payment Method *</label>
                                 <div class="my-3">
                                     <select id="payment_method" name="payment_method"
                                         class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
@@ -119,7 +119,7 @@
 
                         <!-- Service Selection -->
                         <div class="mb-6">
-                            <label for="service_select" class="text-base font-medium">Add Services</label>
+                            <label for="service_select" class="text-base font-medium">Add Services *</label>
                             <div class="my-3 flex gap-3">
                                 <div class="flex-1">
                                     <select id="service_select"
@@ -218,15 +218,15 @@
                             <div class="mt-6 bg-gray-50 p-4 rounded-lg">
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="text-right">
-                                        <div class="py-1"><strong>Subtotal:</strong></div>
-                                        <div class="py-1"><strong>Discount:</strong></div>
-                                        <div class="py-1 text-lg border-t border-gray-300"><strong>Total
-                                                Amount:</strong></div>
+                                        <div class="py-1">Subtotal:</div>
+                                        <div class="py-1">Discount:</div>
+                                        <div class="py-1 text-base border-t border-gray-300">Total
+                                            Amount:</div>
                                     </div>
                                     <div>
                                         <div class="py-1 ml-2.5" id="display_subtotal"> 0.00</div>
                                         <div class="py-1" id="display_discount">0.00</div>
-                                        <div class="py-1 ml-2.5 text-lg border-t border-gray-300" id="display_total"> 0.00
+                                        <div class="py-1 ml-2.5 text-base  font-bold border-t border-gray-300" id="display_total"> 0.00
                                         </div>
                                     </div>
                                 </div>
