@@ -102,7 +102,7 @@
 
                                         @canany(['edit orders', 'delete orders'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-2">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
                                                 {{--  --}}
                                                 @can('view order item')
                                                     <button onclick="showOrderItems({{ $order->id }})"
@@ -112,13 +112,13 @@
                                                 @endcan
                                                 @can('edit orders')
                                                     <a href="{{ route('orders.edit', $order->id) }}"
-                                                        class="text-yellow-600 hover:text-yellow-900" title="Edit Order">
+                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit Order">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 @endcan
                                                 @can('delete orders')
                                                     <a href="javascript:void(0)" onclick="deleteOrder({{ $order->id }})"
-                                                        class=" text-red-700 hover:text-red-900" title="Delate Order">
+                                                        class=" text-red-700 hover:text-red-600" title="Delate Order">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
                                                 @endcan
