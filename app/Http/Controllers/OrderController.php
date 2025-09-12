@@ -50,11 +50,10 @@ class OrderController extends Controller
             } else {
                 $order->custom_fields = []; // make it an empty array if null
             }
-
+            // dd($order->custom_fields);
             return $order;
         });
        
-        // Calculate summary statistics based on current filters
         $totalOrders = (clone $ordersTotal)->count();
         $pendingOrders = (clone $ordersTotal)->where('status', 'pending')->count();
         $completedOrders = (clone  $ordersTotal)->whereIn('status', ['approved', 'done'])->count();
