@@ -397,51 +397,59 @@
                             </tbody>
                             <tfoot class="bg-gray-50">
                                 <tr>
-                                    <td colspan="3" class="px-4 text-sm text-right font-semibold" style="padding-top: 15px">Discount :</td>
+                                    <td colspan="3" class="px-4 text-sm text-right font-semibold"
+                                        style="padding-top: 15px">Discount :</td>
                                     <td class="px-4 text-sm text-right font-bold" id="modalDiscount">- 0.00</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3" class="px-4 text-sm text-right font-semibold" style="padding-top:5px; padding-bottom: 15px">Total Amount:</td>
+                                    <td colspan="3" class="px-4 text-sm text-right font-semibold"
+                                        style="padding-top:5px; padding-bottom: 15px">Total Amount:</td>
                                     <td class="px-4  text-right  font-bold text-sm" id="modalTotalAmount">0.00</td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
 
-                           <!-- Custom Fields Section (Event Details Table) -->
-                <div id="customFieldsSection" class="mb-4">
-                    <h4 class="font-medium text-gray-900 mb-2 mt-5">Event Details:</h4>
-                    <div id="customFieldsContent" class=" rounded-lg">
-                        <table id="customFieldsTable" class="min-w-full hidden border border-gray-200 rounded-lg overflow-hidden">
-                            <thead class="bg-gradient-to-r bg-gray-50 to-indigo-100">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
-                                       </i>#
-                                    </th>
-                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
-                                       </i>Event Name
-                                    </th>
-                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
-                                       Date
-                                    </th>
-                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
-                                        </i>Time
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="customFieldsTableBody" class="bg-white divide-y divide-gray-100">
-                                <!-- Custom fields will be populated here by JavaScript -->
-                            </tbody>
-                        </table>
-                        <div id="noCustomFields" class="text-center py-6 hidden">
-                            <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-3">
-                                <i class="fas fa-calendar-times text-gray-400 text-xl"></i>
+                    <!-- Custom Fields Section (Event Details Table) -->
+                    <div id="customFieldsSection" class="mb-4">
+                        <h4 class="font-medium text-gray-900 mb-2 mt-5">Event Details:</h4>
+                        <div id="customFieldsContent" class=" rounded-lg">
+                            <table id="customFieldsTable"
+                                class="min-w-full hidden border border-gray-200 rounded-lg overflow-hidden">
+                                <thead class="bg-gradient-to-r bg-gray-50 to-indigo-100">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+                                            </i>#
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+                                            </i>Event Name
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+                                            Date
+                                        </th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+                                            </i>Time
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customFieldsTableBody" class="bg-white divide-y divide-gray-100">
+                                    <!-- Custom fields will be populated here by JavaScript -->
+                                </tbody>
+                            </table>
+                            <div id="noCustomFields" class="text-center py-6 hidden">
+                                <div
+                                    class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-3">
+                                    <i class="fas fa-calendar-times text-gray-400 text-xl"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 italic">No event details available</p>
                             </div>
-                            <p class="text-sm text-gray-500 italic">No event details available</p>
                         </div>
                     </div>
-                </div>
-               
+
 
                     <!-- Notes Section -->
                     <div id="notesSection" class="mt-4 hidden">
@@ -541,7 +549,7 @@
 
             function populateModal(order) {
                 // Update modal title and order info
-                document.getElementById('modalTitle').textContent = `Order #${order.id} Items`;
+                document.getElementById('modalTitle').textContent =  `Order #${String(order.id).padStart(5, '0')}`;;
                 document.getElementById('modalCustomer').textContent = order.customer.name;
                 document.getElementById('modalCustomerPhone').textContent = order.customer.phone;
                 document.getElementById('modalCustomerAddress').textContent = order.customer.address;
@@ -568,37 +576,37 @@
                 });
 
                 // Populate custom fields - TABLE VERSION
-    const customFieldsTable = document.getElementById('customFieldsTable');
-    const customFieldsTableBody = document.getElementById('customFieldsTableBody');
-    const noCustomFields = document.getElementById('noCustomFields');
-    
-    // Clear existing content
-    customFieldsTableBody.innerHTML = '';
-    
-    // Check if custom fields exist and are valid
-    if (order.custom_fields && Array.isArray(order.custom_fields) && order.custom_fields.length > 0) {
-        // Show table, hide "no data" message
-        customFieldsTable.classList.remove('hidden');
-        noCustomFields.classList.add('hidden');
-        
-        order.custom_fields.forEach((field, index) => {
-            const row = document.createElement('tr');
-            row.className = 'border';
-            
-            row.innerHTML = `
+                const customFieldsTable = document.getElementById('customFieldsTable');
+                const customFieldsTableBody = document.getElementById('customFieldsTableBody');
+                const noCustomFields = document.getElementById('noCustomFields');
+
+                // Clear existing content
+                customFieldsTableBody.innerHTML = '';
+
+                // Check if custom fields exist and are valid
+                if (order.custom_fields && Array.isArray(order.custom_fields) && order.custom_fields.length > 0) {
+                    // Show table, hide "no data" message
+                    customFieldsTable.classList.remove('hidden');
+                    noCustomFields.classList.add('hidden');
+
+                    order.custom_fields.forEach((field, index) => {
+                        const row = document.createElement('tr');
+                        row.className = 'border';
+
+                        row.innerHTML = `
                 <td class="px-4 py-3 text-sm font-medium  text-gray-900">${index + 1}</td>
                 <td class="px-4 py-3 text-sm text-gray-900">${field.event_name || '-'}</td>
                 <td class="px-4 py-3 text-sm text-gray-900">${field.event_date || '-'}</td>
                 <td class="px-4 py-3 text-sm text-gray-900">${field.event_time || '-'}</td>
             `;
-            
-            customFieldsTableBody.appendChild(row);
-        });
-    } else {
-        // Show "no data" message, hide table
-        customFieldsTable.classList.add('hidden');
-        noCustomFields.classList.remove('hidden');
-    }
+
+                        customFieldsTableBody.appendChild(row);
+                    });
+                } else {
+                    // Show "no data" message, hide table
+                    customFieldsTable.classList.add('hidden');
+                    noCustomFields.classList.remove('hidden');
+                }
                 // Show/hide notes section
                 if (order.notes && order.notes.trim() !== '') {
                     document.getElementById('modalNotes').textContent = order.notes;
