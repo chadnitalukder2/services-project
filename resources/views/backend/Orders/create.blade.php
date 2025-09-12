@@ -751,6 +751,7 @@
                         saveCustomerLoading.classList.add('hidden');
 
                         if (response.status === true) {
+                            showNotification('Customer created successfully', 'success');
                             window.dispatchEvent(new CustomEvent('close-modal', {
                                 detail: 'create-customer'
                             }));
@@ -772,7 +773,7 @@
                         if (xhr.status === 422) {
                             showCustomerFormErrors(xhr.responseJSON.errors);
                         } else {
-                            alert('Something went wrong. Please try again.');
+                            showNotification('Something went wrong. Please try again', 'error');
                         }
                     }
                 });

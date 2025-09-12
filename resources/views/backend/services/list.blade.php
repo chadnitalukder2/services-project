@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-            
+            <x-message />
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Services') }}
@@ -196,21 +196,6 @@
 
     <x-slot name="script">
         <script type="text/javascript">
-            function showNotification(message, type = 'info') {
-                const notification = document.createElement('div');
-                notification.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded-md shadow-lg ${
-                    type === 'success' ? 'bg-green-500 text-white' : 
-                    type === 'error' ? 'bg-red-500 text-white' : 
-                    'bg-blue-500 text-white'
-                }`;
-                notification.textContent = message;
-
-                document.body.appendChild(notification);
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
-            }
-
 
             let deleteId = null;
 
