@@ -27,6 +27,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $query = Order::query();
+        $ordersTotal =  Order::get();
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -41,14 +42,24 @@ class OrderController extends Controller
         }
 
         // Get filtered orders
-        $orders = $query->orderBy('created_at', 'desc')->paginate(15);
+        $orders = $query->orderBy('created_at', 'desc')->paginate(5);
+        $orders->getCollection()->transform(function ($order) {
+            // Check if custom_fields is not null
+            if ($order->custom_fields) {
+                $order->custom_fields = json_decode($order->custom_fields, true); // decode JSON string to array
+            } else {
+                $order->custom_fields = []; // make it an empty array if null
+            }
 
+            return $order;
+        });
+       
         // Calculate summary statistics based on current filters
-        $totalOrders = (clone $query)->count();
-        $pendingOrders = (clone $query)->where('status', 'pending')->count();
-        $completedOrders = (clone $query)->whereIn('status', ['approved', 'done'])->count();
+        $totalOrders = (clone $ordersTotal)->count();
+        $pendingOrders = (clone $ordersTotal)->where('status', 'pending')->count();
+        $completedOrders = (clone  $ordersTotal)->whereIn('status', ['approved', 'done'])->count();
 
-        $totalRevenue = (clone $query)->whereIn('status', ['approved', 'done'])->sum('total_amount');
+        $totalRevenue = (clone $ordersTotal)->whereIn('status', ['approved', 'done'])->sum('total_amount');
 
         $summary = [
             'total_orders' => $totalOrders,
