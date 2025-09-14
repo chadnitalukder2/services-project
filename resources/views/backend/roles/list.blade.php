@@ -11,14 +11,15 @@
                         <h3 class="text-lg font-semibold text-gray-900">Roles List</h3>
                         <div class="flex space-x-2">
                             @can('create roles')
-                                <a href="{{ route('roles.create') }}"
+                                <!-- Updated button to open modal instead of redirecting -->
+                                <button onclick="openCreateRoleModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path
                                             d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
                                     </svg>
-                                    Create Role</a>
+                                    Create Role</button>
                             @endcan
                         </div>
                     </div>
@@ -51,9 +52,9 @@
                                 @foreach ($roles as $role)
                                     <tr class="border-b" id="role-row-{{ $role->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($role->id, 5, '0', STR_PAD_LEFT) }}
+                                            {{ $role->id }}
                                         </td>
-                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900 capitalize">
                                             {{ $role->name }}</td>
                                         <td class="px-6 py-3 text-left">
                                             {{ $role->permissions->isNotEmpty() ? $role->permissions->pluck('name')->implode(', ') : '---' }}
@@ -65,18 +66,19 @@
 
                                         @canany(['edit roles', 'delete roles'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
                                                 {{--  --}}
 
                                                 @can('edit roles')
-                                                    <a href="{{ route('roles.edit', $role->id) }}"
+                                                    <a href="javascript:void(0)"
+                                                        onclick="openEditRoleModal({{ $role->id }})"
                                                         class="text-yellow-500 hover:text-yellow-600" title="Edit Role">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 @endcan
                                                 @can('delete roles')
                                                     <a href="javascript:void(0)" onclick="deleteRole({{ $role->id }})"
-                                                        class=" text-red-700 hover:text-red-600" title="Delate Role">
+                                                        class=" text-red-700 hover:text-red-600" title="Delete Role">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
                                                 @endcan
@@ -148,9 +150,131 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
-            <!-- Confirm Delete Modal ------------------------>
+            <!-- Create Role Modal -->
+            <x-modal name="create-role" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Create New Role</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'create-role')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="createRoleForm">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="rolName" class="block text-sm font-medium text-gray-700 mb-2">
+                                Role Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="roleName" name="name"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                                placeholder="Enter role name">
+                            <div id="roleNameError" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Permissions
+                            </label>
+                            <div
+                                class="grid grid-cols-2 gap-4 max-h-48 overflow-y-auto border border-gray-300 rounded-md p-3">
+                                @if (isset($permissions) && $permissions->isNotEmpty())
+                                    @foreach ($permissions as $permission)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                                style="--tw-ring-shadow: none;"
+                                                class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
+                                            <span class="text-sm text-gray-700">{{ $permission->name }}</span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-gray-500 text-sm">No permissions available</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3">
+                            <button type="button"
+                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                                x-on:click="$dispatch('close-modal', 'create-role')">
+                                Cancel
+                            </button>
+                            <button type="submit" id="createRoleBtn"
+                                class="px-4 py-2 text-sm bg-gray-800 text-white rounded hover:bg-gray-700">
+                                <span id="createBtnText">Create Role</span>
+                                <span id="createBtnLoading" class="hidden">
+                                    <i class="fas fa-spinner fa-spin mr-1"></i>Creating...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+
+            <!-- Edit Role Modal -->
+            <x-modal name="edit-role" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Update Role</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'edit-role')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="editRoleForm">
+                        @csrf
+                        <input type="hidden" id="editRoleId" name="role_id">
+
+                        <div class="mb-4">
+                            <label for="editRoleName" class="block text-sm font-medium text-gray-700 mb-2">
+                                Role Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="editRoleName" name="name"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                                placeholder="Enter role name">
+                            <div id="editRoleNameError" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Permissions
+                            </label>
+                            <div class="grid grid-cols-2 gap-4 max-h-48 overflow-y-auto border border-gray-300 rounded-md p-3"
+                                id="editRolePermissions">
+                                @foreach ($permissions as $permission)
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                            class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
+                                        <span class="text-sm text-gray-700">{{ $permission->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3">
+                            <button type="button"
+                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                                x-on:click="$dispatch('close-modal', 'edit-role')">
+                                Cancel
+                            </button>
+                            <button type="submit" id="editRoleBtn"
+                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded ">
+                                <span id="editBtnText">Update Role</span>
+                                <span id="editBtnLoading" class="hidden">
+                                    <i class="fas fa-spinner fa-spin mr-1"></i>Updating...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+
+            <!-- Confirm Delete Modal -->
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
@@ -178,7 +302,182 @@
 
     <x-slot name="script">
         <script type="text/javascript">
+            //update==========================================
+            function openEditRoleModal(roleId) {
+                const row = document.getElementById(`role-row-${roleId}`);
+                const roleName = row.querySelector('td:nth-child(2)').textContent.trim();
+                const permissionsText = row.querySelector('td:nth-child(3)').textContent.trim();
 
+                document.getElementById('editRoleId').value = roleId;
+                document.getElementById('editRoleName').value = roleName;
+
+                const selectedPermissions = permissionsText.split(',').map(p => p.trim());
+
+                // Uncheck all first
+                document.querySelectorAll('#editRolePermissions input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+                // Check those that exist in the role
+                document.querySelectorAll('#editRolePermissions input[type="checkbox"]').forEach(cb => {
+                    if (selectedPermissions.includes(cb.value)) cb.checked = true;
+                });
+
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'edit-role'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const editForm = document.getElementById('editRoleForm');
+                const editBtn = document.getElementById('editRoleBtn');
+                const editBtnText = document.getElementById('editBtnText');
+                const editBtnLoading = document.getElementById('editBtnLoading');
+                const editRoleNameError = document.getElementById('editRoleNameError');
+
+                editForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    editRoleNameError.classList.add('hidden');
+                    editRoleNameError.textContent = '';
+
+                    editBtn.disabled = true;
+                    editBtnText.classList.add('hidden');
+                    editBtnLoading.classList.remove('hidden');
+
+                    const roleId = document.getElementById('editRoleId').value;
+                    const roleName = document.getElementById('editRoleName').value;
+                    const permissions = Array.from(editForm.querySelectorAll(
+                            'input[name="permissions[]"]:checked'))
+                        .map(input => input.value);
+
+                    $.ajax({
+                        url: `/roles/${roleId}`,
+                        type: 'POST',
+                        data: {
+                            name: roleName,
+                            permissions: permissions
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status) {
+                                showNotification(response.message || 'Role updated successfully!',
+                                    'success');
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'edit-role'
+                                }));
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error updating role!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+                                if (errors.name) {
+                                    editRoleNameError.textContent = errors.name[0];
+                                    editRoleNameError.classList.remove('hidden');
+                                }
+                                showNotification('Please fix the errors and try again.', 'error');
+                            } else {
+                                showNotification('An error occurred while updating the role!',
+                                    'error');
+                            }
+                        },
+                        complete: function() {
+                            editBtn.disabled = false;
+                            editBtnText.classList.remove('hidden');
+                            editBtnLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Create================
+
+            function openCreateRoleModal() {
+                document.getElementById('createRoleForm').reset();
+                document.getElementById('roleNameError').classList.add('hidden');
+                // Open modal
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'create-role'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const createForm = document.getElementById('createRoleForm');
+                const createBtn = document.getElementById('createRoleBtn');
+                const createBtnText = document.getElementById('createBtnText');
+                const createBtnLoading = document.getElementById('createBtnLoading');
+                const roleNameError = document.getElementById('roleNameError');
+
+                createForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    roleNameError.classList.add('hidden');
+                    roleNameError.textContent = '';
+
+                    createBtn.disabled = true;
+                    createBtnText.classList.add('hidden');
+                    createBtnLoading.classList.remove('hidden');
+
+                    // Collect input values manually
+                    const roleName = document.getElementById('roleName').value;
+
+                    // Collect checked permissions
+                    const permissions = Array.from(createForm.querySelectorAll(
+                            'input[name="permissions[]"]:checked'))
+                        .map(input => input.value);
+
+                    // Prepare data object
+                    const data = {
+                        name: roleName,
+                        permissions: permissions
+                    };
+
+                    $.ajax({
+                        url: '{{ route('roles.store') }}',
+                        type: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                showNotification(response.message || 'Role created successfully!',
+                                    'success');
+
+                                // Close modal
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'create-role'
+                                }));
+
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error creating role!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+                                if (errors.name) {
+                                    roleNameError.textContent = errors.name[0];
+                                    roleNameError.classList.remove('hidden');
+                                }
+                                showNotification('Please fix the errors and try again.', 'error');
+                            } else {
+                                showNotification('An error occurred while creating the role!',
+                                    'error');
+                            }
+                        },
+                        complete: function() {
+                            createBtn.disabled = false;
+                            createBtnText.classList.remove('hidden');
+                            createBtnLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
 
             //delete Role=========================
             let deleteId = null;
@@ -239,7 +538,6 @@
                     });
                 });
             });
-           
         </script>
     </x-slot>
 </x-app-layout>
