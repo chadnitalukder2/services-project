@@ -6,7 +6,7 @@
             <x-message />
 
             <!-- Search and Filter Form -->
-            <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('customers.index') }}" class="flex flex-wrap items-center gap-4">
 
                     <!-- Search Input -->

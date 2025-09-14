@@ -8,7 +8,7 @@
 
 
             <!-- Search and Filter Form -->
-            <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('services.index') }}"
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
 
