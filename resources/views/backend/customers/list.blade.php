@@ -226,13 +226,14 @@
                     </div>
                 </div>
             </x-modal>
+            
         </div>
     </div>
 
     <x-slot name="script">
         <script type="text/javascript">
 
-              //delete Role=========================
+              //delete Customer=========================
             let deleteId = null;
 
             function deleteCustomer(id) {

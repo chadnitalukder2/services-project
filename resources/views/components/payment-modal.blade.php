@@ -1,4 +1,5 @@
-<div id="paymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+<div id="paymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+    style="display: none;">
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
@@ -26,15 +27,15 @@
                         </div>
                         <div class="flex justify-between mb-1">
                             <span class="text-sm text-gray-600">Customer:</span>
-                            <span class="text-sm font-medium" id="modalCustomerName"></span>
+                            <span class="text-sm font-medium capitalize" id="modalCustomerName"></span>
                         </div>
                         <div class="flex justify-between mb-1">
                             <span class="text-sm text-gray-600">Current Status:</span>
-                            <span class="text-sm font-medium" id="modalCurrentStatus"></span>
+                            <span class="text-sm font-medium capitalize" id="modalCurrentStatus"></span>
                         </div>
                         <div class="flex justify-between mb-1">
-                            <span class="text-sm text-gray-600">Current Payment Method:</span>
-                            <span class="text-sm font-medium" id="modalCurrentPaymentMethod"></span>
+                            <span class="text-sm text-gray-600 capitalize">Current Payment Method:</span>
+                            <span class="text-sm font-medium capitalize" id="modalCurrentPaymentMethod"></span>
                         </div>
                         <div class="flex justify-between mb-1">
                             <span class="text-sm text-gray-600">Total Amount:</span>
@@ -55,24 +56,24 @@
                     <label for="paymentAmount" class="block text-sm font-medium text-gray-700 mb-2">Payment
                         Amount</label>
                     <input type="number" id="paymentAmount" name="payment_amount" step="0.01" min="0"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter payment amount" >
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900 focus:border-transparent"
+                        placeholder="Enter payment amount">
                     <div class="mt-1">
                         <button type="button" onclick="setFullPayment()"
                             class="text-xs text-blue-600 hover:text-blue-800">
                             Pay Full Due Amount
                         </button>
                     </div>
-                    <div class="mt-2 text-sm text-gray-600">
+                    {{-- <div class="mt-2 text-sm text-gray-600">
                         <span id="statusPreview"></span>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="mb-4">
                     <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-2">Payment
                         Method</label>
                     <select id="paymentMethod" name="payment_method"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900 focus:border-transparent"
                         required>
                         <option value="">Select Payment Method</option>
                         <option value="card">Card</option>
@@ -90,7 +91,7 @@
                         Cancel
                     </button>
                     <button type="submit" id="submitPaymentBtn"
-                        class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 disabled:opacity-50">
+                        class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded-md hover:bg-blue-700 disabled:opacity-50">
                         Process Payment
                     </button>
                 </div>
@@ -99,20 +100,67 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<style>
+    body.modal-open {
+        overflow: hidden !important;
+    }
+
+    /* Check if scrollbar exists and add padding accordingly */
+    @media screen {
+        body.modal-open {
+            padding-right: 17px !important;
+        }
+    }
+    @supports (-webkit-appearance: none) {
+        body.modal-open {
+            padding-right: 17px !important;
+        }
+    }
+    @-moz-document url-prefix() {
+        body.modal-open {
+            padding-right: 17px !important;
+        }
+    }
+
+    #paymentModal {
+        transition: all 0.3s ease-in-out;
+    }
+
+    #paymentModal>div {
+        transition: all 0.3s ease-in-out;
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    #paymentModal.show {
+        display: block !important;
+    }
+
+    #paymentModal.show>div {
+        transform: scale(1);
+        opacity: 1;
+    }
+</style>
+
 <script>
     let currentInvoice = null;
 
     function openPaymentModal(invoice) {
         currentInvoice = invoice;
 
+        function padOrderId(id) {
+            return id.toString().padStart(5, '0');
+        }
+
         // Populate modal fields
         document.getElementById('invoiceId').value = invoice.id;
-        document.getElementById('modalOrderId').textContent = invoice.order_id;
+        document.getElementById('modalOrderId').textContent = '#' + padOrderId(invoice.order_id);
         document.getElementById('modalCustomerName').textContent = invoice.customer_name;
-        document.getElementById('modalTotalAmount').textContent = '$' + parseFloat(invoice.amount).toFixed(2);
-        document.getElementById('modalPaidAmount').textContent = '$' + parseFloat(invoice.paid_amount).toFixed(2);
-        document.getElementById('modalDueAmount').textContent = '$' + parseFloat(invoice.due_amount).toFixed(2);
+        document.getElementById('modalTotalAmount').textContent = parseFloat(invoice.amount).toFixed(2) + ' tk';
+        document.getElementById('modalPaidAmount').textContent = parseFloat(invoice.paid_amount).toFixed(2) + ' tk';
+        document.getElementById('modalDueAmount').textContent = parseFloat(invoice.due_amount).toFixed(2) + ' tk';
 
         document.getElementById('modalCurrentStatus').textContent = invoice.status || 'Due';
         document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';
@@ -122,20 +170,48 @@
         }
         document.getElementById('paymentAmount').setAttribute('max', invoice.due_amount);
 
-        // Show modal
-        document.getElementById('paymentModal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        // Prevent layout shift - Calculate scrollbar width dynamically
+        const hasScrollbar = document.body.scrollHeight > window.innerHeight;
+        if (hasScrollbar) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.paddingRight = scrollbarWidth + 'px';
+        }
+
+        // Add modal-open class to prevent scrolling
+        document.body.classList.add('modal-open');
+
+        // Show modal with smooth transition
+        const modal = document.getElementById('paymentModal');
+        modal.style.display = 'block';
+
+        // Trigger animation after a small delay
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
 
         // Update status preview initially
         updateStatusPreview();
     }
 
     function closePaymentModal() {
-        document.getElementById('paymentModal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
-        document.getElementById('paymentForm').reset();
-        document.getElementById('statusPreview').textContent = '';
-        currentInvoice = null;
+        const modal = document.getElementById('paymentModal');
+
+        // Start closing animation
+        modal.classList.remove('show');
+
+        // Hide modal after animation completes
+        setTimeout(() => {
+            modal.style.display = 'none';
+
+            // Restore body scroll and remove padding
+            document.body.classList.remove('modal-open');
+            document.body.style.paddingRight = '';
+
+            // Reset form
+            document.getElementById('paymentForm').reset();
+            document.getElementById('statusPreview').textContent = '';
+            currentInvoice = null;
+        }, 300);
     }
 
     function setFullPayment() {
@@ -204,7 +280,7 @@
             const newStatus = calculateNewStatus(currentPaidAmount, paymentAmount, totalAmount);
 
             const data = {
-                id: currentInvoice.id ,
+                id: currentInvoice.id,
                 order_id: Number(currentInvoice.order_id),
                 customer_id: Number(currentInvoice.customer_id),
                 amount: Number(currentInvoice.amount),
@@ -213,12 +289,13 @@
                 payment_method: document.getElementById('paymentMethod').value,
                 status: newStatus,
             };
+
             console.log("Submitting data:", data);
+
             $.ajax({
                 url: '{{ route('invoices.process-payment') }}',
                 type: 'POST',
                 data: data,
-                // contentType: 'application/json',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
@@ -229,16 +306,23 @@
                 error: function(xhr, status, error) {
                     console.error("AJAX error:", status, error);
                     console.error("Response:", xhr.responseText);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
                 }
             });
         });
     });
 
-
-
     // Close modal when clicking outside
     document.getElementById('paymentModal').addEventListener('click', function(e) {
         if (e.target === this) {
+            closePaymentModal();
+        }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('paymentModal').style.display === 'block') {
             closePaymentModal();
         }
     });
