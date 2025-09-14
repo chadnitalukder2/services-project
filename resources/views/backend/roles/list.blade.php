@@ -66,7 +66,7 @@
 
                                         @canany(['edit roles', 'delete roles'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
                                                 {{--  --}}
 
                                                 @can('edit roles')
@@ -154,7 +154,7 @@
             </div>
 
             <!-- Create Role Modal -->
-            <x-modal name="create-role" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
+            <x-modal name="create-role" class="sm:max-w-md mt-20" maxWidth="5xl">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New Role</h2>
@@ -180,8 +180,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Permissions
                             </label>
-                            <div
-                                class="grid grid-cols-2 gap-4 max-h-48 overflow-y-auto border border-gray-300 rounded-md p-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
                                 @if (isset($permissions) && $permissions->isNotEmpty())
                                     @foreach ($permissions as $permission)
                                         <label class="flex items-center">
@@ -216,7 +215,7 @@
             </x-modal>
 
             <!-- Edit Role Modal -->
-            <x-modal name="edit-role" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
+            <x-modal name="edit-role" class="sm:max-w-md mt-20" maxWidth="5xl">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Role</h2>
@@ -244,7 +243,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Permissions
                             </label>
-                            <div class="grid grid-cols-2 gap-4 max-h-48 overflow-y-auto border border-gray-300 rounded-md p-3"
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3"
                                 id="editRolePermissions">
                                 @foreach ($permissions as $permission)
                                     <label class="flex items-center">

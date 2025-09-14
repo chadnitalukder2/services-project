@@ -1,7 +1,7 @@
 @props([
     'name',
     'show' => false,
-    'maxWidth' => '2xl',
+    'maxWidth' => '6xl',
     'marginTop' => '6'
 ])
 
@@ -12,6 +12,9 @@ $maxWidth = [
     'lg' => 'sm:max-w-lg',
     'xl' => 'sm:max-w-xl',
     '2xl' => 'sm:max-w-2xl',
+    '5xl'    => 'sm:max-w-5xl',
+    '6xl'   => 'sm:max-w-6xl'
+
 ][$maxWidth];
 @endphp
 
