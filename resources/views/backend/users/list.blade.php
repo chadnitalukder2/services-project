@@ -158,33 +158,94 @@
                 </div>
             </div>
 
+   <!-- Confirm Delete Modal ------------------------>
+            <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
+                <div class="p-6">
+                    <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Are you sure you want to delete this user?
+                        This action cannot be undone.
+                    </p>
+
+                    <div class="mt-4 flex justify-end gap-3">
+                        <button type="button" class="px-4 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+                            x-on:click="$dispatch('close-modal', 'confirm-delete')">
+                            Cancel
+                        </button>
+
+                        <button type="button" id="confirmDeleteBtn"
+                            class="px-4 py-1 text-sm bg-red-700 text-white rounded hover:bg-red-600">
+                            Yes, Delete
+                        </button>
+                    </div>
+                </div>
+            </x-modal>
+
         </div>
     </div>
 
     <x-slot name="script">
         <script type="text/javascript">
+           //delete User=========================
+            let deleteId = null;
+
             function deleteUser(id) {
-                if (confirm('Are you sure you want to delete this user?')) {
+                deleteId = id;
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'confirm-delete'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+                confirmBtn.addEventListener('click', function() {
+                    if (!deleteId) return;
+
+                    const row = document.getElementById(`user-row-${deleteId}`);
+                    if (row) row.style.opacity = '0.5';
+
                     $.ajax({
                         url: '{{ route('users.destroy') }}',
                         type: 'DELETE',
                         data: {
-                            id: id,
+                            id: deleteId
                         },
                         dataType: 'json',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            if (response.status) {
-                                location.reload();
+                            if (response.status === true) {
+                                showNotification(response.message ||
+                                    'User deleted successfully!', 'success');
+                                if (row) {
+                                    row.style.transition = 'opacity 0.5s';
+                                    row.style.opacity = '0';
+                                    setTimeout(() => location.reload(), 1000);
+                                } else {
+                                    setTimeout(() => location.reload(), 1000);
+                                }
                             } else {
-                                alert('Service not found');
+                                showNotification(response.message || 'User not found!', 'error');
+                                if (row) row.style.opacity = '1';
                             }
+                        },
+                        error: function() {
+                            showNotification('An error occurred while deleting the user!',
+                                'error');
+                            if (row) row.style.opacity = '1';
+                        },
+                        complete: function() {
+                            window.dispatchEvent(new CustomEvent('close-modal', {
+                                detail: 'confirm-delete'
+                            }));
+                            deleteId = null;
                         }
                     });
-                }
-            }
+                });
+            });
+
         </script>
     </x-slot>
 </x-app-layout>

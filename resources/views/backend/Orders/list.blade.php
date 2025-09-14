@@ -504,25 +504,6 @@
 
     <x-slot name="script">
         <script type="text/javascript">
-            //show notification
-            // function showNotification(message, type = "success") {
-            //     const notification = document.createElement('div');
-            //     notification.style.marginTop = "0.5rem";
-            //     notification.className = `fixed top-5 right-5 px-4 py-2 rounded shadow text-white z-50 transition-opacity duration-500 ${type === "success" ? "bg-green-500" : "bg-red-500"
-    //     }`;
-            //     notification.textContent = message;
-
-            //     document.body.appendChild(notification);
-
-            //     setTimeout(() => {
-            //         notification.style.opacity = "0";
-            //     }, 2000);
-
-            //     setTimeout(() => {
-            //         notification.remove();
-            //     }, 2500);
-            // }
-
             function showOrderItems(orderId) {
                 // Show modal
                 document.getElementById('orderItemsModal').classList.remove('hidden');
@@ -547,7 +528,7 @@
 
             function populateModal(order) {
                 // Update modal title and order info
-                document.getElementById('modalTitle').textContent =  `Order #${String(order.id).padStart(5, '0')}`;;
+                document.getElementById('modalTitle').textContent = `Order #${String(order.id).padStart(5, '0')}`;;
                 document.getElementById('modalCustomer').textContent = order.customer.name;
                 document.getElementById('modalCustomerPhone').textContent = order.customer.phone;
                 document.getElementById('modalCustomerAddress').textContent = order.customer.address;
@@ -596,7 +577,7 @@
                 <td class="px-4 py-3 text-sm text-gray-900">${field.event_name || '-'}</td>
                 <td class="px-4 py-3 text-sm text-gray-900">${field.event_date || '-'}</td>
                 <td class="px-4 py-3 text-sm text-gray-900">${field.event_time || '-'}</td>
-            `;
+                `;
 
                         customFieldsTableBody.appendChild(row);
                     });
@@ -688,29 +669,7 @@
                 });
             });
 
-            // function deleteOrder(id) {
-            //     if (confirm('Are you sure you want to delete this order?')) {
-            //         $.ajax({
-            //             url: '{{ route('orders.destroy') }}',
-            //             type: 'DELETE',
-            //             data: {
-            //                 id: id,
-            //             },
-            //             dataType: 'json',
-            //             headers: {
-            //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            //             },
-            //             success: function(response) {
-            //                 if (response.status) {
-            //                     location.reload();
-            //                 } else {
-            //                     alert('Order not found');
-            //                 }
-            //             }
-            //         });
-            //     }
-            // }
-
+       
             // Close modal when clicking outside
             document.getElementById('orderItemsModal').addEventListener('click', function(e) {
                 if (e.target === this) {

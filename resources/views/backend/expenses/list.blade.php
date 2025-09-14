@@ -8,7 +8,7 @@
             <!-- Filter Form -->
             <div class="bg-white p-6 rounded-lg shadow-md mb-6">
                 <form method="GET" action="{{ route('expenses.index') }}"
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
                     <!-- Category Filter -->
                     <div>
@@ -25,14 +25,14 @@
                         </select>
                     </div>
 
-                    <!-- Expense Date From (Optional) -->
+                    {{-- <!-- Expense Date  (Optional) -->
                     <div>
                         <label for="expense_date_from" class="block text-sm font-medium text-gray-700 mb-1">Expense Date
-                            From</label>
+                            </label>
                         <input type="date" name="expense_date_from" id="expense_date_from"
                             value="{{ request('expense_date_from') }}"
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    </div>
+                    </div> --}}
 
                     <!-- Created At Date From -->
                     <div>
@@ -53,11 +53,11 @@
                     <!-- Filter Buttons -->
                     <div class="flex items-end space-x-2">
                         <button type="submit"
-                            class="bg-blue-600 text-white px-8 py-2 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-200">
+                            class="bg-blue-600 text-white px-12 py-2 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-200">
                             Filter
                         </button>
                         <a href="{{ route('expenses.index') }}"
-                            class="bg-gray-500 text-white px-8 py-2 rounded-md hover:bg-gray-600">
+                            class="bg-gray-500 text-white px-12 py-2 rounded-md hover:bg-gray-600">
                             Clear
                         </a>
                     </div>
@@ -142,7 +142,7 @@
                                                     </a>
                                                 @endcan
                                                 @can('delete expenses')
-                                                    <a href="javascript:void(0)" onclick="deleteexpense({{ $expense->id }})"
+                                                    <a href="javascript:void(0)" onclick="deleteExpense({{ $expense->id }})"
                                                         class=" text-red-700 hover:text-red-600" title="Delate expense">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
@@ -217,33 +217,92 @@
                 </div>
             </div>
 
+            <!-- Confirm Delete Modal ------------------------>
+            <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
+                <div class="p-6">
+                    <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Are you sure you want to delete this expense?
+                        This action cannot be undone.
+                    </p>
+
+                    <div class="mt-4 flex justify-end gap-3">
+                        <button type="button" class="px-4 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+                            x-on:click="$dispatch('close-modal', 'confirm-delete')">
+                            Cancel
+                        </button>
+
+                        <button type="button" id="confirmDeleteBtn"
+                            class="px-4 py-1 text-sm bg-red-700 text-white rounded hover:bg-red-600">
+                            Yes, Delete
+                        </button>
+                    </div>
+                </div>
+            </x-modal>
+
         </div>
     </div>
 
     <x-slot name="script">
         <script type="text/javascript">
+            //delete Expense=========================
+            let deleteId = null;
             function deleteExpense(id) {
-                if (confirm('Are you sure you want to delete this expense?')) {
+                deleteId = id;
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'confirm-delete'
+                }));
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+                confirmBtn.addEventListener('click', function() {
+                    if (!deleteId) return;
+
+                    const row = document.getElementById(`expense-row-${deleteId}`);
+                    if (row) row.style.opacity = '0.5';
+
                     $.ajax({
                         url: '{{ route('expenses.destroy') }}',
                         type: 'DELETE',
                         data: {
-                            id: id,
+                            id: deleteId
                         },
                         dataType: 'json',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            if (response.status) {
-                                location.reload();
+                            if (response.status === true) {
+                                showNotification(response.message ||
+                                    'Expense deleted successfully!', 'success');
+                                if (row) {
+                                    row.style.transition = 'opacity 0.5s';
+                                    row.style.opacity = '0';
+                                    setTimeout(() => location.reload(), 1000);
+                                } else {
+                                    setTimeout(() => location.reload(), 1000);
+                                }
                             } else {
-                                alert('Expense not found');
+                                showNotification(response.message || 'Expense not found!', 'error');
+                                if (row) row.style.opacity = '1';
                             }
+                        },
+                        error: function() {
+                            showNotification('An error occurred while deleting the expense!',
+                                'error');
+                            if (row) row.style.opacity = '1';
+                        },
+                        complete: function() {
+                            window.dispatchEvent(new CustomEvent('close-modal', {
+                                detail: 'confirm-delete'
+                            }));
+                            deleteId = null;
                         }
                     });
-                }
-            }
+                });
+            });
+       
 
             // Auto-submit form when filter values change (optional)
             document.getElementById('category_id').addEventListener('change', function() {
