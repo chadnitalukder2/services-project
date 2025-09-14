@@ -95,11 +95,11 @@
                             </div>
                             <div class="flex items-end gap-4 text-center">
                                 <button type="submit"
-                                    class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                                    class="w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md  transition-colors">
                                     Filter
                                 </button>
                                 <a href="{{ route('orders.index') }}" style=" padding: 10px;"
-                                    class="text-sm px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-800 text-white w-full">
+                                    class="text-sm px-4 py-2 rounded-md bg-gray-500 hover:bg-gray-600 text-white w-full">
                                     Clear
                                 </a>
                             </div>
@@ -118,7 +118,7 @@
                         <div class="flex space-x-2">
                             @can('create orders')
                                 <a href="{{ route('orders.create') }}"
-                                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path

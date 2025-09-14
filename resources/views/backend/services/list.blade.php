@@ -56,7 +56,7 @@
                     <!-- Action Buttons -->
                     <div class="gap-2" style="display: block; margin:0 auto; margin-top: 24px;">
                         <button type="submit"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-200">
+                            class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">
                             Search
                         </button>
                         <a href="{{ route('services.index') }}"
@@ -76,7 +76,7 @@
                         <div class="flex space-x-2">
                             @can('create services')
                                 <a href="{{ route('services.create') }}"
-                                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path

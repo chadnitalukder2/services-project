@@ -53,7 +53,7 @@
                     <!-- Filter Buttons -->
                     <div class="flex items-end space-x-2">
                         <button type="submit"
-                            class="bg-blue-600 text-white px-12 py-2 rounded-md hover:bg-blue-700 focus:ring focus:ring-blue-200">
+                            class="bg-gray-800 hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
                             Filter
                         </button>
                         <a href="{{ route('expenses.index') }}"
@@ -72,7 +72,7 @@
                         <div class="flex space-x-2">
                             @can('create expenses')
                                 <a href="{{ route('expenses.create') }}"
-                                    class="bg-slate-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path
