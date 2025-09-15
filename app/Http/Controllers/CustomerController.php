@@ -68,6 +68,7 @@ class CustomerController extends Controller implements HasMiddleware
             ], 422);
         }
 
+        
         $customer = Customer::create([
             'name' => $request->name,
             'email' => $request->email,

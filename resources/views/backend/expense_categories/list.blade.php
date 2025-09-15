@@ -4,21 +4,21 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
 
-               {{-- Category table --}}
+            {{-- Category table --}}
             <div class="bg-white rounded-lg shadow-sm border">
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-semibold text-gray-900">Expense Category List</h3>
                         <div class="flex space-x-2">
                             @can('create expense category')
-                                <a href="{{ route('expense_categories.create') }}"
+                                <button onclick="openCreateExCategoryModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path
                                             d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
                                     </svg>
-                                    Create Category</a>
+                                    Create Category</button>
                             @endcan
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Name</th>
-                                    <th
+                                <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
                                 <th
@@ -47,7 +47,7 @@
                                 @foreach ($expenseCategories as $category)
                                     <tr class="border-b" id="category-row-{{ $category->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($category->id, 5, '0', STR_PAD_LEFT) }}
+                                            {{ $category->id }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $category->name }}
@@ -58,11 +58,12 @@
 
                                         @canany(['edit expenseCategories', 'delete expenseCategories'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
 
                                                 @can('edit expense category')
-                                                    <a href="{{ route('expense_categories.edit', $category->id) }}"
-                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit Customer">
+                                                    <a href="javascript:void(0)"
+                                                        onclick="openEditCategoryModal({{ $category->id }}, '{{ $category->name }}')"
+                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit Category">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 @endcan
@@ -78,7 +79,8 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No expenseCategories found
+                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No expenseCategories
+                                        found
                                     </td>
                                 </tr>
                             @endif
@@ -142,7 +144,80 @@
                 </div>
             </div>
 
-                <!-- Confirm Delete Modal ------------------------>
+            <!-- Create customer Modal -->
+            <x-modal name="create-expense-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Create New Expense Category</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'create-expense-category')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="createExpenseCategoryForm" class="space-y-4">
+                        <!-- Name -->
+                        <div>
+                            <label for="category_name" class="block text-sm font-medium text-gray-700">Category Name
+                                <span class="text-red-500">*</span></label>
+                            <input type="text" id="category_name" name="name"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                            <div id="category-name-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 mt-6 pt-4">
+                            <button type="button" x-on:click="$dispatch('close-modal', 'create-expense-category')"
+                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                Cancel
+                            </button>
+                            <button type="submit" id="save-category-btn"
+                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                <span id="save-category-text">Save Category</span>
+                                <span id="save-category-loading" class="hidden">Saving...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+
+            <!-- Update customer Modal -->
+            <x-modal name="edit-expense-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Edit Expense Category</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'edit-expense-category')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="editExpenseCategoryForm" class="space-y-4">
+                        <input type="hidden" id="edit_category_id">
+                        <div>
+                            <label for="edit_category_name" class="block text-sm font-medium text-gray-700">
+                                Category Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="edit_category_name" name="name"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                            <div id="edit-category-name-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 mt-6 pt-4">
+                            <button type="button" x-on:click="$dispatch('close-modal', 'edit-expense-category')"
+                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                Cancel
+                            </button>
+                            <button type="submit" id="update-category-btn"
+                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                <span id="update-category-text">Update Category</span>
+                                <span id="update-category-loading" class="hidden">Updating...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+
+            <!-- Confirm Delete Modal ------------------------>
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
@@ -164,13 +239,168 @@
                     </div>
                 </div>
             </x-modal>
-           
+
         </div>
     </div>
 
     <x-slot name="script">
         <script type="text/javascript">
-          //delete Category=========================
+            //update===========================================
+            function openEditCategoryModal(id, name) {
+                document.getElementById('edit_category_id').value = id;
+                const nameEl = document.getElementById('edit_category_name');
+                nameEl.value = name;
+
+                const errorEl = document.getElementById('edit-category-name-error');
+                errorEl.textContent = '';
+                errorEl.classList.add('hidden');
+
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'edit-expense-category'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('editExpenseCategoryForm');
+                const saveBtn = document.getElementById('update-category-btn');
+                const saveText = document.getElementById('update-category-text');
+                const saveLoading = document.getElementById('update-category-loading');
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const nameEl = document.getElementById('edit-category-name-error');
+                    nameEl.textContent = '';
+                    nameEl.classList.add('hidden');
+
+                    saveBtn.disabled = true;
+                    saveText.classList.add('hidden');
+                    saveLoading.classList.remove('hidden');
+
+                    const id = document.getElementById('edit_category_id').value;
+                    const name = document.getElementById('edit_category_name').value;
+
+                    $.ajax({
+                        url: `/expense_categories/${id}`, // Assuming RESTful route
+                        type: 'POST',
+                        data: {
+                            name
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                showNotification(response.message ||
+                                    'Category updated successfully!', 'success');
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'edit-expense-category'
+                                }));
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error updating category!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+                                if (errors.name) {
+                                    nameEl.textContent = errors.name[0];
+                                    nameEl.classList.remove('hidden');
+                                }
+                            } else {
+                                showNotification('An error occurred while updating the category!',
+                                    'error');
+                            }
+                        },
+                        complete: function() {
+                            saveBtn.disabled = false;
+                            saveText.classList.remove('hidden');
+                            saveLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Create================
+
+            function openCreateExCategoryModal() {
+                document.getElementById('createExpenseCategoryForm').reset();
+
+                const errorEl = document.getElementById('category-name-error');
+                errorEl.classList.add('hidden');
+                errorEl.textContent = '';
+
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'create-expense-category'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('createExpenseCategoryForm');
+                const saveBtn = document.getElementById('save-category-btn');
+                const saveText = document.getElementById('save-category-text');
+                const saveLoading = document.getElementById('save-category-loading');
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Clear previous name errors
+                    const nameEl = document.getElementById('category-name-error');
+                    nameEl.textContent = '';
+                    nameEl.classList.add('hidden');
+
+                    saveBtn.disabled = true;
+                    saveText.classList.add('hidden');
+                    saveLoading.classList.remove('hidden');
+
+                    const data = {
+                        name: document.getElementById('category_name').value
+                    };
+
+                    $.ajax({
+                        url: '{{ route('expense_categories.store') }}', // Make sure this route exists
+                        type: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                showNotification(response.message ||
+                                    'Category created successfully!', 'success');
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'create-expense-category'
+                                }));
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error creating category!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+                                if (errors.name) {
+                                    nameEl.textContent = errors.name[0];
+                                    nameEl.classList.remove('hidden');
+                                }
+                            } else {
+                                showNotification('An error occurred while creating the category!',
+                                    'error');
+                            }
+                        },
+                        complete: function() {
+                            saveBtn.disabled = false;
+                            saveText.classList.remove('hidden');
+                            saveLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            //delete Category=========================
             let deleteId = null;
 
             function deleteCategory(id) {
@@ -211,7 +441,8 @@
                                     setTimeout(() => location.reload(), 1000);
                                 }
                             } else {
-                                showNotification(response.message || 'Category not found!', 'error');
+                                showNotification(response.message || 'Category not found!',
+                                    'error');
                                 if (row) row.style.opacity = '1';
                             }
                         },
