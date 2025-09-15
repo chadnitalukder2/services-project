@@ -118,9 +118,8 @@
 
                                         @canany(['edit customers', 'delete customers'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
-                                                {{--  --}}
-
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
+                                             
                                                 @can('edit customers')
                                                     <a href="{{ route('customers.edit', $customer->id) }}"
                                                         class="text-yellow-500 hover:text-yellow-600" title="Edit Customer">
