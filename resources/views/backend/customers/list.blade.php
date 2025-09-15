@@ -29,8 +29,7 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-2">
-                        <button type="submit"
-                            class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md ">
+                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md ">
                             Search
                         </button>
                         <a href="{{ route('customers.index') }}"
@@ -48,14 +47,14 @@
                         <h3 class="text-lg font-semibold text-gray-900">customers List</h3>
                         <div class="flex space-x-2">
                             @can('create customers')
-                                <a href="{{ route('customers.create') }}"
+                                <button onclick="openCreateCustomerModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path
                                             d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
                                     </svg>
-                                    Create Customer</a>
+                                    Create Customer</button>
                             @endcan
                         </div>
                     </div>
@@ -204,7 +203,81 @@
                 </div>
             </div>
 
-             <!-- Confirm Delete Modal ------------------------>
+            <!-- Create customer Modal -->
+            <x-modal name="create-customer" class="sm:max-w-md mt-20" maxWidth="2xl">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Create New Customer</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'create-customer')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="createCustomerForm" class="space-y-4">
+                        <div class="grid grid-cols-1 gap-4">
+                            <!-- Name -->
+                            <div>
+                                <label for="customer_name" class="block text-sm font-medium text-gray-700">Name
+                                    <span class="text-red-500">*</span></label>
+                                <input type="text" id="customer_name" name="name"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+                            <!-- Phone -->
+                            <div>
+                                <label for="customer_phone" class="block text-sm font-medium text-gray-700">Phone
+                                    <span class="text-red-500">*</span></label>
+                                <input type="number" id="customer_phone" name="phone"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="customer_email"
+                                    class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="customer_email" name="email"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Address -->
+                            <div>
+                                <label for="customer_address"
+                                    class="block text-sm font-medium text-gray-700">Address</label>
+                                <textarea id="customer_address" name="address" rows="3"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                                <div id="address-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Company (Optional) -->
+                            <div>
+                                <label for="customer_company"
+                                    class="block text-sm font-medium text-gray-700">Company</label>
+                                <input type="text" id="customer_company" name="company"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="company-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 mt-6 pt-4 ">
+                            <button type="button" x-on:click="$dispatch('close-modal', 'create-customer')"
+                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                Cancel
+                            </button>
+                            <button type="submit" id="save-customer-btn"
+                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                <span id="save-customer-text">Save Customer</span>
+                                <span id="save-customer-loading" class="hidden">Saving...</span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </x-modal>
+
+            <!-- Confirm Delete Modal ------------------------>
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
@@ -232,8 +305,102 @@
 
     <x-slot name="script">
         <script type="text/javascript">
+            // Create================
 
-              //delete Customer=========================
+            function openCreateCustomerModal() {
+                document.getElementById('createCustomerForm').reset();
+
+                // Hide previous errors
+                ['name', 'phone', 'email', 'address', 'company'].forEach(id => {
+                    document.getElementById(id + '-error').classList.add('hidden');
+                    document.getElementById(id + '-error').textContent = '';
+                });
+
+                // Open modal
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'create-customer'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('createCustomerForm');
+                const saveBtn = document.getElementById('save-customer-btn');
+                const saveText = document.getElementById('save-customer-text');
+                const saveLoading = document.getElementById('save-customer-loading');
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Clear previous name & phone errors
+                    ['name', 'phone'].forEach(id => {
+                        const el = document.getElementById(id + '-error');
+                        el.textContent = '';
+                        el.classList.add('hidden');
+                    });
+
+                    saveBtn.disabled = true;
+                    saveText.classList.add('hidden');
+                    saveLoading.classList.remove('hidden');
+
+                    const data = {
+                        name: document.getElementById('customer_name').value,
+                        phone: document.getElementById('customer_phone').value,
+                        email: document.getElementById('customer_email').value,
+                        address: document.getElementById('customer_address').value,
+                        company: document.getElementById('customer_company').value
+                    };
+
+                    $.ajax({
+                        url: '{{ route('customers.store') }}',
+                        type: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                showNotification(response.message ||
+                                    'Customer created successfully!', 'success');
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'create-customer'
+                                }));
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error creating customer!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+
+                                // Only show name and phone errors
+                                if (errors.name) {
+                                    const nameEl = document.getElementById('name-error');
+                                    nameEl.textContent = errors.name[0];
+                                    nameEl.classList.remove('hidden');
+                                }
+                                if (errors.phone) {
+                                    const phoneEl = document.getElementById('phone-error');
+                                    phoneEl.textContent = errors.phone[0];
+                                    phoneEl.classList.remove('hidden');
+                                }
+                            } else {
+                                showNotification('An error occurred while creating the customer!',
+                                    'error');
+                            }
+                        },
+                        complete: function() {
+                            saveBtn.disabled = false;
+                            saveText.classList.remove('hidden');
+                            saveLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+
+            //delete Customer=========================
             let deleteId = null;
 
             function deleteCustomer(id) {
@@ -274,7 +441,8 @@
                                     setTimeout(() => location.reload(), 1000);
                                 }
                             } else {
-                                showNotification(response.message || 'Customer not found!', 'error');
+                                showNotification(response.message || 'Customer not found!',
+                                    'error');
                                 if (row) row.style.opacity = '1';
                             }
                         },
@@ -293,8 +461,8 @@
                 });
             });
 
-        //====================================================
-          
+            //====================================================
+
 
             // Auto-submit form when sort changes (optional)
             document.querySelector('select[name="sort"]').addEventListener('change', function() {
