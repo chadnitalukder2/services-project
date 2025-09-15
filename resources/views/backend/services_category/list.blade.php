@@ -8,10 +8,10 @@
             <div class="bg-white rounded-lg shadow-sm border">
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-900">Expense Category List</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Service Category List</h3>
                         <div class="flex space-x-2">
-                            @can('create expense category')
-                                <button onclick="openCreateExCategoryModal()"
+                            @can('create service category')
+                                <button onclick="openCreateServiceCategoryModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
@@ -42,9 +42,9 @@
                                     Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="expenseCategoriesTableBody" class="bg-white divide-y divide-gray-200">
-                            @if ($expenseCategories->isNotEmpty())
-                                @foreach ($expenseCategories as $category)
+                        <tbody id="serviceCategoryTableBody" class="bg-white divide-y divide-gray-200">
+                            @if ($serviceCategory->isNotEmpty())
+                                @foreach ($serviceCategory as $category)
                                     <tr class="border-b" id="category-row-{{ $category->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $category->id }}
@@ -56,18 +56,18 @@
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($category->created_at)->format('d M, Y') }}</td>
 
-                                        @canany(['edit expenseCategories', 'delete expenseCategories'])
+                                        @canany(['edit serviceCategory', 'delete serviceCategory'])
                                             <td
                                                 class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
 
-                                                @can('edit expense category')
+                                                @can('edit service category')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditCategoryModal({{ $category->id }}, '{{ $category->name }}')"
                                                         class="text-yellow-500 hover:text-yellow-600" title="Edit Category">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 @endcan
-                                                @can('delete expense category')
+                                                @can('delete service category')
                                                     <a href="javascript:void(0)" onclick="deleteCategory({{ $category->id }})"
                                                         class=" text-red-700 hover:text-red-600" title="Delate Category">
                                                         <i class="fa-solid fa-trash"></i>
@@ -79,7 +79,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No expenseCategories
+                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No Service Category
                                         found
                                     </td>
                                 </tr>
@@ -92,30 +92,30 @@
                 <div class="px-6 py-4 border-t border-gray-200">
                     <div class="flex justify-between items-center">
                         <div class="text-sm text-gray-700">
-                            Showing <span class="font-medium">{{ $expenseCategories->firstItem() }}</span>
-                            to <span class="font-medium">{{ $expenseCategories->lastItem() }}</span>
-                            of <span class="font-medium">{{ $expenseCategories->total() }}</span> results
+                            Showing <span class="font-medium">{{ $serviceCategory->firstItem() }}</span>
+                            to <span class="font-medium">{{ $serviceCategory->lastItem() }}</span>
+                            of <span class="font-medium">{{ $serviceCategory->total() }}</span> results
                         </div>
 
                         <!-- Pagination buttons -->
                         <div class="flex space-x-2">
                             <!-- Previous -->
-                            @if ($expenseCategories->onFirstPage())
+                            @if ($serviceCategory->onFirstPage())
                                 <button
                                     class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
                                     disabled>
                                     Previous
                                 </button>
                             @else
-                                <a href="{{ $expenseCategories->previousPageUrl() }}"
+                                <a href="{{ $serviceCategory->previousPageUrl() }}"
                                     class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
                                     Previous
                                 </a>
                             @endif
 
                             <!-- Page numbers -->
-                            @foreach ($expenseCategories->getUrlRange(1, $expenseCategories->lastPage()) as $page => $url)
-                                @if ($page == $expenseCategories->currentPage())
+                            @foreach ($serviceCategory->getUrlRange(1, $serviceCategory->lastPage()) as $page => $url)
+                                @if ($page == $serviceCategory->currentPage())
                                     <span
                                         class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
                                 @else
@@ -127,8 +127,8 @@
                             @endforeach
 
                             <!-- Next -->
-                            @if ($expenseCategories->hasMorePages())
-                                <a href="{{ $expenseCategories->nextPageUrl() }}"
+                            @if ($serviceCategory->hasMorePages())
+                                <a href="{{ $serviceCategory->nextPageUrl() }}"
                                     class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
                                     Next
                                 </a>
@@ -145,17 +145,17 @@
             </div>
 
             <!-- Create customer Modal -->
-            <x-modal name="create-expense-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
+            <x-modal name="create-service-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-gray-900">Create New Expense Category</h2>
+                        <h2 class="text-lg font-semibold text-gray-900">Create New Service Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
-                            x-on:click="$dispatch('close-modal', 'create-expense-category')">
+                            x-on:click="$dispatch('close-modal', 'create-service-category')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
 
-                    <form id="createExpenseCategoryForm" class="space-y-4">
+                    <form id="createServiceCategoryForm" class="space-y-4">
                         <!-- Name -->
                         <div>
                             <label for="category_name" class="block text-sm font-medium text-gray-700">Category Name
@@ -166,7 +166,7 @@
                         </div>
 
                         <div class="flex justify-end gap-3 mt-6 pt-4">
-                            <button type="button" x-on:click="$dispatch('close-modal', 'create-expense-category')"
+                            <button type="button" x-on:click="$dispatch('close-modal', 'create-service-category')"
                                 class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
                                 Cancel
                             </button>
@@ -181,17 +181,17 @@
             </x-modal>
 
             <!-- Update customer Modal -->
-            <x-modal name="edit-expense-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
+            <x-modal name="edit-service-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-gray-900">Edit Expense Category</h2>
+                        <h2 class="text-lg font-semibold text-gray-900">Edit service Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
-                            x-on:click="$dispatch('close-modal', 'edit-expense-category')">
+                            x-on:click="$dispatch('close-modal', 'edit-service-category')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
 
-                    <form id="editExpenseCategoryForm" class="space-y-4">
+                    <form id="editserviceCategoryForm" class="space-y-4">
                         <input type="hidden" id="edit_category_id">
                         <div>
                             <label for="edit_category_name" class="block text-sm font-medium text-gray-700">
@@ -203,7 +203,7 @@
                         </div>
 
                         <div class="flex justify-end gap-3 mt-6 pt-4">
-                            <button type="button" x-on:click="$dispatch('close-modal', 'edit-expense-category')"
+                            <button type="button" x-on:click="$dispatch('close-modal', 'edit-service-category')"
                                 class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
                                 Cancel
                             </button>
@@ -222,7 +222,7 @@
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
                     <p class="mt-2 text-sm text-gray-600">
-                        Are you sure you want to delete this expense category?
+                        Are you sure you want to delete this service category?
                         This action cannot be undone.
                     </p>
 
@@ -256,12 +256,12 @@
                 errorEl.classList.add('hidden');
 
                 window.dispatchEvent(new CustomEvent('open-modal', {
-                    detail: 'edit-expense-category'
+                    detail: 'edit-service-category'
                 }));
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                const form = document.getElementById('editExpenseCategoryForm');
+                const form = document.getElementById('editserviceCategoryForm');
                 const saveBtn = document.getElementById('update-category-btn');
                 const saveText = document.getElementById('update-category-text');
                 const saveLoading = document.getElementById('update-category-loading');
@@ -281,7 +281,7 @@
                     const name = document.getElementById('edit_category_name').value;
 
                     $.ajax({
-                        url: `/expense_categories/${id}`, // Assuming RESTful route
+                        url: `/service_category/${id}`, // Assuming RESTful route
                         type: 'POST',
                         data: {
                             name
@@ -294,7 +294,7 @@
                                 showNotification(response.message ||
                                     'Category updated successfully!', 'success');
                                 window.dispatchEvent(new CustomEvent('close-modal', {
-                                    detail: 'edit-expense-category'
+                                    detail: 'edit-service-category'
                                 }));
                                 setTimeout(() => location.reload(), 1000);
                             } else {
@@ -325,20 +325,20 @@
 
             // Create================
 
-            function openCreateExCategoryModal() {
-                document.getElementById('createExpenseCategoryForm').reset();
+            function openCreateServiceCategoryModal() {
+                document.getElementById('createServiceCategoryForm').reset();
 
                 const errorEl = document.getElementById('category-name-error');
                 errorEl.classList.add('hidden');
                 errorEl.textContent = '';
 
                 window.dispatchEvent(new CustomEvent('open-modal', {
-                    detail: 'create-expense-category'
+                    detail: 'create-service-category'
                 }));
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                const form = document.getElementById('createExpenseCategoryForm');
+                const form = document.getElementById('createServiceCategoryForm');
                 const saveBtn = document.getElementById('save-category-btn');
                 const saveText = document.getElementById('save-category-text');
                 const saveLoading = document.getElementById('save-category-loading');
@@ -346,7 +346,6 @@
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
 
-                    // Clear previous name errors
                     const nameEl = document.getElementById('category-name-error');
                     nameEl.textContent = '';
                     nameEl.classList.add('hidden');
@@ -360,7 +359,7 @@
                     };
 
                     $.ajax({
-                        url: '{{ route('expense_categories.store') }}', // Make sure this route exists
+                        url: '{{ route('service_category.store') }}', 
                         type: 'POST',
                         data: data,
                         headers: {
@@ -371,7 +370,7 @@
                                 showNotification(response.message ||
                                     'Category created successfully!', 'success');
                                 window.dispatchEvent(new CustomEvent('close-modal', {
-                                    detail: 'create-expense-category'
+                                    detail: 'create-service-category'
                                 }));
                                 setTimeout(() => location.reload(), 1000);
                             } else {
@@ -420,7 +419,7 @@
                     if (row) row.style.opacity = '0.5';
 
                     $.ajax({
-                        url: '{{ route('expense_categories.destroy') }}',
+                        url: '{{ route('service_category.destroy') }}',
                         type: 'DELETE',
                         data: {
                             id: deleteId

@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/services/{id}/edit', [ServicesController::class, 'edit'])->name('services.edit');
     Route::post('/services/{id}', [ServicesController::class, 'update'])->name('services.update');
     Route::delete('/services', [ServicesController::class, 'destroy'])->name('services.destroy');
+
+    //services
+    Route::get('/service_category', [ServiceCategoryController::class, 'index'])->name('service_category.index');
+    Route::post('/service_category/store', [ServiceCategoryController::class, 'store'])->name('service_category.store');
+    Route::post('/service_category/{id}', [ServiceCategoryController::class, 'update'])->name('service_category.update');
+    Route::delete('/service_category', [ServiceCategoryController::class, 'destroy'])->name('service_category.destroy');
 
     //expense_categories 
     Route::get('/expense_categories', [ExpenseCategoryController::class, 'index'])->name('expense_categories.index');

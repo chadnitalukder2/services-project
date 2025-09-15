@@ -111,7 +111,7 @@
 
                             <x-slot name="content">
 
-                                   @can('view users')
+                                @can('view users')
                                     <x-dropdown-link :href="route('users.index')" :class="request()->routeIs('users.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Users') }}
@@ -119,7 +119,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                 @can('view roles')
+                                @can('view roles')
                                     <x-dropdown-link :href="route('roles.index')" :class="request()->routeIs('roles.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Roles') }}
@@ -134,7 +134,7 @@
                                         </div>
                                     </x-dropdown-link>
                                 @endcan
-                                
+
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -150,11 +150,39 @@
                 @endcan
 
                 <!-- Services -->
+                <!-- Services Dropdown -->
                 @can('view services')
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('services.index')" :active="request()->routeIs('services.*')">
-                            {{ __('Services') }}
-                        </x-nav-link>
+                    <div class="hidden sm:flex sm:items-center sm:ms-8">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150 {{ request()->routeIs(['services.*', 'service_category.*']) ? 'text-gray-900 border-b-2 border-indigo-400' : '' }}">
+                                    <div>{{ __('Services') }}</div>
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                @can('view services')
+                                    <x-dropdown-link :href="route('services.index')" :class="request()->routeIs('services.*') ? 'bg-gray-100' : ''">
+                                        {{ __('All Services') }}
+                                    </x-dropdown-link>
+                                @endcan
+
+                                @can('view services')
+                                    <x-dropdown-link :href="route('service_category.index')" :class="request()->routeIs('service_category.*') ? 'bg-gray-100' : ''">
+                                        {{ __('Service Categories') }}
+                                    </x-dropdown-link>
+                                @endcan
+                            </x-slot>
+                        </x-dropdown>
                     </div>
                 @endcan
 
@@ -178,18 +206,19 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                @can('view expense categories')
-                                    <x-dropdown-link :href="route('expense_categories.index')" :class="request()->routeIs('expense_categories.*') ? 'bg-gray-100' : ''">
-                                        <div class="flex items-center">
-                                            {{ __('Expense Categories') }}
-                                        </div>
-                                    </x-dropdown-link>
-                                @endcan
 
                                 @can('view expenses')
                                     <x-dropdown-link :href="route('expenses.index')" :class="request()->routeIs('expenses.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
-                                            {{ __('Expenses') }}
+                                            {{ __('All Expenses') }}
+                                        </div>
+                                    </x-dropdown-link>
+                                @endcan
+
+                                @can('view expense categories')
+                                    <x-dropdown-link :href="route('expense_categories.index')" :class="request()->routeIs('expense_categories.*') ? 'bg-gray-100' : ''">
+                                        <div class="flex items-center">
+                                            {{ __('Expense Categories') }}
                                         </div>
                                     </x-dropdown-link>
                                 @endcan
@@ -198,7 +227,7 @@
                     </div>
                 @endcanany
 
-                  <!-- Order and Invoice -->
+                <!-- Order and Invoice -->
                 @canany(['view expense categories', 'view expenses'])
                     <div class="hidden sm:flex sm:items-center sm:ms-8">
                         <x-dropdown align="left" width="48">
@@ -278,7 +307,8 @@
                                 onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 <div class="flex items-center">
-                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                                         </path>
@@ -314,11 +344,11 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
+          
+
             <!-- User Management Mobile -->
             @canany(['view permissions', 'view roles', 'view users'])
-                <div class="px-4 pt-2 pb-1">
-                    <div class="font-medium text-base text-gray-800">{{ __('User Management') }}</div>
-                </div>
+              
                 @can('view permissions')
                     <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.*')" class="pl-8">
                         {{ __('Permissions') }}
@@ -343,6 +373,12 @@
                 </x-responsive-nav-link>
             @endcan
 
+              @can('view services')
+                <x-responsive-nav-link :href="route('service_category.index')" :active="request()->routeIs('services.*')">
+                    {{ __('Service Category') }}
+                </x-responsive-nav-link>
+            @endcan
+
             <!-- Customers Mobile -->
             @can('view customers')
                 <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
@@ -352,9 +388,7 @@
 
             <!-- Expense Management Mobile -->
             @canany(['view expense categories', 'view expenses'])
-                <div class="px-4 pt-2 pb-1">
-                    <div class="font-medium text-base text-gray-800">{{ __('Expense Management') }}</div>
-                </div>
+            
                 @can('view expense categories')
                     <x-responsive-nav-link :href="route('expense_categories.index')" :active="request()->routeIs('expense_categories.*')" class="pl-8">
                         {{ __('Expense Categories') }}
@@ -366,6 +400,10 @@
                     </x-responsive-nav-link>
                 @endcan
             @endcanany
+
+              <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Reports') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
