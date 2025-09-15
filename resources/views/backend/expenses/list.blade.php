@@ -87,6 +87,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     # ID</th>
@@ -111,9 +112,12 @@
                         <tbody id="expensesTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($expenses->isNotEmpty())
                                 @foreach ($expenses as $expense)
+                                    <td class="hidden" id="expense-description-{{ $expense->id }}">
+                                        {{ $expense->description }}
+                                    </td>
                                     <tr class="border-b" id="expense-row-{{ $expense->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                          {{ $expense->id }}
+                                            {{ $expense->id }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}
@@ -135,7 +139,8 @@
                                                 {{--  --}}
 
                                                 @can('edit expenses')
-                                                    <a href="{{ route('expenses.edit', $expense->id) }}"
+                                                    <a href="javascript:void(0)"
+                                                        onclick="openEditExpenseModal({{ $expense->id }})"
                                                         class="text-yellow-500 hover:text-yellow-600" title="Edit expense">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
@@ -229,7 +234,9 @@
 
                     <form id="createExpenseForm" class="space-y-4">
                         <div>
-                            <label for="modal_category_id" class="block text-sm font-medium text-gray-700 mt-6">Category <span class="text-red-500">*</span></label>
+                            <label for="modal_category_id"
+                                class="block text-sm font-medium text-gray-700 mt-6">Category <span
+                                    class="text-red-500">*</span></label>
                             <select id="modal_category_id" name="category_id"
                                 class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Category</option>
@@ -242,7 +249,8 @@
 
                         <!-- Amount -->
                         <div>
-                            <label for="modal_amount" class="block text-sm font-medium text-gray-700 mt-6">Amount <span class="text-red-500">*</span></label>
+                            <label for="modal_amount" class="block text-sm font-medium text-gray-700 mt-6">Amount
+                                <span class="text-red-500">*</span></label>
                             <input type="number" id="modal_amount" name="amount"
                                 class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                             <div id="modal_amount-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -250,7 +258,8 @@
 
                         <!-- Date -->
                         <div>
-                            <label for="modal_date" class="block text-sm font-medium text-gray-700 mt-6">Date <span class="text-red-500">*</span></label>
+                            <label for="modal_date" class="block text-sm font-medium text-gray-700 mt-6">Date <span
+                                    class="text-red-500">*</span></label>
                             <input type="date" id="modal_date" name="date"
                                 class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
                                 value="{{ old('date', date('Y-m-d')) }}">
@@ -259,7 +268,8 @@
 
                         <!-- Description -->
                         <div>
-                            <label for="modal_description" class="block text-sm font-medium text-gray-700 mt-6">Description</label>
+                            <label for="modal_description"
+                                class="block text-sm font-medium text-gray-700 mt-6">Description</label>
                             <textarea id="modal_description" name="description" rows="3"
                                 class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                             <div id="modal_description-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -279,6 +289,72 @@
                     </form>
 
 
+                </div>
+            </x-modal>
+
+            <x-modal name="edit-expense" class="sm:max-w-md mt-20" maxWidth="2xl">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Edit Expense</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'edit-expense')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="editExpenseForm" class="space-y-4">
+                        <input type="hidden" id="edit_expense_id">
+
+                        <div>
+                            <label for="edit_category_id"
+                                class="block text-sm font-medium text-gray-700 mt-6">Category <span
+                                    class="text-red-500">*</span></label>
+                            <select id="edit_category_id" name="category_id"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <option value="">Select Category</option>
+                                @foreach ($expenseCategories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <div id="edit_category-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div>
+                            <label for="edit_amount" class="block text-sm font-medium text-gray-700 mt-6">Amount <span
+                                    class="text-red-500">*</span></label>
+                            <input type="number" id="edit_amount" name="amount"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                            <div id="edit_amount-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div>
+                            <label for="edit_date" class="block text-sm font-medium text-gray-700 mt-6">Date <span
+                                    class="text-red-500">*</span></label>
+                            <input type="date" id="edit_date" name="date"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                            <div id="edit_date-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div>
+                            <label for="edit_description"
+                                class="block text-sm font-medium text-gray-700 mt-6">Description</label>
+                            <textarea id="edit_description" name="description" rows="3"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                            <div id="edit_description-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 mt-6 pt-4">
+                            <button type="button" x-on:click="$dispatch('close-modal', 'edit-expense')"
+                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
+                                Cancel
+                            </button>
+                            <button type="submit" id="update-expense-btn"
+                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md">
+                                <span id="update-expense-text">Update Expense</span>
+                                <span id="update-expense-loading" class="hidden">Updating...</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </x-modal>
 
@@ -310,6 +386,159 @@
 
     <x-slot name="script">
         <script type="text/javascript">
+            function openEditExpenseModal(expenseId) {
+                const row = document.getElementById(`expense-row-${expenseId}`);
+                if (!row) return;
+
+                const cells = row.querySelectorAll('td');
+                const date = cells[1].textContent.trim();
+                const category = cells[2].textContent.trim();
+                const amountText = cells[3].textContent.trim();
+
+                const amount = amountText.replace(/[^0-9.]/g, '');
+                document.getElementById('edit_amount').value = amount;
+
+                const description = document.getElementById(`expense-description-${expenseId}`).textContent.trim();
+                document.getElementById('edit_description').value = description;
+
+                // Set modal values
+                document.getElementById('edit_expense_id').value = expenseId;
+                document.getElementById('edit_date').value = parseTableDate(date); // Use plain JS function
+                document.getElementById('edit_amount').value = amount;
+
+                // Select the correct category option
+                const categorySelect = document.getElementById('edit_category_id');
+                Array.from(categorySelect.options).forEach(opt => {
+                    opt.selected = opt.text === category;
+                });
+
+                document.getElementById('edit_description').value = description;
+
+                // Clear previous errors
+                ['category', 'amount', 'date', 'description'].forEach(id => {
+                    const el = document.getElementById(`edit_${id}-error`);
+                    if (el) {
+                        el.textContent = '';
+                        el.classList.add('hidden');
+                    }
+                });
+
+                // Open modal
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'edit-expense'
+                }));
+            }
+
+            function parseTableDate(dateStr) {
+                const [day, monthStr, year] = dateStr.replace(',', '').split(' ');
+                const monthNames = {
+                    Jan: '01',
+                    Feb: '02',
+                    Mar: '03',
+                    Apr: '04',
+                    May: '05',
+                    Jun: '06',
+                    Jul: '07',
+                    Aug: '08',
+                    Sep: '09',
+                    Oct: '10',
+                    Nov: '11',
+                    Dec: '12'
+                };
+                return `${year}-${monthNames[monthStr]}-${day.padStart(2,'0')}`;
+            }
+
+            document.getElementById('editExpenseForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const expenseId = document.getElementById('edit_expense_id').value;
+                const data = {
+                    category_id: document.getElementById('edit_category_id').value,
+                    amount: document.getElementById('edit_amount').value,
+                    date: document.getElementById('edit_date').value,
+                    description: document.getElementById('edit_description').value,
+                };
+
+                const btn = document.getElementById('update-expense-btn');
+                const btnText = document.getElementById('update-expense-text');
+                const btnLoading = document.getElementById('update-expense-loading');
+
+                // Clear previous errors like create form
+                ['category', 'amount', 'date', 'description'].forEach(id => {
+                    const el = document.getElementById(`edit_${id}-error`);
+                    if (el) {
+                        el.textContent = '';
+                        el.classList.add('hidden');
+                    }
+                });
+
+                btn.disabled = true;
+                btnText.classList.add('hidden');
+                btnLoading.classList.remove('hidden');
+
+                $.ajax({
+                    url: `/expenses/${expenseId}`,
+                    type: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            showNotification('Expense updated successfully!', 'success');
+                            window.dispatchEvent(new CustomEvent('close-modal', {
+                                detail: 'edit-expense'
+                            }));
+                            setTimeout(() => location.reload(), 1000);
+                        } else {
+                            showNotification(response.message || 'Error updating expense', 'error');
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+
+                            // Show validation errors like create form
+                            if (errors.category_id) {
+                                const el = document.getElementById('edit_category-error');
+                                if (el) {
+                                    el.textContent = errors.category_id[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                            if (errors.amount) {
+                                const el = document.getElementById('edit_amount-error');
+                                if (el) {
+                                    el.textContent = errors.amount[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                            if (errors.date) {
+                                const el = document.getElementById('edit_date-error');
+                                if (el) {
+                                    el.textContent = errors.date[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                            if (errors.description) {
+                                const el = document.getElementById('edit_description-error');
+                                if (el) {
+                                    el.textContent = errors.description[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                        } else {
+                            showNotification('An error occurred!', 'error');
+                        }
+                    },
+                    complete: function() {
+                        btn.disabled = false;
+                        btnText.classList.remove('hidden');
+                        btnLoading.classList.add('hidden');
+                    }
+                });
+            });
+
             //create==========================================
 
             function openCreateExpenseModal() {

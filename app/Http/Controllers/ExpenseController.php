@@ -38,14 +38,7 @@ class ExpenseController extends Controller implements HasMiddleware
         return view('backend.expenses.list', compact('expenses', 'categories', 'expenseCategories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $expenseCategories = ExpenseCategory::orderBy('created_at', 'asc')->get();
-        return view('backend.expenses.create', compact('expenseCategories'));
-    }
+ 
 
     /**
      * Store a newly created resource in storage.
@@ -77,28 +70,6 @@ class ExpenseController extends Controller implements HasMiddleware
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Expense $Expense)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $expense = Expense::find($id);
-        $expenseCategories = ExpenseCategory::orderBy('created_at', 'asc')->get();
-        if ($expense) {
-            return view('backend.expenses.edit', compact('expense', 'expenseCategories'));
-        } else {
-            return redirect()->route('expenses.index')->with('error', 'Expense not found');
-        }
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
@@ -111,7 +82,13 @@ class ExpenseController extends Controller implements HasMiddleware
             'date' => 'required|date',
             'description' => 'nullable|string|max:255',
         ]);
-        if ($validator->passes()) {
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
             $category->category_id = $request->category_id;
             $category->amount = $request->amount;
@@ -119,10 +96,10 @@ class ExpenseController extends Controller implements HasMiddleware
             $category->description = $request->description;
             $category->save();
 
-            return redirect()->route('expenses.index')->with('success', 'Expense updated successfully');
-        } else {
-            return redirect()->route('expenses.edit', $id)->withErrors($validator)->withInput();
-        }
+          return response()->json([
+            'status' => true,
+            'message' => 'Expense  updated successfully',
+        ]);
     }
 
     /**
