@@ -27,7 +27,7 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         $users = User::orderBy('created_at', 'desc')->paginate(12);
-         $roles = Role::orderBy('name', 'ASC')->get();
+        $roles = Role::orderBy('name', 'ASC')->get();
         return view('backend.users.list', compact('users', 'roles'));
     }
 
@@ -45,14 +45,14 @@ class UserController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-          $validator = Validator::make($request->all(), [
-            'name' => 'required|min:3', 
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|same:confirm_password',
             'confirm_password' => 'required',
         ]);
         if ($validator->fails()) {
-         return response()->json([
+            return response()->json([
                 'status' => false,
                 'errors' => $validator->errors(),
             ], 422);
@@ -69,7 +69,6 @@ class UserController extends Controller implements HasMiddleware
             'status' => true,
             'message' => 'User created successfully',
         ]);
-       
     }
 
     /**
@@ -101,7 +100,10 @@ class UserController extends Controller implements HasMiddleware
             'email' => 'required|email|unique:users,email,' . $id . ',id',
         ]);
         if ($validator->fails()) {
-            return redirect()->route('users.edit', $id)->withErrors($validator)->withInput();
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
         $user = User::findOrFail($id);
         $user->name = $request->name;
@@ -109,7 +111,10 @@ class UserController extends Controller implements HasMiddleware
         $user->save();
 
         $user->syncRoles($request->input('roles', []));
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'User updated successfully!'
+        ]);
     }
 
     /**
@@ -117,7 +122,7 @@ class UserController extends Controller implements HasMiddleware
      */
     public function destroy(Request $request)
     {
-      $user = User::find($request->id);
+        $user = User::find($request->id);
         if ($user) {
             $user->delete();
             return response()->json(['status' => true, 'message' => 'User deleted successfully']);

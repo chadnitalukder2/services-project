@@ -377,7 +377,6 @@
                                     editRoleNameError.textContent = errors.name[0];
                                     editRoleNameError.classList.remove('hidden');
                                 }
-                                showNotification('Please fix the errors and try again.', 'error');
                             } else {
                                 showNotification('An error occurred while updating the role!',
                                     'error');

@@ -77,7 +77,8 @@
                                                 {{--  --}}
 
                                                 @can('edit users')
-                                                    <a href="{{ route('users.edit', $user->id) }}"
+                                                    <a href="javascript:void(0)"
+                                                        onclick="openEditUserModal({{ $user->id }})"
                                                         class="text-yellow-500 hover:text-yellow-600" title="Edit User">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
@@ -241,6 +242,72 @@
                 </div>
             </x-modal>
 
+            <!-- Edit User Modal -->
+            <x-modal name="edit-user" class="sm:max-w-md mt-20" maxWidth="2xl">
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Edit User</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'edit-user')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="editUserForm">
+                        @csrf
+                        <input type="hidden" id="edit_id" name="id">
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                            <input id="edit_name" type="text" name="name"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <p id="editNameError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input id="edit_email" type="email" name="email"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <p id="editEmailError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Roles
+                            </label>
+                            <div id="edit_roles"
+                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
+                                @if (isset($roles) && $roles->isNotEmpty())
+                                    @foreach ($roles as $role)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="roles[]" value="{{ $role->name }}"
+                                                style="--tw-ring-shadow: none;"
+                                                class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
+                                            <span class="text-sm text-gray-700">{{ $role->name }}</span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-gray-500 text-sm">No Roles available</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3">
+                            <button type="button" class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded"
+                                x-on:click="$dispatch('close-modal', 'edit-user')">Cancel</button>
+
+                            <button type="submit" id="editUserBtn"
+                                class="px-4 py-2 text-sm bg-gray-800 text-white rounded">
+                                <span id="editBtnText">Update User</span>
+                                <span id="editBtnLoading" class="hidden">
+                                    <i class="fas fa-spinner fa-spin mr-1"></i>Updating...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+
             <!-- Confirm Delete Modal ------------------------>
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
@@ -269,6 +336,109 @@
 
     <x-slot name="script">
         <script type="text/javascript">
+            //update=============================================
+            function openEditUserModal(userId) {
+                const row = document.getElementById(`user-row-${userId}`);
+
+                // pick values from table columns
+                const name = row.querySelector('td:nth-child(2)').textContent.trim();
+                const email = row.querySelector('td:nth-child(3)').textContent.trim();
+                const rolesText = row.querySelector('td:nth-child(4)').textContent.trim();
+
+                // fill modal fields
+                document.getElementById('edit_id').value = userId;
+                document.getElementById('edit_name').value = name;
+                document.getElementById('edit_email').value = email;
+
+                // roles checkboxes
+                const selectedRoles = rolesText === '---' ? [] : rolesText.split(',').map(r => r.trim());
+
+                document.querySelectorAll('#edit_roles input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+                document.querySelectorAll('#edit_roles input[type="checkbox"]').forEach(cb => {
+                    if (selectedRoles.includes(cb.value)) cb.checked = true;
+                });
+
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'edit-user'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const editForm = document.getElementById('editUserForm');
+                const editBtn = document.getElementById('editUserBtn');
+                const editBtnText = document.getElementById('editBtnText');
+                const editBtnLoading = document.getElementById('editBtnLoading');
+
+                const editNameError = document.getElementById('editNameError');
+                const editEmailError = document.getElementById('editEmailError');
+
+                editForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Reset errors
+                    [editNameError, editEmailError].forEach(el => {
+                        el.classList.add('hidden');
+                        el.textContent = '';
+                    });
+
+                    editBtn.disabled = true;
+                    editBtnText.classList.add('hidden');
+                    editBtnLoading.classList.remove('hidden');
+
+                    const userId = document.getElementById('edit_id').value;
+                    const data = {
+                        name: editForm.name.value || document.getElementById('edit_name').value,
+                        email: editForm.email.value || document.getElementById('edit_email').value,
+                        roles: Array.from(editForm.querySelectorAll('input[name="roles[]"]:checked'))
+                            .map(input => input.value),
+                    };
+
+                    $.ajax({
+                        url: `/users/${userId}`,
+                        type: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                showNotification(response.message || 'User updated successfully!',
+                                    'success');
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'edit-user'
+                                }));
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error updating user!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+                                if (errors.name) {
+                                    editNameError.textContent = errors.name[0];
+                                    editNameError.classList.remove('hidden');
+                                }
+                                if (errors.email) {
+                                    editEmailError.textContent = errors.email[0];
+                                    editEmailError.classList.remove('hidden');
+                                }
+                            } else {
+                                showNotification('An error occurred while updating the user!',
+                                    'error');
+                            }
+                        },
+                        complete: function() {
+                            editBtn.disabled = false;
+                            editBtnText.classList.remove('hidden');
+                            editBtnLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
             // Create================
 
             function openCreateUserModal() {
