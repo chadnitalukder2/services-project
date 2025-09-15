@@ -27,9 +27,7 @@ Route::middleware('auth')->group(function () {
 
     //users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users', [UserController::class, 'destroy'])->name('users.destroy');
 
@@ -49,9 +47,10 @@ Route::middleware('auth')->group(function () {
 
     //customers
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
     Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
     Route::post('/customers/OrderCustomerStore', [CustomerController::class, 'OrderCustomerStore'])->name('customers.OrderCustomerStore');
-    // Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::post('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/customers', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
