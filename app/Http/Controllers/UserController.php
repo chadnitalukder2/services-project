@@ -27,7 +27,8 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         $users = User::orderBy('created_at', 'desc')->paginate(12);
-        return view('backend.users.list', compact('users'));
+         $roles = Role::orderBy('name', 'ASC')->get();
+        return view('backend.users.list', compact('users', 'roles'));
     }
 
     /**
@@ -51,7 +52,10 @@ class UserController extends Controller implements HasMiddleware
             'confirm_password' => 'required',
         ]);
         if ($validator->fails()) {
-            return redirect()->route('users.create')->withErrors($validator)->withInput();
+         return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422);
         }
         $user = new User();
         $user->name = $request->name;
@@ -60,7 +64,12 @@ class UserController extends Controller implements HasMiddleware
         $user->save();
 
         $user->syncRoles($request->input('roles', []));
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User created successfully',
+        ]);
+       
     }
 
     /**

@@ -11,14 +11,14 @@
                         <h3 class="text-lg font-semibold text-gray-900">users List</h3>
                         <div class="flex space-x-2">
                             @can('create users')
-                                <a href="{{ route('users.create') }}"
+                                <button onclick="openCreateUserModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path
                                             d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
                                     </svg>
-                                    Create User</a>
+                                    Create User</button>
                             @endcan
                         </div>
                     </div>
@@ -73,12 +73,12 @@
 
                                         @canany(['edit users', 'delete users'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
                                                 {{--  --}}
 
                                                 @can('edit users')
                                                     <a href="{{ route('users.edit', $user->id) }}"
-                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit Order">
+                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit User">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 @endcan
@@ -158,7 +158,90 @@
                 </div>
             </div>
 
-   <!-- Confirm Delete Modal ------------------------>
+            <!-- Create User Modal -->
+            <x-modal name="create-user" class="sm:max-w-md mt-20" maxWidth="2xl">
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Create New User</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'create-user')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="createUserForm">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span
+                                    class="text-red-500">*</span></label>
+                            <input id="name" type="text" name="name"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                            <p id="nameError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email <span
+                                    class="text-red-500">*</span></label>
+                            <input id="email" type="email" name="email"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                            <p id="emailError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password <span
+                                    class="text-red-500">*</span></label>
+                            <input id="password" type="password" name="password"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                            <p id="passwordError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-2">Confirm
+                                Password <span class="text-red-500">*</span></label>
+                            <input id="confirm_password" type="password" name="confirm_password"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                            <p id="confirmPasswordError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Roles
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
+                                @if (isset($roles) && $roles->isNotEmpty())
+                                    @foreach ($roles as $role)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="roles[]" value="{{ $role->name }}"
+                                                style="--tw-ring-shadow: none;"
+                                                class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
+                                            <span class="text-sm text-gray-700">{{ $role->name }}</span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-gray-500 text-sm">No Roles available</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3">
+                            <button type="button"
+                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                                x-on:click="$dispatch('close-modal', 'create-user')">
+                                Cancel
+                            </button>
+                            <button type="submit" id="createUserBtn"
+                                class="px-4 py-2 text-sm bg-gray-800 text-white rounded hover:bg-gray-700">
+                                <span id="createBtnText">Create User</span>
+                                <span id="createBtnLoading" class="hidden">
+                                    <i class="fas fa-spinner fa-spin mr-1"></i>Creating...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+
+            <!-- Confirm Delete Modal ------------------------>
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
@@ -186,7 +269,104 @@
 
     <x-slot name="script">
         <script type="text/javascript">
-           //delete User=========================
+            // Create================
+
+            function openCreateUserModal() {
+                document.getElementById('createUserForm').reset();
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'create-user'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const createForm = document.getElementById('createUserForm');
+                const createBtn = document.getElementById('createUserBtn');
+                const createBtnText = document.getElementById('createBtnText');
+                const createBtnLoading = document.getElementById('createBtnLoading');
+
+                // Error placeholders
+                const nameError = document.getElementById('nameError');
+                const emailError = document.getElementById('emailError');
+                const passwordError = document.getElementById('passwordError');
+                const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+                createForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    [nameError, emailError, passwordError, confirmPasswordError].forEach(el => {
+                        el.classList.add('hidden');
+                        el.textContent = '';
+                    });
+
+                    createBtn.disabled = true;
+                    createBtnText.classList.add('hidden');
+                    createBtnLoading.classList.remove('hidden');
+
+                    const data = {
+                        name: createForm.name.value,
+                        email: createForm.email.value,
+                        password: createForm.password.value,
+                        confirm_password: createForm.confirm_password.value,
+                        roles: Array.from(createForm.querySelectorAll('input[name="roles[]"]:checked'))
+                            .map(input => input.value),
+                    };
+
+                    $.ajax({
+                        url: '{{ route('users.store') }}',
+                        type: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                showNotification(response.message || 'User created successfully!',
+                                    'success');
+
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'create-user'
+                                }));
+                                createForm.reset();
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error creating user!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+
+                                if (errors.name) {
+                                    nameError.textContent = errors.name[0];
+                                    nameError.classList.remove('hidden');
+                                }
+                                if (errors.email) {
+                                    emailError.textContent = errors.email[0];
+                                    emailError.classList.remove('hidden');
+                                }
+                                if (errors.password) {
+                                    passwordError.textContent = errors.password[0];
+                                    passwordError.classList.remove('hidden');
+                                }
+                                if (errors.confirm_password) {
+                                    confirmPasswordError.textContent = errors.confirm_password[
+                                        0];
+                                    confirmPasswordError.classList.remove('hidden');
+                                }
+                            } else {
+                                showNotification('An unexpected error occurred!', 'error');
+                            }
+                        },
+                        complete: function() {
+                            createBtn.disabled = false;
+                            createBtnText.classList.remove('hidden');
+                            createBtnLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            //delete User=========================
             let deleteId = null;
 
             function deleteUser(id) {
@@ -245,7 +425,6 @@
                     });
                 });
             });
-
         </script>
     </x-slot>
 </x-app-layout>

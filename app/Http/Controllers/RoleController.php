@@ -28,14 +28,6 @@ class RoleController extends Controller implements HasMiddleware
         return view('backend.roles.list', compact('roles', 'permissions'));
     }
 
-    // public function create()
-    // {
-    //     $permissions = Permission::orderBy('name', 'asc')->get();
-    //     return view('backend.roles.create', [
-    //         'permissions' => $permissions
-    //     ]);
-    // }
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -59,22 +51,11 @@ class RoleController extends Controller implements HasMiddleware
 
         return response()->json([
             'status' => true,
-            'message' => 'Role added successfully',
+            'message' => 'Role created successfully',
             'role' => $role,
         ]);
     }
 
-    // public function edit($id)
-    // {
-    //     $role = Role::findOrFail($id);
-    //     $hasPermissions = $role->permissions->pluck('name');
-    //     $permissions = Permission::orderBy('name', 'asc')->get();
-    //     return view('backend.roles.edit', [
-    //         'role' => $role,
-    //         'permissions' => $permissions,
-    //         'hasPermissions' => $hasPermissions
-    //     ]);
-    // }
 
   public function update($id, Request $request)
 {

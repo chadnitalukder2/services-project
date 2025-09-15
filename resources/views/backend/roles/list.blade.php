@@ -216,7 +216,7 @@
 
             <!-- Edit Role Modal -->
             <x-modal name="edit-role" class="sm:max-w-md mt-20" maxWidth="5xl">
-                <div class="p-6">
+                <div class="p-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -275,7 +275,7 @@
 
             <!-- Confirm Delete Modal -->
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
-                <div class="p-6">
+                <div class="p-8">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
                     <p class="mt-2 text-sm text-gray-600">
                         Are you sure you want to delete this role?
@@ -463,7 +463,6 @@
                                     roleNameError.textContent = errors.name[0];
                                     roleNameError.classList.remove('hidden');
                                 }
-                                showNotification('Please fix the errors and try again.', 'error');
                             } else {
                                 showNotification('An error occurred while creating the role!',
                                     'error');
