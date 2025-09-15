@@ -12,14 +12,14 @@ use Illuminate\Routing\Controllers\Middleware;
 class ExpenseController extends Controller implements HasMiddleware
 {
 
-     public static function middleware(): array
+    public static function middleware(): array
     {
-      return [
-        new Middleware('permission:view expenses', only: ['index', 'show']),
-        new Middleware('permission:create expenses', only: ['create', 'store']),
-        new Middleware('permission:edit expenses', only: ['edit', 'update']),
-        new Middleware('permission:delete expenses', only: ['destroy']),
-      ];
+        return [
+            new Middleware('permission:view expenses', only: ['index', 'show']),
+            new Middleware('permission:create expenses', only: ['create', 'store']),
+            new Middleware('permission:edit expenses', only: ['edit', 'update']),
+            new Middleware('permission:delete expenses', only: ['destroy']),
+        ];
     }
     /**
      * Display a listing of the resource.
@@ -27,14 +27,15 @@ class ExpenseController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $expenses = Expense::with('category')
-                          ->filter($request->only(['category_id', 'date_from', 'date_to', 'expense_date_from', 'expense_date_to']))
-                          ->orderBy('created_at', 'desc')
-                          ->paginate(15)
-                          ->appends($request->query());
+            ->filter($request->only(['category_id', 'date_from', 'date_to', 'expense_date_from', 'expense_date_to']))
+            ->orderBy('created_at', 'desc')
+            ->paginate(15)
+            ->appends($request->query());
 
         $categories = ExpenseCategory::orderBy('created_at', 'asc')->get();
+        $expenseCategories = ExpenseCategory::orderBy('created_at', 'asc')->get();
 
-        return view('backend.expenses.list', compact('expenses', 'categories'));
+        return view('backend.expenses.list', compact('expenses', 'categories', 'expenseCategories'));
     }
 
     /**
@@ -43,7 +44,7 @@ class ExpenseController extends Controller implements HasMiddleware
     public function create()
     {
         $expenseCategories = ExpenseCategory::orderBy('created_at', 'asc')->get();
-         return view('backend.expenses.create', compact('expenseCategories'));
+        return view('backend.expenses.create', compact('expenseCategories'));
     }
 
     /**
@@ -51,24 +52,28 @@ class ExpenseController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'category_id' => 'required|exists:expense_categories,id',
             'amount' => 'required|numeric|min:0',
             'date' => 'required|date',
             'description' => 'nullable|string|max:255',
         ]);
-        if($validator->passes()){
-            $expense = Expense::create([
-                'category_id' => $request->category_id,
-                'amount' => $request->amount,
-                'date' => $request->date,
-                'description' => $request->description,
-            ]);
-
-            return redirect()->route('expenses.index')->with('success', 'Expense added successfully');
-        }else{
-            return redirect()->route('expenses.create')->withErrors($validator)->withInput();
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422);
         }
+        $expense = Expense::create([
+            'category_id' => $request->category_id,
+            'amount' => $request->amount,
+            'date' => $request->date,
+            'description' => $request->description,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Expense created successfully',
+        ]);
     }
 
     /**
@@ -82,7 +87,7 @@ class ExpenseController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( $id)
+    public function edit($id)
     {
         $expense = Expense::find($id);
         $expenseCategories = ExpenseCategory::orderBy('created_at', 'asc')->get();
@@ -98,15 +103,15 @@ class ExpenseController extends Controller implements HasMiddleware
      */
     public function update(Request $request, $id)
     {
-         $category = Expense::findOrFail($id);
+        $category = Expense::findOrFail($id);
 
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'category_id' => 'required|exists:expense_categories,id',
             'amount' => 'required|numeric|min:0',
             'date' => 'required|date',
             'description' => 'nullable|string|max:255',
         ]);
-        if($validator->passes()){
+        if ($validator->passes()) {
 
             $category->category_id = $request->category_id;
             $category->amount = $request->amount;
@@ -115,7 +120,7 @@ class ExpenseController extends Controller implements HasMiddleware
             $category->save();
 
             return redirect()->route('expenses.index')->with('success', 'Expense updated successfully');
-        }else{
+        } else {
             return redirect()->route('expenses.edit', $id)->withErrors($validator)->withInput();
         }
     }
@@ -125,7 +130,7 @@ class ExpenseController extends Controller implements HasMiddleware
      */
     public function destroy(Request $request)
     {
-          $expense = Expense::find($request->id);
+        $expense = Expense::find($request->id);
         if ($expense) {
             $expense->delete();
             return response()->json(['status' => true, 'message' => 'Expense deleted successfully']);

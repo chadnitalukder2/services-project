@@ -52,8 +52,7 @@
 
                     <!-- Filter Buttons -->
                     <div class="flex items-end space-x-2">
-                        <button type="submit"
-                            class="bg-gray-800 hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
+                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
                             Filter
                         </button>
                         <a href="{{ route('expenses.index') }}"
@@ -71,14 +70,14 @@
                         <h3 class="text-lg font-semibold text-gray-900">Expense List</h3>
                         <div class="flex space-x-2">
                             @can('create expenses')
-                                <a href="{{ route('expenses.create') }}"
+                                <button onclick="openCreateExpenseModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
                                         viewBox="0 0 640 640" fill="white">
                                         <path
                                             d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
                                     </svg>
-                                    Create Expense</a>
+                                    Create Expense</button>
                             @endcan
                         </div>
                     </div>
@@ -114,7 +113,7 @@
                                 @foreach ($expenses as $expense)
                                     <tr class="border-b" id="expense-row-{{ $expense->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($expense->id, 5, '0', STR_PAD_LEFT) }}
+                                          {{ $expense->id }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}
@@ -132,7 +131,7 @@
 
                                         @canany(['edit expenses', 'delete expenses'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
                                                 {{--  --}}
 
                                                 @can('edit expenses')
@@ -217,6 +216,72 @@
                 </div>
             </div>
 
+            <!-- Create Expense Modal -->
+            <x-modal name="create-expense" class="sm:max-w-md mt-20" maxWidth="2xl">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Create New Expense</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'create-expense')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="createExpenseForm" class="space-y-4">
+                        <div>
+                            <label for="modal_category_id" class="block text-sm font-medium text-gray-700 mt-6">Category <span class="text-red-500">*</span></label>
+                            <select id="modal_category_id" name="category_id"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <option value="">Select Category</option>
+                                @foreach ($expenseCategories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <div id="modal_category-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <!-- Amount -->
+                        <div>
+                            <label for="modal_amount" class="block text-sm font-medium text-gray-700 mt-6">Amount <span class="text-red-500">*</span></label>
+                            <input type="number" id="modal_amount" name="amount"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                            <div id="modal_amount-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <!-- Date -->
+                        <div>
+                            <label for="modal_date" class="block text-sm font-medium text-gray-700 mt-6">Date <span class="text-red-500">*</span></label>
+                            <input type="date" id="modal_date" name="date"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
+                                value="{{ old('date', date('Y-m-d')) }}">
+                            <div id="modal_date-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <label for="modal_description" class="block text-sm font-medium text-gray-700 mt-6">Description</label>
+                            <textarea id="modal_description" name="description" rows="3"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                            <div id="modal_description-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 mt-6 pt-4">
+                            <button type="button" x-on:click="$dispatch('close-modal', 'create-expense')"
+                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
+                                Cancel
+                            </button>
+                            <button type="submit" id="save-expense-btn"
+                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md">
+                                <span id="save-expense-text">Save Expense</span>
+                                <span id="save-expense-loading" class="hidden">Saving...</span>
+                            </button>
+                        </div>
+                    </form>
+
+
+                </div>
+            </x-modal>
+
             <!-- Confirm Delete Modal ------------------------>
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
@@ -245,8 +310,125 @@
 
     <x-slot name="script">
         <script type="text/javascript">
+            //create==========================================
+
+            function openCreateExpenseModal() {
+                document.getElementById('createExpenseForm').reset();
+
+                // Clear all previous errors
+                ['category', 'amount', 'date', 'description'].forEach(id => {
+                    const el = document.getElementById(`modal_${id}-error`);
+                    if (el) {
+                        el.textContent = '';
+                        el.classList.add('hidden');
+                    }
+                });
+
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'create-expense'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('createExpenseForm');
+                const saveBtn = document.getElementById('save-expense-btn');
+                const saveText = document.getElementById('save-expense-text');
+                const saveLoading = document.getElementById('save-expense-loading');
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Clear previous errors
+                    ['category', 'amount', 'date', 'description'].forEach(id => {
+                        const el = document.getElementById(`modal_${id}-error`);
+                        if (el) {
+                            el.textContent = '';
+                            el.classList.add('hidden');
+                        }
+                    });
+
+                    saveBtn.disabled = true;
+                    saveText.classList.add('hidden');
+                    saveLoading.classList.remove('hidden');
+
+                    const data = {
+                        category_id: document.getElementById('modal_category_id').value,
+                        amount: document.getElementById('modal_amount').value,
+                        date: document.getElementById('modal_date').value,
+                        description: document.getElementById('modal_description').value,
+                    };
+
+                    $.ajax({
+                        url: '{{ route('expenses.store') }}',
+                        type: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                showNotification(response.message ||
+                                    'Expense created successfully!', 'success');
+                                window.dispatchEvent(new CustomEvent('close-modal', {
+                                    detail: 'create-expense'
+                                }));
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showNotification(response.message || 'Error creating expense!',
+                                    'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                const errors = xhr.responseJSON.errors;
+
+                                // Show validation errors
+                                if (errors.category_id) {
+                                    const el = document.getElementById('modal_category-error');
+                                    if (el) {
+                                        el.textContent = errors.category_id[0];
+                                        el.classList.remove('hidden');
+                                    }
+                                }
+                                if (errors.amount) {
+                                    const el = document.getElementById('modal_amount-error');
+                                    if (el) {
+                                        el.textContent = errors.amount[0];
+                                        el.classList.remove('hidden');
+                                    }
+                                }
+                                if (errors.date) {
+                                    const el = document.getElementById('modal_date-error');
+                                    if (el) {
+                                        el.textContent = errors.date[0];
+                                        el.classList.remove('hidden');
+                                    }
+                                }
+                                if (errors.description) {
+                                    const el = document.getElementById('modal_description-error');
+                                    if (el) {
+                                        el.textContent = errors.description[0];
+                                        el.classList.remove('hidden');
+                                    }
+                                }
+                            } else {
+                                showNotification('An error occurred while creating the expense!',
+                                    'error');
+                            }
+                        },
+                        complete: function() {
+                            saveBtn.disabled = false;
+                            saveText.classList.remove('hidden');
+                            saveLoading.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+
             //delete Expense=========================
             let deleteId = null;
+
             function deleteExpense(id) {
                 deleteId = id;
                 window.dispatchEvent(new CustomEvent('open-modal', {
@@ -302,7 +484,7 @@
                     });
                 });
             });
-       
+
 
             // Auto-submit form when filter values change (optional)
             document.getElementById('category_id').addEventListener('change', function() {

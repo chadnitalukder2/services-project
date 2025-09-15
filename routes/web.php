@@ -62,9 +62,7 @@ Route::middleware('auth')->group(function () {
 
     //expense_categories 
     Route::get('/expense_categories', [ExpenseCategoryController::class, 'index'])->name('expense_categories.index');
-    Route::get('/expense_categories/create', [ExpenseCategoryController::class, 'create'])->name('expense_categories.create');
     Route::post('/expense_categories/store', [ExpenseCategoryController::class, 'store'])->name('expense_categories.store');
-    Route::get('/expense_categories/{id}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_categories.edit');
     Route::post('/expense_categories/{id}', [ExpenseCategoryController::class, 'update'])->name('expense_categories.update');
     Route::delete('/expense_categories', [ExpenseCategoryController::class, 'destroy'])->name('expense_categories.destroy');
 
