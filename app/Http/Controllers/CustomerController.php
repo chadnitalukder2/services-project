@@ -48,11 +48,6 @@ class CustomerController extends Controller implements HasMiddleware
 
         return view('backend.customers.list', compact('customers'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-
     /**
      * Store a newly created resource in storage.
      */
@@ -119,58 +114,44 @@ class CustomerController extends Controller implements HasMiddleware
         ]);
     }
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $customer = Customer::find($id);
-        if ($customer) {
-            return view('backend.customers.edit', compact('customer'));
-        } else {
-            return redirect()->route('customers.index')->with('error', 'Customer not found');
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $customer = Customer::find($id);
-        if ($customer) {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:customers,email,' . $id,
-                'phone' => 'required|numeric|min:0',
-                'address' => 'required|string',
-                'company' => 'nullable|string',
-            ]);
-            if ($validator->passes()) {
-                $customer->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                    'address' => $request->address,
-                    'company' => $request->company,
-                ]);
-                return redirect()->route('customers.index')->with('success', 'Customer updated successfully');
-            } else {
-                return redirect()->route('customers.edit', $id)->withErrors($validator)->withInput();
-            }
-        } else {
-            return redirect()->route('customers.index')->with('error', 'Customer not found');
+
+        if (!$customer) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Customer not found',
+            ], 404);
         }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email',
+            'phone' => 'required',
+            'address' => 'nullable|string',
+            'company' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $customer->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'company' => $request->company,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Customer updated successfully',
+        ]);
     }
 
     /**

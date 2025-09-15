@@ -95,7 +95,7 @@
                                 @foreach ($customers as $customer)
                                     <tr class="border-b" id="customer-row-{{ $customer->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($customer->id, 5, '0', STR_PAD_LEFT) }}
+                                            {{ $customer->id }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $customer->name }}
@@ -119,9 +119,10 @@
                                         @canany(['edit customers', 'delete customers'])
                                             <td
                                                 class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
-                                             
+
                                                 @can('edit customers')
-                                                    <a href="{{ route('customers.edit', $customer->id) }}"
+                                                    <a href="javascript:void(0)"
+                                                        onclick="openEditCustomerModal({{ $customer->id }})"
                                                         class="text-yellow-500 hover:text-yellow-600" title="Edit Customer">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
@@ -276,6 +277,82 @@
                 </div>
             </x-modal>
 
+            <!-- Edit Customer Modal -->
+            <x-modal name="edit-customer" class="sm:max-w-md mt-20" maxWidth="2xl">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Update Customer</h2>
+                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                            x-on:click="$dispatch('close-modal', 'edit-customer')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="editCustomerForm" class="space-y-4">
+                        <input type="hidden" id="edit_customer_id" name="customer_id">
+
+                        <div class="grid grid-cols-1 gap-4">
+                            <!-- Name -->
+                            <div>
+                                <label for="edit_customer_name" class="block text-sm font-medium text-gray-700">Name
+                                    <span class="text-red-500">*</span></label>
+                                <input type="text" id="edit_customer_name" name="name"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="edit-name-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label for="edit_customer_phone" class="block text-sm font-medium text-gray-700">Phone
+                                    <span class="text-red-500">*</span></label>
+                                <input type="number" id="edit_customer_phone" name="phone"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="edit-phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="edit_customer_email"
+                                    class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="edit_customer_email" name="email"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="edit-email-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Address -->
+                            <div>
+                                <label for="edit_customer_address"
+                                    class="block text-sm font-medium text-gray-700">Address</label>
+                                <textarea id="edit_customer_address" name="address" rows="3"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                                <div id="edit-address-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+
+                            <!-- Company -->
+                            <div>
+                                <label for="edit_customer_company"
+                                    class="block text-sm font-medium text-gray-700">Company</label>
+                                <input type="text" id="edit_customer_company" name="company"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                <div id="edit-company-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 mt-6 pt-4">
+                            <button type="button" x-on:click="$dispatch('close-modal', 'edit-customer')"
+                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                Cancel
+                            </button>
+                            <button type="submit" id="update-customer-btn"
+                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                <span id="update-customer-text">Update Customer</span>
+                                <span id="update-customer-loading" class="hidden">Updating...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </x-modal>
+
             <!-- Confirm Delete Modal ------------------------>
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
@@ -304,6 +381,120 @@
 
     <x-slot name="script">
         <script type="text/javascript">
+            function openEditCustomerModal(customerId) {
+                const row = document.getElementById(`customer-row-${customerId}`);
+                if (!row) return;
+
+                const cells = row.querySelectorAll('td');
+                const name = cells[1].textContent.trim();
+                const phone = cells[2].textContent.trim();
+                const email = cells[3].textContent.trim() === '---' ? '' : cells[3].textContent.trim();
+                const address = cells[4].textContent.trim() === '---' ? '' : cells[4].textContent.trim();
+                const company = cells[5].textContent.trim() === '---' ? '' : cells[5].textContent.trim();
+
+                document.getElementById('edit_customer_id').value = customerId;
+                document.getElementById('edit_customer_name').value = name;
+                document.getElementById('edit_customer_phone').value = phone;
+                document.getElementById('edit_customer_email').value = email;
+                document.getElementById('edit_customer_address').value = address;
+                document.getElementById('edit_customer_company').value = company;
+
+                ['edit-name', 'edit-phone', 'edit-email', 'edit-address', 'edit-company'].forEach(id => {
+                    document.getElementById(id + '-error').classList.add('hidden');
+                    document.getElementById(id + '-error').textContent = '';
+                });
+
+                window.dispatchEvent(new CustomEvent('open-modal', {
+                    detail: 'edit-customer'
+                }));
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const editForm = document.getElementById('editCustomerForm');
+                const updateBtn = document.getElementById('update-customer-btn');
+                const updateText = document.getElementById('update-customer-text');
+                const updateLoading = document.getElementById('update-customer-loading');
+
+                if (editForm) {
+                    editForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+
+
+                        ['edit-name', 'edit-phone', 'edit-email', 'edit-address', 'edit-company'].forEach(
+                            id => {
+                                const el = document.getElementById(id + '-error');
+                                el.textContent = '';
+                                el.classList.add('hidden');
+                            });
+
+                        updateBtn.disabled = true;
+                        updateText.classList.add('hidden');
+                        updateLoading.classList.remove('hidden');
+
+                        const customerId = document.getElementById('edit_customer_id').value;
+                        const data = {
+                            name: document.getElementById('edit_customer_name').value,
+                            phone: document.getElementById('edit_customer_phone').value,
+                            email: document.getElementById('edit_customer_email').value,
+                            address: document.getElementById('edit_customer_address').value,
+                            company: document.getElementById('edit_customer_company').value
+                        };
+
+                        $.ajax({
+                            url: `/customers/${customerId}`,
+                            type: 'POST',
+                            data: data,
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.status === true) {
+                                    showNotification(response.message ||
+                                        'Customer updated successfully!', 'success');
+                                    window.dispatchEvent(new CustomEvent('close-modal', {
+                                        detail: 'edit-customer'
+                                    }));
+                                    setTimeout(() => location.reload(), 1000);
+                                } else {
+                                    showNotification(response.message || 'Error updating customer!',
+                                        'error');
+                                }
+                            },
+                            error: function(xhr) {
+                                if (xhr.status === 422) {
+                                    const errors = xhr.responseJSON.errors;
+
+                                    // Show validation errors
+                                    if (errors.name) {
+                                        const nameEl = document.getElementById('edit-name-error');
+                                        nameEl.textContent = errors.name[0];
+                                        nameEl.classList.remove('hidden');
+                                    }
+                                    if (errors.phone) {
+                                        const phoneEl = document.getElementById('edit-phone-error');
+                                        phoneEl.textContent = errors.phone[0];
+                                        phoneEl.classList.remove('hidden');
+                                    }
+                                    if (errors.email) {
+                                        const emailEl = document.getElementById('edit-email-error');
+                                        emailEl.textContent = errors.email[0];
+                                        emailEl.classList.remove('hidden');
+                                    }
+                                } else {
+                                    showNotification(
+                                        'An error occurred while updating the customer!',
+                                        'error');
+                                }
+                            },
+                            complete: function() {
+                                updateBtn.disabled = false;
+                                updateText.classList.remove('hidden');
+                                updateLoading.classList.add('hidden');
+                            }
+                        });
+                    });
+                }
+            });
             // Create================
 
             function openCreateCustomerModal() {

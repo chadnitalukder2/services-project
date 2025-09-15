@@ -55,7 +55,7 @@
                                 @foreach ($users as $user)
                                     <tr class="border-b" id="user-row-{{ $user->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}
+                                            {{ $user->id }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $user->name }}

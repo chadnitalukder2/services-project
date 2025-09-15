@@ -37,7 +37,7 @@
                                 @foreach ($permissions as $permission)
                                     <tr class="border-b" id="order-row-{{ $permission->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($permission->id, 5, '0', STR_PAD_LEFT) }}
+                                           {{ $permission->id }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $permission->name }}</td>
