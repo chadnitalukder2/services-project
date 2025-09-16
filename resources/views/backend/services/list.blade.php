@@ -55,8 +55,7 @@
 
                     <!-- Action Buttons -->
                     <div class="gap-2" style="display: block; margin:0 auto; margin-top: 24px;">
-                        <button type="submit"
-                            class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">
+                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">
                             Search
                         </button>
                         <a href="{{ route('services.index') }}"
@@ -75,14 +74,10 @@
                         <h3 class="text-lg font-semibold text-gray-900">Service List</h3>
                         <div class="flex space-x-2">
                             @can('create services')
-                                <a href="{{ route('services.create') }}"
+                                <button onclick="openCreateExpenseModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="12px" width="12px"
-                                        viewBox="0 0 640 640" fill="white">
-                                        <path
-                                            d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z" />
-                                    </svg>
-                                    Create Service</a>
+                                  <i class="fa-solid fa-plus"></i>
+                                    Create Service</button>
                             @endcan
                         </div>
                     </div>
