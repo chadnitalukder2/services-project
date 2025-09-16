@@ -31,7 +31,11 @@ class ServicesController extends Controller implements HasMiddleware
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where('name', 'LIKE', "%{$searchTerm}%");
-             $query->where('name', 'LIKE', "%{$searchTerm}%");
+            $query->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
         }
 
         if ($request->filled('price_min')) {
@@ -64,11 +68,6 @@ class ServicesController extends Controller implements HasMiddleware
         return view('backend.services.list', compact('services', 'serviceCategories'));
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -99,7 +98,6 @@ class ServicesController extends Controller implements HasMiddleware
             'message' => 'Service created successfully',
         ]);
     }
-
     public function update(Request $request, string $id)
     {
         $service = Services::find($id);
@@ -131,10 +129,6 @@ class ServicesController extends Controller implements HasMiddleware
             'message' => 'Service  updated successfully',
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request)
     {
         $service = Services::find($request->id);

@@ -13,12 +13,27 @@
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
 
                     <!-- Service Name Search -->
-                    <div class="lg:col-span-2">
+                    <div class="">
                         <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search
                             Service</label>
-                        <input type="text" name="search" id="search"
-                            placeholder="Search by service name and status..." value="{{ request('search') }}"
+                        <input type="text" name="search" id="search" placeholder="Search by name..."
+                            value="{{ request('search') }}"
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    </div>
+
+                      <!-- CategorySearch -->
+                    <div>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select name="category_id" id="category_id"
+                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <option value="">All Categories</option>
+                            @foreach ($serviceCategories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <!-- Price Range - Min -->
@@ -691,8 +706,6 @@
                     detail: 'confirm-delete'
                 }));
             }
-
-            // Attach event to confirm button once page is ready
             document.addEventListener('DOMContentLoaded', function() {
                 const confirmBtn = document.getElementById('confirmDeleteBtn');
 
@@ -745,10 +758,6 @@
 
 
             //filter and search form handlers===========================
-
-            document.getElementById('sort').addEventListener('change', function() {
-                this.form.submit();
-            });
 
             document.getElementById('search').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
