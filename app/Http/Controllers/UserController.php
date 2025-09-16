@@ -21,23 +21,12 @@ class UserController extends Controller implements HasMiddleware
             new Middleware('permission:delete users', only: ['destroy']),
         ];
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $users = User::orderBy('created_at', 'desc')->paginate(12);
         $roles = Role::orderBy('name', 'ASC')->get();
         return view('backend.users.list', compact('users', 'roles'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $roles = Role::orderBy('name', 'ASC')->get();
-        return view('backend.users.create', compact('roles'));
     }
 
     /**
@@ -71,28 +60,6 @@ class UserController extends Controller implements HasMiddleware
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $user = User::findOrFail($id);
-        $hasRoles = $user->roles->pluck('id');
-        $roles = Role::orderBy('name', 'ASC')->get();
-        return view('backend.users.edit', compact('user', 'roles', 'hasRoles'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -117,9 +84,6 @@ class UserController extends Controller implements HasMiddleware
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request)
     {
         $user = User::find($request->id);

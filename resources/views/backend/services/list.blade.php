@@ -21,7 +21,7 @@
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     </div>
 
-                      <!-- CategorySearch -->
+                    <!-- CategorySearch -->
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select name="category_id" id="category_id"
@@ -120,9 +120,12 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                @canany(['edit services', 'delete services'])
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody id="servicesTableBody" class="bg-white divide-y divide-gray-200">
@@ -165,8 +168,6 @@
                                         @canany(['edit services', 'delete services'])
                                             <td
                                                 class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
-                                                {{--  --}}
-
                                                 @can('edit services')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditServiceModal({{ $service->id }})"

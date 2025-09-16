@@ -13,17 +13,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class OrderController extends Controller
+class OrderController extends Controller implements HasMiddleware
 {
-    // public function index()
-    // {
-    //     $orders = Order::with('customer', 'orderItems.service')
-    //         ->orderBy('created_at', 'desc')
-    //         ->paginate(10);
-
-    //     return view('backend.orders.list', compact('orders'));
-    // }
-
+      public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view orders', only: ['index', 'show']),
+            new Middleware('permission:create orders', only: ['create', 'store']),
+            new Middleware('permission:edit orders', only: ['edit', 'update']),
+            new Middleware('permission:delete orders', only: ['destroy']),
+        ];
+    }
     public function index(Request $request)
     {
         $query = Order::query();

@@ -46,6 +46,7 @@ class ExpenseController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'title' => 'required',
             'category_id' => 'required|exists:expense_categories,id',
             'amount' => 'required|numeric|min:0',
             'date' => 'required|date',
@@ -58,6 +59,7 @@ class ExpenseController extends Controller implements HasMiddleware
             ], 422);
         }
         $expense = Expense::create([
+            'title' => $request->title,
             'category_id' => $request->category_id,
             'amount' => $request->amount,
             'date' => $request->date,
@@ -77,6 +79,7 @@ class ExpenseController extends Controller implements HasMiddleware
         $category = Expense::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
+           'title' => 'required',
             'category_id' => 'required|exists:expense_categories,id',
             'amount' => 'required|numeric|min:0',
             'date' => 'required|date',
@@ -90,6 +93,7 @@ class ExpenseController extends Controller implements HasMiddleware
             ], 422);
         }
 
+             $category->title = $request->title;
             $category->category_id = $request->category_id;
             $category->amount = $request->amount;
             $category->date = $request->date;

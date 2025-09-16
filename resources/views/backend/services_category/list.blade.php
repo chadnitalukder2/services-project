@@ -33,9 +33,12 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                @canany(['edit service category', 'delete service category'])
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody id="serviceCategoryTableBody" class="bg-white divide-y divide-gray-200">
@@ -52,7 +55,7 @@
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($category->created_at)->format('d M, Y') }}</td>
 
-                                        @canany(['edit serviceCategory', 'delete serviceCategory'])
+                                        @canany(['edit service category', 'delete service category'])
                                             <td
                                                 class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
 
@@ -355,7 +358,7 @@
                     };
 
                     $.ajax({
-                        url: '{{ route('service_category.store') }}', 
+                        url: '{{ route('service_category.store') }}',
                         type: 'POST',
                         data: data,
                         headers: {
@@ -455,7 +458,6 @@
                     });
                 });
             });
-           
         </script>
     </x-slot>
 </x-app-layout>

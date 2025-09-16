@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('category_id')->constrained('service_categories')->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->decimal('unit_price', 15, 2);
+            $table->decimal('unit_price', 50, 2);
             $table->string('status')->default('active');
             $table->timestamps();
         });

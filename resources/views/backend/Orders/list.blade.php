@@ -151,9 +151,12 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
+
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Actions</th>
+
+
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
@@ -174,7 +177,7 @@
                                         <td class="px-6 py-4 text-left">
                                             <select onchange="updateOrderStatus({{ $order->id }}, this.value)"
                                                 data-original-value="{{ $order->status }}"
-                                                class="px-10-2 py-1 border rounded text-sm">
+                                                class="px-10-2 py-1 border rounded text-sm focus:border-gray-900 focus:ring-gray-900">
                                                 <option value="pending"
                                                     @if ($order->status == 'pending') selected @endif>
                                                     Pending</option>
@@ -203,30 +206,28 @@
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
 
-                                        @canany(['edit orders', 'delete orders'])
-                                            <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
-                                                {{--  --}}
-                                                @can('view order item')
-                                                    <button onclick="showOrderItems({{ $order->id }})"
-                                                        class=" text-blue-600 hover:text-blue-900" title="View Details">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                @endcan
-                                                @can('edit orders')
-                                                    <a href="{{ route('orders.edit', $order->id) }}"
-                                                        class="text-yellow-500 hover:text-yellow-600" title="Edit Order">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                @endcan
-                                                @can('delete orders')
-                                                    <a href="javascript:void(0)" onclick="deleteOrder({{ $order->id }})"
-                                                        class=" text-red-700 hover:text-red-600" title="Delate Order">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </a>
-                                                @endcan
-                                            </td>
-                                        @endcanany
+                                        <td
+                                            class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
+
+                                            <button onclick="showOrderItems({{ $order->id }})"
+                                                class=" text-blue-600 hover:text-blue-900" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+
+                                            @can('edit orders')
+                                                <a href="{{ route('orders.edit', $order->id) }}"
+                                                    class="text-yellow-500 hover:text-yellow-600" title="Edit Order">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endcan
+                                            @can('delete orders')
+                                                <a href="javascript:void(0)" onclick="deleteOrder({{ $order->id }})"
+                                                    class=" text-red-700 hover:text-red-600" title="Delate Order">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            @endcan
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             @else
@@ -665,7 +666,7 @@
                 });
             });
 
-       
+
             // Close modal when clicking outside
             document.getElementById('orderItemsModal').addEventListener('click', function(e) {
                 if (e.target === this) {

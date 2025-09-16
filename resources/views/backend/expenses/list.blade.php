@@ -72,7 +72,7 @@
                             @can('create expenses')
                                 <button onclick="openCreateExpenseModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
-                                   <i class="fa-solid fa-plus"></i>
+                                    <i class="fa-solid fa-plus"></i>
                                     Create Expense</button>
                             @endcan
                         </div>
@@ -89,6 +89,9 @@
                                     # ID</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Title</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Date</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -100,9 +103,12 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                @canany(['edit expenses', 'delete expenses'])
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody id="expensesTableBody" class="bg-white divide-y divide-gray-200">
@@ -114,6 +120,9 @@
                                     <tr class="border-b" id="expense-row-{{ $expense->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $expense->id }}
+                                        </td>
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            {{ $expense->title }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}
@@ -229,6 +238,16 @@
                     </div>
 
                     <form id="createExpenseForm" class="space-y-4">
+
+                        <!-- Title -->
+                        <div>
+                            <label for="modal_title" class="block text-sm font-medium text-gray-700 mt-6">Title
+                                <span class="text-red-500">*</span></label>
+                            <input type="text" id="modal_title" name="title"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                            <div id="modal_title-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
+
                         <div>
                             <label for="modal_category_id"
                                 class="block text-sm font-medium text-gray-700 mt-6">Category <span
@@ -300,6 +319,15 @@
 
                     <form id="editExpenseForm" class="space-y-4">
                         <input type="hidden" id="edit_expense_id">
+
+                        <!-- Title -->
+                        <div>
+                            <label for="edit_title" class="block text-sm font-medium text-gray-700 mt-6">Title
+                                <span class="text-red-500">*</span></label>
+                            <input type="text" id="edit_title" name="title"
+                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                            <div id=edit_title-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                        </div>
 
                         <div>
                             <label for="edit_category_id"
@@ -386,10 +414,12 @@
                 const row = document.getElementById(`expense-row-${expenseId}`);
                 if (!row) return;
 
+
                 const cells = row.querySelectorAll('td');
-                const date = cells[1].textContent.trim();
-                const category = cells[2].textContent.trim();
-                const amountText = cells[3].textContent.trim();
+                const title = cells[1].textContent.trim();
+                const date = cells[2].textContent.trim();
+                const category = cells[3].textContent.trim();
+                const amountText = cells[4].textContent.trim();
 
                 const amount = amountText.replace(/[^0-9.]/g, '');
                 document.getElementById('edit_amount').value = amount;
@@ -399,8 +429,9 @@
 
                 // Set modal values
                 document.getElementById('edit_expense_id').value = expenseId;
-                document.getElementById('edit_date').value = parseTableDate(date); // Use plain JS function
+                document.getElementById('edit_date').value = parseTableDate(date);
                 document.getElementById('edit_amount').value = amount;
+                document.getElementById('edit_title').value = title;
 
                 // Select the correct category option
                 const categorySelect = document.getElementById('edit_category_id');
@@ -449,6 +480,7 @@
 
                 const expenseId = document.getElementById('edit_expense_id').value;
                 const data = {
+                    title: document.getElementById('edit_title').value,
                     category_id: document.getElementById('edit_category_id').value,
                     amount: document.getElementById('edit_amount').value,
                     date: document.getElementById('edit_date').value,
@@ -460,7 +492,7 @@
                 const btnLoading = document.getElementById('update-expense-loading');
 
                 // Clear previous errors like create form
-                ['category', 'amount', 'date', 'description'].forEach(id => {
+                ['category', 'title', 'amount', 'date', 'description'].forEach(id => {
                     const el = document.getElementById(`edit_${id}-error`);
                     if (el) {
                         el.textContent = '';
@@ -494,7 +526,13 @@
                         if (xhr.status === 422) {
                             const errors = xhr.responseJSON.errors;
 
-                            // Show validation errors like create form
+                            if (errors.title) {
+                                const el = document.getElementById('edit_title-error');
+                                if (el) {
+                                    el.textContent = errors.title[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
                             if (errors.category_id) {
                                 const el = document.getElementById('edit_category-error');
                                 if (el) {
@@ -564,7 +602,7 @@
                     e.preventDefault();
 
                     // Clear previous errors
-                    ['category', 'amount', 'date', 'description'].forEach(id => {
+                    ['category', 'title', 'amount', 'date', 'description'].forEach(id => {
                         const el = document.getElementById(`modal_${id}-error`);
                         if (el) {
                             el.textContent = '';
@@ -577,6 +615,7 @@
                     saveLoading.classList.remove('hidden');
 
                     const data = {
+                        title: document.getElementById('modal_title').value,
                         category_id: document.getElementById('modal_category_id').value,
                         amount: document.getElementById('modal_amount').value,
                         date: document.getElementById('modal_date').value,
@@ -607,7 +646,13 @@
                             if (xhr.status === 422) {
                                 const errors = xhr.responseJSON.errors;
 
-                                // Show validation errors
+                                if (errors.title) {
+                                    const el = document.getElementById('modal_title-error');
+                                    if (el) {
+                                        el.textContent = errors.title[0];
+                                        el.classList.remove('hidden');
+                                    }
+                                }
                                 if (errors.category_id) {
                                     const el = document.getElementById('modal_category-error');
                                     if (el) {

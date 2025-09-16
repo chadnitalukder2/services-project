@@ -41,9 +41,13 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+
+                                @canany(['edit users', 'delete users'])
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200">
@@ -70,8 +74,6 @@
                                         @canany(['edit users', 'delete users'])
                                             <td
                                                 class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
-                                                {{--  --}}
-
                                                 @can('edit users')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditUserModal({{ $user->id }})"

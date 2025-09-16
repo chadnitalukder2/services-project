@@ -8,11 +8,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class ServiceCategoryController extends Controller
+class ServiceCategoryController extends Controller implements HasMiddleware
 {
-    /**
-     * Display a listing of the resource.
-     */
+ 
+        public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view service category', only: ['index', 'show']),
+            new Middleware('permission:create service category', only: ['create', 'store']),
+            new Middleware('permission:edit service category', only: ['edit', 'update']),
+            new Middleware('permission:delete service category', only: ['destroy']),
+        ];
+    }
     public function index()
     {
         $serviceCategory = ServiceCategory::orderBy('created_at', 'desc')->paginate(12);

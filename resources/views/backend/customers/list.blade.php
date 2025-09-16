@@ -81,9 +81,13 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                @canany(['edit customers', 'delete customers'])
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody id="customersTableBody" class="bg-white divide-y divide-gray-200">
@@ -647,20 +651,6 @@
                 });
             });
 
-            //====================================================
-
-
-            // Auto-submit form when sort changes (optional)
-            document.querySelector('select[name="sort"]').addEventListener('change', function() {
-                this.form.submit();
-            });
-
-            // Enter key to submit search
-            document.querySelector('input[name="search"]').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    this.form.submit();
-                }
-            });
         </script>
     </x-slot>
 </x-app-layout>

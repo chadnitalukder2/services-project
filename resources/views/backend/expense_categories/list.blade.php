@@ -33,9 +33,12 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
+                                @canany(['edit expense categories', 'delete expense categories'])
+                                       <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Actions</th>
+                                @endcanany
+                                 
                             </tr>
                         </thead>
                         <tbody id="expenseCategoriesTableBody" class="bg-white divide-y divide-gray-200">
@@ -52,18 +55,18 @@
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($category->created_at)->format('d M, Y') }}</td>
 
-                                        @canany(['edit expenseCategories', 'delete expenseCategories'])
+                                        @canany(['edit expense categories', 'delete expense categories'])
                                             <td
                                                 class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
 
-                                                @can('edit expense category')
+                                                @can('edit expense categories')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditCategoryModal({{ $category->id }}, '{{ $category->name }}')"
                                                         class="text-yellow-500 hover:text-yellow-600" title="Edit Category">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 @endcan
-                                                @can('delete expense category')
+                                                @can('delete expense categories')
                                                     <a href="javascript:void(0)" onclick="deleteCategory({{ $category->id }})"
                                                         class=" text-red-700 hover:text-red-600" title="Delate Category">
                                                         <i class="fa-solid fa-trash"></i>
@@ -75,7 +78,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No expenseCategories
+                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No Expense Categories
                                         found
                                     </td>
                                 </tr>

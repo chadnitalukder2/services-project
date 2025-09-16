@@ -11,10 +11,9 @@
                         <h3 class="text-lg font-semibold text-gray-900">Roles List</h3>
                         <div class="flex space-x-2">
                             @can('create roles')
-                                <!-- Updated button to open modal instead of redirecting -->
                                 <button onclick="openCreateRoleModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
-                                   <i class="fa-solid fa-plus"></i>
+                                    <i class="fa-solid fa-plus"></i>
                                     Create Role</button>
                             @endcan
                         </div>
@@ -38,9 +37,12 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                 @canany(['edit roles', 'delete roles'])
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody id="rolesTableBody" class="bg-white divide-y divide-gray-200">
