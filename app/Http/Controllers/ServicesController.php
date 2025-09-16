@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ServiceCategory;
 use App\Models\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -30,6 +31,7 @@ class ServicesController extends Controller implements HasMiddleware
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where('name', 'LIKE', "%{$searchTerm}%");
+             $query->where('name', 'LIKE', "%{$searchTerm}%");
         }
 
         if ($request->filled('price_min')) {
@@ -53,18 +55,16 @@ class ServicesController extends Controller implements HasMiddleware
             $query->orderBy('created_at', 'desc');
         }
 
-        $services = $query->paginate(12)->appends($request->query());
+        $services = $query->with('category')
+            ->paginate(12)
+            ->appends($request->query());
 
-        return view('backend.services.list', compact('services'));
+        $serviceCategories = ServiceCategory::orderBy('created_at', 'desc')->get();
+
+        return view('backend.services.list', compact('services', 'serviceCategories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('backend.services.create');
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -73,72 +73,63 @@ class ServicesController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:service_categories,id',
             'unit_price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'status' => 'required|string|in:active,inactive',
         ]);
-        if ($validator->passes()) {
-            $service = Services::create([
-                'name' => $request->name,
-                'unit_price' => $request->unit_price,
-                'description' => $request->description,
-                'status' => $request->status,
-            ]);
 
-            return redirect()->route('services.index')->with('success', 'Service created successfully');
-        } else {
-            return redirect()->route('services.create')->withErrors($validator)->withInput();
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422);
         }
+
+        $service = Services::create([
+            'name' => $request->name,
+            'unit_price' => $request->unit_price,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Service created successfully',
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $service = Services::find($id);
-        if ($service) {
-            return view('backend.services.edit', compact('service'));
-        } else {
-            return redirect()->route('services.index')->with('error', 'Service not found');
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $service = Services::find($id);
-        if ($service) {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'unit_price' => 'required|numeric|min:0',
-                'description' => 'nullable|string',
-                'status' => 'required|string|in:active,inactive',
-            ]);
-            if ($validator->passes()) {
-                $service->update([
-                    'name' => $request->name,
-                    'unit_price' => $request->unit_price,
-                    'description' => $request->description,
-                    'status' => $request->status,
-                ]);
-                return redirect()->route('services.index')->with('success', 'Service updated successfully');
-            } else {
-                return redirect()->route('services.edit', $id)->withErrors($validator)->withInput();
-            }
-        } else {
-            return redirect()->route('services.index')->with('error', 'Service not found');
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:service_categories,id',
+            'unit_price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'status' => 'required|string|in:active,inactive',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422);
         }
+
+        $service->update([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'unit_price' => $request->unit_price,
+            'description' => $request->description,
+            'status' => $request->status,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Service  updated successfully',
+        ]);
     }
 
     /**
