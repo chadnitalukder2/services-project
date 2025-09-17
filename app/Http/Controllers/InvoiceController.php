@@ -5,8 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-class InvoiceController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class InvoiceController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view invoices', only: ['index', 'show']),
+            new Middleware('permission:payment invoices', only: ['processPayment']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -16,54 +27,11 @@ class InvoiceController extends Controller
         return view('backend.invoices.list', compact('invoices'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Invoice $invoice)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-   
     public function processPayment(Request $request)
     {
-        $id = $request->id ;
-         $invoice = Invoice::findOrFail($id);
+        $id = $request->id;
+        $invoice = Invoice::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required|integer',
@@ -74,12 +42,12 @@ class InvoiceController extends Controller
             'payment_method' => 'nullable|string',
             'status' => 'nullable|string',
         ]);
- 
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if($validator->passes()){
+        if ($validator->passes()) {
             $invoice->customer_id = $request->customer_id;
             $invoice->order_id = $request->order_id;
             $invoice->amount = $request->amount;
@@ -91,15 +59,14 @@ class InvoiceController extends Controller
 
 
             return redirect()->route('invoices.index')->with('success', 'Invoice updated successfully');
-        }else{
+        } else {
             //return redirect()->route('invoices.edit', $invoice->id)->withErrors($validator)->withInput();
         }
-
     }
 
     public function destroy(Request $request)
     {
-          $invoice = Invoice::findOrFail($request->id);
+        $invoice = Invoice::findOrFail($request->id);
         if ($invoice) {
             $invoice->delete();
             return response()->json(['status' => true, 'message' => 'Invoice deleted successfully']);
@@ -107,6 +74,4 @@ class InvoiceController extends Controller
             return response()->json(['status' => false, 'message' => 'Invoice not found']);
         }
     }
-
-   
 }

@@ -3,7 +3,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
-
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Invoices Management</h2>
             {{-- Invoice table --}}
             <div class="bg-white rounded-lg shadow-sm border">
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -46,9 +46,12 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                @canany(['payment invoices'])
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody id="invoiceTableBody" class="bg-white divide-y divide-gray-200">
@@ -94,12 +97,13 @@
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($invoice->created_at)->format('d M, Y') }}</td>
 
-                                        @canany(['edit invoices'])
+                                        @canany(['payment invoices'])
                                             <td
                                                 class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
-                                                @if ($invoice->due_amount > 0)
-                                                    <button
-                                                        onclick="openPaymentModal({
+                                                @can('payment invoices')
+                                                    @if ($invoice->due_amount > 0)
+                                                        <button
+                                                            onclick="openPaymentModal({
                                                             id: {{ $invoice->id }},
                                                             order_id: '{{ $invoice->order_id }}',
                                                             customer_name: '{{ $invoice->customer->name }}',
@@ -110,16 +114,18 @@
                                                             payment_method: '{{ $invoice->payment_method }}',
                                                             status: '{{ $invoice->status }}'
                                                         })"
-                                                        class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white ">
-                                                        Pay
-                                                    </button>
-                                                @else
-                                                    <button
-                                                        class="bg-gray-400 text-sm rounded-md py-1.5 px-2.5 text-white cursor-not-allowed"
-                                                        disabled>
-                                                        Pay
-                                                    </button>
-                                                @endif
+                                                            class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white ">
+                                                            Pay
+                                                        </button>
+                                                    @else
+                                                        <button
+                                                            class="bg-gray-400 text-sm rounded-md py-1.5 px-2.5 text-white cursor-not-allowed"
+                                                            disabled>
+                                                            Pay
+                                                        </button>
+                                                    @endif
+                                                @endcan
+
                                             </td>
                                         @endcanany
                                     </tr>

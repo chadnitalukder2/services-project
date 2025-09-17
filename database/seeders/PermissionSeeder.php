@@ -10,6 +10,12 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
+            //roles
+            'create roles',
+            'view roles',
+            'edit roles',
+            'delete roles',
+
             //users
             'create users',
             'view users',
@@ -18,57 +24,49 @@ class PermissionSeeder extends Seeder
 
             //Permissions
             'view permissions',
-            // 'create permissions',
-            // 'edit permissions',
-            // 'delete permissions',
 
-             //Services
-            'create services',
-            'edit services',
-            'view services',
-            'delete services',
-
-             //Customers
+            //Customers
             'create customers',
             'edit customers',
             'view customers',
             'delete customers',
 
-             //Expense Categories
+            //service category
+            'create service category',
+            'edit service category',
+            'view service category',
+            'delete service category',
+
+            //Services
+            'create services',
+            'edit services',
+            'view services',
+            'delete services',
+
+
+
+            //Expense Categories
+            'view expense categories',
             'create expense categories',
             'edit expense categories',
-            'view expense categories',
             'delete expense categories',
 
-             //Expenses
+            //Expenses
+            'view expenses',
             'create expenses',
             'edit expenses',
-            'view expenses',
             'delete expenses',
 
-             //Orders
+            //Orders
+            'view orders',
             'create orders',
             'edit orders',
-            'view orders',
             'delete orders',
 
-             //Order Items
-            'create order items',
-            'edit order items',
-            'view order items',
-            'delete order items',
-
-             //Invoices
-            'create invoices',
-            'edit invoices',
+            //Invoices
             'view invoices',
-            'delete invoices',
+            'payment invoices',
 
-             //invoice_payments
-            'create invoice payments',
-            'edit invoice payments',
-            'view invoice payments',
-            'delete invoice payments',
         ];
 
         foreach ($permissions as $permission) {
