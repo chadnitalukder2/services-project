@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class InvoiceController extends Controller implements HasMiddleware
 {
@@ -73,5 +75,28 @@ class InvoiceController extends Controller implements HasMiddleware
         } else {
             return response()->json(['status' => false, 'message' => 'Invoice not found']);
         }
+    }
+
+    public function viewInvoice($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        return view('backend.invoices.generate-invoice');
+    }
+
+    public function generateInvoice($id, $action = 'view')
+    {
+        $invoice = Invoice::findOrFail($id);
+        $todayDate = Carbon::now()->format('d-m-Y');
+
+        $data = ['order' => $invoice, 'todayDate' => $todayDate];
+
+        $pdf = Pdf::loadView('backend.invoices.generate-invoice', $data);
+
+        if ($action === 'download') {
+            return $pdf->download('invoice-' . $invoice->id . '-' . $todayDate . '.pdf');
+        }
+
+        // Default: open in browser (printable)
+        return $pdf->stream('invoice-' . $invoice->id . '-' . $todayDate . '.pdf');
     }
 }

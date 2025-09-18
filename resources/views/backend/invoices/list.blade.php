@@ -46,11 +46,11 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                @canany(['payment invoices'])
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Actions</th>
-                                @endcanany
+
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
+
 
                             </tr>
                         </thead>
@@ -97,13 +97,23 @@
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($invoice->created_at)->format('d M, Y') }}</td>
 
-                                        @canany(['payment invoices'])
-                                            <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
-                                                @can('payment invoices')
-                                                    @if ($invoice->due_amount > 0)
-                                                        <button
-                                                            onclick="openPaymentModal({
+
+                                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5 "
+                                            style="align-items: center">
+
+                                            <a href="{{ route('invoices.view', $invoice->id) }}" target="_blank"
+                                                class="text-blue-500 hover:text-blue-600" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('invoices.generate', $invoice->id) }}" target="_blank"
+                                                class="text-yellow-500 hover:text-yellow-600" title="Download">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+
+                                            @can('payment invoices')
+                                                @if ($invoice->due_amount > 0)
+                                                    <button
+                                                        onclick="openPaymentModal({
                                                             id: {{ $invoice->id }},
                                                             order_id: '{{ $invoice->order_id }}',
                                                             customer_name: '{{ $invoice->customer->name }}',
@@ -114,20 +124,22 @@
                                                             payment_method: '{{ $invoice->payment_method }}',
                                                             status: '{{ $invoice->status }}'
                                                         })"
-                                                            class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white ">
-                                                            Pay
-                                                        </button>
-                                                    @else
-                                                        <button
-                                                            class="bg-gray-400 text-sm rounded-md py-1.5 px-2.5 text-white cursor-not-allowed"
-                                                            disabled>
-                                                            Pay
-                                                        </button>
-                                                    @endif
-                                                @endcan
+                                                        class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white ">
+                                                        Pay
+                                                    </button>
+                                                @else
+                                                    <button
+                                                        class="bg-gray-400 text-sm rounded-md py-1.5 px-2.5 text-white cursor-not-allowed"
+                                                        disabled>
+                                                        Pay
+                                                    </button>
+                                                @endif
+                                            @endcan
 
-                                            </td>
-                                        @endcanany
+
+
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             @else
