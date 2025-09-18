@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @page {
             size: A4;
@@ -41,7 +42,6 @@
             align-items: center;
             margin-bottom: 30px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #000;
         }
         
         .header h1 {
@@ -242,10 +242,12 @@
     </style>
 </head>
 <body>
-    <div class="invoice">
+    <div class="invoice p-5 border">
         <div class="header">
-            <h1>INVOICE</h1>
-            <div class="invoice-number">#INV-2024-001</div>
+            <h1>Invoice</h1>
+            <div class="invoice-number">
+                <img src="https://png.pngtree.com/element_pic/00/16/07/06577d261edb9ec.jpg" alt="Logo" style="max-height: 50px;"><br>
+            </div>
         </div>
         
         <div class="details">
