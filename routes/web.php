@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,10 @@ Route::middleware('auth')->group(function () {
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+  //Settings
+  Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+  Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
+ 
   //Reports
   Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
