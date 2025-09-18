@@ -38,9 +38,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
   Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
  
-  //Reports
-  Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-
   //users
   Route::get('/users', [UserController::class, 'index'])->name('users.index');
   Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
@@ -102,6 +99,15 @@ Route::middleware('auth')->group(function () {
   Route::delete('/invoices', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
   Route::get('/invoices/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoices.view');
   Route::get('/invoices/{id}/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
+
+ //Reports
+  Route::get('/customer/reports', [ReportController::class, 'customerReport'])->name('reports.customer');
+  Route::get('/service/reports', [ReportController::class, 'serviceReport'])->name('reports.service');
+  Route::get('/order/reports', [ReportController::class, 'orderReport'])->name('reports.order');
+  Route::get('/expense/reports', [ReportController::class, 'expenseReport'])->name('reports.expense');
+  Route::get('/invoice/reports', [ReportController::class, 'invoiceReport'])->name('reports.invoice');
+  Route::get('/profit-loss/reports', [ReportController::class, 'profitLossReport'])->name('reports.profit-loss');
+
 });
 
 require __DIR__ . '/auth.php';
