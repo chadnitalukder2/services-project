@@ -3,7 +3,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Page Title & Filters -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Dashboard</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
         </div>
 
         <!-- Quick Stats Cards -->
@@ -12,7 +12,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Total Revenue</p>
-                        <p class="text-3xl font-bold text-green-600"><i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($totalRevenue, 2) }}</p>
+                        <p class="text-2xl font-bold text-green-600"><i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($totalRevenue, 2) }}</p>
                         <p class="text-sm text-green-500 mt-1">  {{ $revenueGrowth >= 0 ? '↗' : '↘' }} {{ number_format($revenueGrowth, 1) }}% from last month</p>
                     </div>
                     <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -25,7 +25,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Total Expenses</p>
-                        <p class="text-3xl font-bold text-red-600"> <i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($totalExpenses, 2) }}</p>
+                        <p class="text-2xl font-bold text-red-600"> <i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($totalExpenses, 2) }}</p>
                         <p class="text-sm text-red-500 mt-1">  {{ $expenseGrowth >= 0 ? '↗' : '↘' }} {{ number_format($expenseGrowth, 1) }}% from last month</p>
                     </div>
                     <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
@@ -38,7 +38,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Net Profit</p>
-                        <p class="text-3xl font-bold text-blue-600">  <i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($netProfit, 2) }}</p>
+                        <p class="text-2xl font-bold text-blue-600">  <i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($netProfit, 2) }}</p>
                           <p class="text-sm text-blue-600 mt-1">  {{ $expenseGrowth >= 0 ? '↗' : '↘' }} {{ number_format($expenseGrowth, 1) }}% from last month</p>
                     </div>
                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -51,7 +51,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Pending Invoices</p>
-                        <p class="text-3xl font-bold text-orange-600"> {{ $pendingInvoices }}</p>
+                        <p class="text-2xl font-bold text-orange-600"> {{ $pendingInvoices }}</p>
                         <p class="text-sm text-orange-500 mt-1"> <i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($outstanding, 2) }} outstanding</p>
                     </div>
                     <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">

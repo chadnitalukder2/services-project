@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Purobi Services</title>
-
+       <title>{{ $settings->title ?? 'Purobi SMS' }}</title>
+        <link rel="icon" sizes="32x32" href="{{ asset('storage/' . $settings->logo) }}">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

@@ -6,7 +6,11 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        @if (isset($settings->logo) && $settings->logo != '')
+                            <img src="{{ asset('storage/' . $settings->logo) }}" alt="Site Logo" class="h-11 w-11" />
+                        @else
+                            <h2 class="text-3xl font-extrabold ">{{ $settings->title ?? 'Purobi SMS' }}</h2>
+                        @endif
                     </a>
                 </div>
 
@@ -17,7 +21,7 @@
                     </x-nav-link>
                 </div> --}}
 
-               <!-- Report -->
+                <!-- Report -->
                 {{-- @can('view reports')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
@@ -26,7 +30,7 @@
                     </div>
                 @endcan --}}
 
-                     @canany(['view reports'])
+                @canany(['view reports'])
                     <div class="hidden sm:flex sm:items-center sm:ms-8">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -70,7 +74,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                 @can('view permissions')
+                                @can('view permissions')
                                     <x-dropdown-link :href="route('reports.invoice')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Invoice Report ') }}
@@ -78,7 +82,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                 @can('view permissions')
+                                @can('view permissions')
                                     <x-dropdown-link :href="route('reports.expense')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Expense Report ') }}
@@ -86,7 +90,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                 @can('view permissions')
+                                @can('view permissions')
                                     <x-dropdown-link :href="route('reports.profit-loss')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Profit & Loss') }}
@@ -159,7 +163,7 @@
                 @endcan
 
                 <!-- Services Dropdown -->
-                @can('view services' , 'view service category')
+                @can('view services', 'view service category')
                     <div class="hidden sm:flex sm:items-center sm:ms-8">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -306,7 +310,7 @@
                         </x-dropdown-link>
 
                         {{-- Settings --}}
-                            <x-dropdown-link :href="route('settings.index')">
+                        <x-dropdown-link :href="route('settings.index')">
                             <div class="flex items-center">
                                 <i class="fa-solid fa-gear w-4 h-4 me-2"></i>
                                 {{ __('Settings') }}
@@ -322,7 +326,7 @@
                                                 this.closest('form').submit();">
                                 <div class="flex items-center">
                                     <i class="fa-solid fa-right-from-bracket w-4 h-4 me-2"></i>
-                                
+
                                     {{ __('Log Out') }}
                                 </div>
                             </x-dropdown-link>
@@ -402,7 +406,7 @@
                         {{ __('Expenses') }}
                     </x-responsive-nav-link>
                 @endcan
-                 @can('view expense categories')
+                @can('view expense categories')
                     <x-responsive-nav-link :href="route('expense_categories.index')" :active="request()->routeIs('expense_categories.*')" class="pl-8">
                         {{ __('Expense Categories') }}
                     </x-responsive-nav-link>

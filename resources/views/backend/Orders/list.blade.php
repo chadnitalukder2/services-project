@@ -14,7 +14,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-gray-600">Total Orders</p>
-                                    <p class="text-3xl font-bold text-gray-900" id="totalOrders">
+                                    <p class="text-2xl font-bold text-gray-900" id="totalOrders">
                                         {{ $summary['total_orders'] }}</p>
                                 </div>
                                 <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">

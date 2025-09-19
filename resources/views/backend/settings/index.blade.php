@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-message />
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Setting</h2>
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Setting</h2>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
             <div class=" p-14">
