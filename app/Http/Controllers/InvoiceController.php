@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -80,12 +81,14 @@ class InvoiceController extends Controller implements HasMiddleware
     public function viewInvoice($id)
     {
         $invoice = Invoice::findOrFail($id);
-        return view('backend.invoices.generate-invoice');
+         $setting = Setting::getSettings();
+        return view('backend.invoices.generate-invoice', compact('invoice','setting'));
     }
 
     public function generateInvoice($id, $action = 'view')
     {
         $invoice = Invoice::findOrFail($id);
+        $setting = Setting::getSettings();
         $todayDate = Carbon::now()->format('d-m-Y');
 
         $data = ['order' => $invoice, 'todayDate' => $todayDate];

@@ -41,33 +41,44 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
             padding-bottom: 15px;
         }
-        
+         
         .header h1 {
             margin: 0;
             font-size: 28px;
             font-weight: bold;
         }
-        
+        .invoice_details{
+                display: flex;
+                justify-content: space-between;
+                gap: 20px;
+                margin-bottom: 5px;
+            }
+            .invoice_details_left{
+                flex: 0 0 150px;
+            }
+            .invoice_details_right{
+                flex: 1;
+            }
         .invoice-number {
             font-size: 16px;
             font-weight: bold;
         }
         
-        .details {
+        .invoice_info {
             display: flex;
             justify-content: space-between;
             margin-bottom: 25px;
+            margin-top: 15px;
             gap: 40px;
         }
         
-        .details div {
+        .invoice_info div {
             flex: 1;
         }
         
-        .details h3 {
+        .invoice_info h3 {
             margin: 0 0 8px 0;
             font-size: 12px;
             font-weight: bold;
@@ -81,7 +92,6 @@
             justify-content: space-between;
             margin-bottom: 25px;
             padding: 10px 0;
-            border-top: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
         }
         
@@ -103,23 +113,21 @@
         }
         
         .items th {
-            background: #000;
-            color: white;
-            padding: 8px;
+            background: #f9f9f9;
+            color: #111111;
+            text-transform: uppercase;
+            padding: 12px;
             text-align: left;
             font-size: 12px;
             font-weight: bold;
         }
         
         .items td {
-            padding: 8px;
+            padding: 12px;
             border-bottom: 1px solid #ddd;
             font-size: 13px;
         }
         
-        .items tr:nth-child(even) {
-            background: #f9f9f9;
-        }
         
         .right {
             text-align: right;
@@ -132,7 +140,6 @@
         .summary {
             width: 250px;
             margin-left: auto;
-            border: 1px solid #000;
             margin-bottom: 20px;
         }
         
@@ -193,7 +200,7 @@
         }
         
         /* Mobile responsive */
-        @media (max-width: 600px) {
+        @media (max-width: 359px) {
             body {
                 padding: 10px;
                 font-size: 12px;
@@ -204,8 +211,9 @@
                 text-align: center;
                 gap: 10px;
             }
+           
             
-            .details {
+            .invoice_info {
                 flex-direction: column;
                 gap: 20px;
             }
@@ -245,62 +253,58 @@
 <body>
     <div class="invoice p-5 border">
         <div class="header">
-            <h1>Invoice</h1>
+            <div>
+                <h1>Invoice</h1>
+            </div>
+            {{-- {{ $setting }} --}}
             <div class="invoice-number">
                 <img src="https://png.pngtree.com/element_pic/00/16/07/06577d261edb9ec.jpg" alt="Logo" style="max-height: 50px;"><br>
             </div>
         </div>
+
+        <div style="border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+            <div class="invoice_details">
+                <p class="invoice_details_left"><strong>Invoice :</strong></p>
+                <p class="invoice_details_right"> #001</p>
+            </div>
+            <div class="invoice_details">
+                 <p class="invoice_details_left"><strong>Invoice Date :</strong></p>
+                <p class="invoice_details_right">  Sep 18, 2024</p>
+            </div>
+             <div class="invoice_details">
+                 <p class="invoice_details_left"><strong>Expiry Date :</strong></p>
+                <p class="invoice_details_right"> Oct 18, 2024</p>
+            </div>
+        </div>
         
-        <div class="details">
+        <div class="invoice_info">
             <div>
-                <h3>From</h3>
                 <strong>Your Company Name</strong><br>
                 123 Business Street<br>
-                City, State 12345<br>
                 (555) 123-4567<br>
                 hello@company.com
             </div>
             
             <div>
-                <h3>To</h3>
                 <strong>Client Company Name</strong><br>
                 456 Client Avenue<br>
-                Client City, State 67890<br>
                 (555) 987-6543<br>
                 client@email.com
             </div>
         </div>
         
-        <div class="meta">
-            <div>
-                <strong>Invoice Date</strong>
-                Sep 18, 2024
-            </div>
-            <div>
-                <strong>Due Date</strong>
-                Oct 18, 2024
-            </div>
-            <div>
-                <strong>Terms</strong>
-                Net 30
-            </div>
-            <div>
-                <strong>Project</strong>
-                Website Dev
-            </div>
-        </div>
+      
         
         <table class="items">
             <tr>
-                <th style="width: 50%">Description</th>
-                <th class="center" style="width: 10%">Qty</th>
-                <th class="right" style="width: 20%">Rate</th>
-                <th class="right" style="width: 20%">Amount</th>
+                <th style="width: 50%">Service</th>
+                <th style="width: 10%; text-align: center;">Qty</th>
+                <th style="width: 20%; text-align: right;">Unit Price</th>
+                <th style="width: 20%; text-align: right;">Amount</th>
             </tr>
             <tr>
                 <td>
                     <strong>Website Design & Development</strong><br>
-                    Custom responsive website
                 </td>
                 <td class="center">1</td>
                 <td class="right">$2,500.00</td>
@@ -309,40 +313,18 @@
             <tr>
                 <td>
                     <strong>SEO Optimization</strong><br>
-                    On-page SEO setup
                 </td>
                 <td class="center">1</td>
+                <td class="right">$2,500.00</td>
                 <td class="right">$500.00</td>
-                <td class="right">$500.00</td>
             </tr>
-            <tr>
-                <td>
-                    <strong>Content Management</strong><br>
-                    CMS installation
-                </td>
-                <td class="center">1</td>
-                <td class="right">$300.00</td>
-                <td class="right">$300.00</td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Additional Revisions</strong><br>
-                    Client requested changes
-                </td>
-                <td class="center">3</td>
-                <td class="right">$100.00</td>
-                <td class="right">$300.00</td>
-            </tr>
+          
         </table>
         
         <div class="summary">
             <div class="summary-row">
                 <span>Subtotal:</span>
                 <span>$3,600.00</span>
-            </div>
-            <div class="summary-row">
-                <span>Tax (8.5%):</span>
-                <span>$306.00</span>
             </div>
             <div class="summary-row">
                 <span>Discount:</span>
@@ -354,12 +336,6 @@
             </div>
         </div>
         
-        <div class="terms">
-            <h4>Payment Terms</h4>
-            <p><strong>Payment due within 30 days.</strong> Late fees: 1.5% monthly.</p>
-            <p><strong>Bank:</strong> Account 123456789 | Routing 987654321</p>
-            <p>Thank you for your business! Questions: support@company.com</p>
-        </div>
         
         <div class="footer">
             <p>Invoice generated on September 18, 2024 | support@company.com | (555) 123-4567</p>
