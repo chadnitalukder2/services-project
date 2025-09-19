@@ -12,6 +12,7 @@ class Order extends Model
         'delivery_date',
         'status',
         'total_amount',
+        'subtotal',
         'discount_type',
         'discount_value',
         'discount_amount',

@@ -83,8 +83,8 @@ class InvoiceController extends Controller implements HasMiddleware
     public function viewInvoice($id)
     {
         $invoice = Invoice::findOrFail($id);
-         $setting = Setting::getSettings();
-        return view('backend.invoices.generate-invoice', compact('invoice','setting'));
+        $setting = Setting::getSettings();
+        return view('backend.invoices.generate-invoice', compact('invoice', 'setting'));
     }
 
     public function generateInvoice($id, $action = 'view')
@@ -92,10 +92,17 @@ class InvoiceController extends Controller implements HasMiddleware
         $invoice = Invoice::findOrFail($id);
         $todayDate = Carbon::now()->format('d-m-Y');
         $customer = Customer::find($invoice->customer_id);
-        $order = Order::find($invoice->order_id);
+        $order = Order::with('orderItems.service', 'service')->find($invoice->order_id);
         $expiryDate = Carbon::now()->addDays(7)->format('d-m-Y');
 
-        $data = ['order' => $invoice, 'todayDate' => $todayDate, 'expiryDate' => $expiryDate, 'customer' => $customer, 'settings' => Setting::getSettings()];
+        $data = [
+            'invoice' => $invoice,
+            'todayDate' => $todayDate,
+            'expiryDate' => $expiryDate,
+            'customer' => $customer,
+            'order' => $order,
+            'orderItems' => $order->orderItems
+        ];
 
         $pdf = Pdf::loadView('backend.invoices.generate-invoice', $data);
 

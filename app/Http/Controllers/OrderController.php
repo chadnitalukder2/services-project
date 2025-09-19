@@ -15,7 +15,7 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class OrderController extends Controller implements HasMiddleware
 {
-      public static function middleware(): array
+    public static function middleware(): array
     {
         return [
             new Middleware('permission:view orders', only: ['index', 'show']),
@@ -50,7 +50,7 @@ class OrderController extends Controller implements HasMiddleware
             }
             return $order;
         });
-       
+
         $totalOrders = (clone $ordersTotal)->count();
         $pendingOrders = (clone $ordersTotal)->where('status', 'pending')->count();
         $completedOrders = (clone  $ordersTotal)->whereIn('status', ['approved', 'done'])->count();
@@ -82,7 +82,8 @@ class OrderController extends Controller implements HasMiddleware
             'order_date' => 'required|date',
             'delivery_date' => 'required|date|after:order_date',
             'status' => 'nullable|string',
-            'total_amount' => 'required|numeric|min:0',
+            'total_amount' => 'nullable|numeric|min:0',
+            'subtotal' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
 
             // Custom fields validation
@@ -119,6 +120,7 @@ class OrderController extends Controller implements HasMiddleware
                 'order_date' => $request->order_date,
                 'delivery_date' => $request->delivery_date,
                 'status' => $request->status,
+                'subtotal' => $request->subtotal,
                 'total_amount' => $request->total_amount,
                 'discount_type' => $request->discount_type,
                 'discount_value' => $request->discount_value,
@@ -179,6 +181,7 @@ class OrderController extends Controller implements HasMiddleware
             'delivery_date' => 'nullable|date|after:order_date',
             'status' => 'nullable|string',
             'total_amount' => 'nullable|numeric|min:0',
+            'subtotal' => 'nullable|numeric|min:0',
             'custom_fields' => 'nullable|array',
             'notes' => 'nullable|string',
 
@@ -206,12 +209,13 @@ class OrderController extends Controller implements HasMiddleware
         if ($request->custom_fields) {
             $customFieldsData = json_encode($request->custom_fields);
         }
-        // Update order
+
         $order->update([
             'customer_id' => $request->customer_id,
             'order_date' => $request->order_date,
             'delivery_date' => $request->delivery_date,
             'status' => $request->status,
+            'subtotal' => $request->subtotal,
             'total_amount' => $request->total_amount,
             'discount_type' => $request->discount_type,
             'discount_value' => $request->discount_value,
@@ -235,8 +239,15 @@ class OrderController extends Controller implements HasMiddleware
             $orderItem = $order->orderItems()->where('service_id', $service['id'])->first();
 
             if ($orderItem) {
+                // update existing
                 $orderItem->update([
-                    'order_id' => $order->id,
+                    'quantity' => $service['quantity'],
+                    'unit_price' => $service['unit_price'],
+                    'subtotal' => $service['subtotal'],
+                ]);
+            } else {
+                // create new if not exists
+                $order->orderItems()->create([
                     'service_id' => $service['id'],
                     'quantity' => $service['quantity'],
                     'unit_price' => $service['unit_price'],

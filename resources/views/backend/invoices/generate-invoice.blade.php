@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Invoice</title>
@@ -83,6 +84,7 @@
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+
         .info-content {
             margin: 0;
             padding-bottom: 7px;
@@ -97,6 +99,7 @@
         .items th {
             background: #f2f2f2;
         }
+
         .items td {
             border-bottom: 1px solid #ddd;
         }
@@ -133,6 +136,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="invoice">
 
@@ -145,7 +149,8 @@
                         @if (isset($settings) && $settings->logo == null)
                             <h2>{{ $settings->title }}</h2>
                         @elseif (isset($settings) && $settings->logo != null)
-                             <img src="{{ public_path('storage/' . $settings->logo) }}" alt="Logo" style="height:60px; width:60px;">
+                            <img src="{{ public_path('storage/' . $settings->logo) }}" alt="Logo"
+                                style="height:60px; width:60px;">
                         @endif
                     </td>
                 </tr>
@@ -193,43 +198,44 @@
 
         <!-- Items -->
         <table class="items">
-            <tr> 
+            <tr>
                 <th style="width: 50%; text-align: left;">Service</th>
                 <th style="width: 10%" class="center">Qty</th>
                 <th style="width: 20%" class="right">Unit Price</th>
                 <th style="width: 20%" class="right">Amount</th>
             </tr>
-            <tr>
-                <td>Website Design & Development</td>
-                <td class="center">1</td>
-                <td class="right">$2,500.00</td>
-                <td class="right">$2,500.00</td>
-            </tr>
-            <tr>
-                <td>SEO Optimization</td>
-                <td class="center">1</td>
-                <td class="right">$500.00</td>
-                <td class="right">$500.00</td>
-            </tr>
+            @foreach ($orderItems as $item)
+                <tr>
+                    <td>{{ $item->service->name ?? 'N/A' }}</td>
+                    <td class="center">{{ $item->quantity }}</td>
+                    <td class="right">${{ number_format($item->service->unit_price, 2) }}</td>
+                    <td class="right">${{ number_format($item->subtotal) }}</td>
+                </tr>
+            @endforeach
+
         </table>
 
         <!-- Summary -->
         <table class="summary">
             <tr>
                 <td>Subtotal</td>
-                <td class="right">$3,000.00</td>
+                <td class="right">${{ $order->subtotal }}</td>
             </tr>
             <tr>
                 <td>Discount</td>
-                <td class="right">-$100.00</td>
+                <td class="right">-${{ $order->discount_amount }}</td>
             </tr>
             <tr>
                 <td>Total</td>
-                <td class="right">$2,900.00</td>
+                <td class="right">${{ number_format($invoice->amount, 2) }}</td>
+            </tr>
+            <tr>
+                <td>Paid Amount</td>
+                <td class="right">${{ number_format($invoice->paid_amount, 2) }}</td>
             </tr>
             <tr>
                 <td>Due Amount</td>
-                <td class="right">$2,900.00</td>
+                <td class="right">${{ number_format($invoice->due_amount, 2) }}</td>
             </tr>
         </table>
 
@@ -239,4 +245,5 @@
         </div>
     </div>
 </body>
+
 </html>
