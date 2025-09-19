@@ -160,7 +160,7 @@
                             <label for="category_name" class="block text-base font-medium">Category Name
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="category_name" name="name"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                             <div id="category-name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
@@ -197,7 +197,7 @@
                                 Category Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="edit_category_name" name="name"
-                                class="mt-4 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                class="mt-4 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                             <div id="edit-category-name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
