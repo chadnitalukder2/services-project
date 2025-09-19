@@ -10,7 +10,7 @@
                     @csrf
                     <div class="flex items-center gap-5 mb-6">
                         <div class="mb-4 w-1/2">
-                            <label class="block text-sm font-medium mb-2">Website Title <span
+                            <label class="block text-base font-medium mb-2">Company Name <span
                                     class="text-red-500">*</span></label>
                             <input type="text" name="title" value="{{ old('title', $setting->title ?? '') }}"
                                 class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
@@ -18,20 +18,20 @@
                         </div>
 
                         <div class="mb-4 w-1/2">
-                            <label class="block text-sm font-medium mb-2">Address</label>
+                            <label class="block text-base font-medium mb-2">Address</label>
                             <input type="text" name="address" value="{{ old('address', $setting->address ?? '') }}"
                                 class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                         </div>
                     </div>
                     <div class="flex items-center gap-5 mb-6">
                         <div class="mb-4 w-1/2">
-                            <label class="block text-sm font-medium mb-2">Phone</label>
+                            <label class="block text-base font-medium mb-2">Phone</label>
                             <input type="text" name="phone" value="{{ old('phone', $setting->phone ?? '') }}"
                                 class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                         </div>
 
                         <div class="mb-4 w-1/2">
-                            <label class="block text-sm font-medium mb-2">Email</label>
+                            <label class="block text-base font-medium mb-2">Email</label>
                             <input type="email" name="email" value="{{ old('email', $setting->email ?? '') }}"
                                 class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                         </div>
@@ -39,14 +39,14 @@
 
                     <div class="flex items-center gap-5 mb-6">
                         <div class="mb-4 w-1/2">
-                            <label class="block text-sm font-medium mb-2">Currency</label>
+                            <label class="block text-base font-medium mb-2">Currency</label>
                             <input type="text" name="currency"
                                 value="{{ old('currency', $setting->currency ?? '') }}" placeholder="e.g., USD, BDT"
                                 class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                         </div>
 
                         <div class="mb-4 w-1/2">
-                            <label class="block text-sm font-medium mb-2">Currency Position</label>
+                            <label class="block text-base font-medium mb-2">Currency Position</label>
                             <select name="currency_position"
                                 class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <option value="left"
