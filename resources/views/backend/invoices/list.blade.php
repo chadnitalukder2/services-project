@@ -68,16 +68,39 @@
                                             {{ $invoice->customer->name ?? '---' }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ number_format($invoice->amount, 2) }} tk
+                                            @if ($settings->currency_position == 'left')
+                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($invoice->amount, 2) }}
+                                            @else
+                                                {{ number_format($invoice->amount, 2) }}
+                                                {{ $settings->currency ?? 'Tk' }}
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ number_format($invoice->paid_amount, 2) }} tk
+                                            @if ($settings->currency_position == 'left')
+                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($invoice->paid_amount, 2) }}
+                                            @else
+                                                {{ number_format($invoice->paid_amount, 2) }}
+                                                {{ $settings->currency ?? 'Tk' }}
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            <span
-                                                class="{{ $invoice->due_amount > 0 ? 'text-red-600 font-medium' : 'text-green-600' }}">
-                                                {{ number_format($invoice->due_amount, 2) }} tk
-                                            </span>
+                                            @if ($settings->currency_position == 'left')
+                                                <span
+                                                    class="{{ $invoice->due_amount > 0 ? 'text-red-600 font-medium' : 'text-green-600' }}">
+                                                    {{ $settings->currency ?? 'Tk' }}
+                                                    {{ number_format($invoice->due_amount, 2) }}
+
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="{{ $invoice->due_amount > 0 ? 'text-red-600 font-medium' : 'text-green-600' }}">
+                                                    {{ number_format($invoice->due_amount, 2) }}
+                                                    {{ $settings->currency ?? 'Tk' }}
+                                                </span>
+                                            @endif
+
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900 capitalize">
                                             {{ $invoice->payment_method ?? '---' }}

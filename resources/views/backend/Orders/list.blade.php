@@ -202,7 +202,12 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 text-left  whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ number_format($order->total_amount, 2) }} tk</td>
+                                            @if ($settings->currency_position == 'left')
+                                                  {{ $settings->currency ?? 'Tk' }} {{ number_format($order->total_amount, 2) }}
+                                            @else
+                                                {{ number_format($order->total_amount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
 
@@ -399,7 +404,8 @@
                                 <tr>
                                     <td colspan="3" class="px-4 text-sm text-right font-semibold"
                                         style="padding-top:5px; padding-bottom: 15px">Total Amount:</td>
-                                    <td class="px-4  text-right  font-bold text-sm" id="modalTotalAmount">0.00 tk</td>
+                                    <td class="px-4  text-right  font-bold text-sm" id="modalTotalAmount">0.00
+                                        {{ $settings->currency ?? 'Tk' }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -533,7 +539,19 @@
                 document.getElementById('modalDeliveryDate').textContent = formatDate(order.delivery_date);
                 document.getElementById('modalStatus').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(
                     1);
-                document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} tk`;
+                //currency
+                const currency = "{{ $settings->currency ?? 'Tk' }}";
+                const currencyPosition = "{{ $settings->currency_position ?? 'right' }}"; // left or right
+                const totalAmount = parseFloat(order.total_amount).toFixed(2);
+
+                document.getElementById('modalTotalAmount').textContent =
+                    currencyPosition === 'left' ?
+                    `${currency} ${totalAmount}` :
+                    `${totalAmount} ${currency}`;
+
+                //document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} tk`;
+
+
                 document.getElementById('modalDiscount').textContent = `- ${parseFloat(order.discount_amount).toFixed(2)}`;
 
                 // Populate order items

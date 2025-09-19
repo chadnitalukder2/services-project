@@ -132,7 +132,11 @@
                                             {{ $expense->category->name }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ number_format($expense->amount, 2) }} tk
+                                             @if ($settings->currency_position == 'left')
+                                              {{ $settings->currency ?? 'Tk' }}  {{ number_format($expense->amount, 2) }}
+                                            @else
+                                               {{ number_format($expense->amount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                            @endif
                                         </td>
 
 
