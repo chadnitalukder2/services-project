@@ -167,7 +167,7 @@
 
                                         @canany(['edit services', 'delete services'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
                                                 @can('edit services')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditServiceModal({{ $service->id }})"
@@ -253,7 +253,7 @@
 
             <!-- Create Service Modal -->
             <x-modal name="create-service" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="p-6">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New Service</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -265,21 +265,21 @@
                     <form id="createServiceForm" class="space-y-4">
 
                         <!-- Name -->
-                        <div>
-                            <label for="modal_name" class="block text-sm font-medium text-gray-700 mt-6">Service Name
+                        <div class="mt-6">
+                            <label for="modal_name" class="block text-base font-medium">Service Name
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="modal_name" name="name"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                             <div id="modal_name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
                         {{-- Category --}}
                         <div>
                             <label for="modal_category_id"
-                                class="block text-sm font-medium text-gray-700 mt-6">Category <span
+                                class="block text-base font-medium mt-6">Category <span
                                     class="text-red-500">*</span></label>
                             <select id="modal_category_id" name="category_id"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Category</option>
                                 @foreach ($serviceCategories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -290,19 +290,19 @@
 
                         <!-- Price -->
                         <div>
-                            <label for="modal_price" class="block text-sm font-medium text-gray-700 mt-6">Price
+                            <label for="modal_price" class="block text-base font-medium mt-6">Price
                                 <span class="text-red-500">*</span></label>
                             <input type="number" id="modal_price" name="unit_price"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                             <div id="modal_price-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
                         <!-- Status -->
                         <div>
-                            <label for="modal_status" class="block text-sm font-medium text-gray-700 mt-6">Status
+                            <label for="modal_status" class="block text-base font-medium mt-6">Status
                                 <span class="text-red-500">*</span></label>
                             <select id="modal_status" name="status"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                class="block text-sm  mt-1 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                 <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active
                                 </option>
                                 <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>
@@ -314,19 +314,19 @@
                         <!-- Description -->
                         <div>
                             <label for="modal_description"
-                                class="block text-sm font-medium text-gray-700 mt-6">Description</label>
+                                class="block text-base font-medium mt-6">Description</label>
                             <textarea id="modal_description" name="description" rows="5"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                                class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                             <div id="modal_description-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
                         <div class="flex justify-end gap-3 mt-6 pt-4">
                             <button type="button" x-on:click="$dispatch('close-modal', 'create-service')"
-                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
+                                class="px-4 py-2 text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
                                 Cancel
                             </button>
                             <button type="submit" id="save-service-btn"
-                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md">
+                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md">
                                 <span id="save-service-text">Save service</span>
                                 <span id="save-service-loading" class="hidden">Saving...</span>
                             </button>
@@ -339,7 +339,7 @@
 
             <!-- Edit Service Modal -->
             <x-modal name="edit-service" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="p-6">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit Service</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -353,22 +353,22 @@
 
                         <!-- Name -->
                         <div>
-                            <label for="edit_name" class="block text-sm font-medium text-gray-700 mt-6">
+                            <label for="edit_name" class="block text-base font-medium mt-6">
                                 Service Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="edit_name" name="name"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm 
+                                class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm 
                            focus:border-gray-900 focus:ring-gray-900">
                             <div id="edit_name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
                         <!-- Category -->
                         <div>
-                            <label for="edit_category_id" class="block text-sm font-medium text-gray-700 mt-6">
+                            <label for="edit_category_id" class="block text-base font-medium mt-6">
                                 Category <span class="text-red-500">*</span>
                             </label>
                             <select id="edit_category_id" name="category_id"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm 
+                                class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm 
                            focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Category</option>
                                 @foreach ($serviceCategories as $category)
@@ -377,27 +377,25 @@
                             </select>
                             <div id="edit_category-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
-
-
-
+                        
                         <!-- Price -->
                         <div>
-                            <label for="edit_price" class="block text-sm font-medium text-gray-700 mt-6">
+                            <label for="edit_price" class="block text-base font-medium mt-6">
                                 Price <span class="text-red-500">*</span>
                             </label>
                             <input type="number" id="edit_price" name="unit_price" step="0.01" min="0"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm 
+                                class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm 
                            focus:border-gray-900 focus:ring-gray-900">
                             <div id="edit_price-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
                         <!-- Status -->
                         <div>
-                            <label for="edit_status" class="block text-sm font-medium text-gray-700 mt-6">
+                            <label for="edit_status" class="block text-base font-medium mt-6">
                                 Status <span class="text-red-500">*</span>
                             </label>
                             <select id="edit_status" name="status"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm 
+                                class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm 
                            focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Status</option>
                                 <option value="active">Active</option>
@@ -408,11 +406,11 @@
 
                         <!-- Description -->
                         <div>
-                            <label for="edit_description" class="block text-sm font-medium text-gray-700 mt-6">
+                            <label for="edit_description" class="block text-base font-medium mt-6">
                                 Description
                             </label>
                             <textarea id="edit_description" name="description" rows="5"
-                                class="mt-3 block w-full border-gray-300 rounded-md shadow-sm 
+                                class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm 
                            focus:border-gray-900 focus:ring-gray-900"></textarea>
                             <div id="edit_description-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
@@ -420,11 +418,11 @@
                         <!-- Buttons -->
                         <div class="flex justify-end gap-3 mt-6 pt-4">
                             <button type="button" x-on:click="$dispatch('close-modal', 'edit-service')"
-                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
+                                class="px-4 py-2 text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
                                 Cancel
                             </button>
                             <button type="submit" id="update-service-btn"
-                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md">
+                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md">
                                 <span id="update-service-text">Update Service</span>
                                 <span id="update-service-loading" class="hidden">Updating...</span>
                             </button>

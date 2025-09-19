@@ -64,7 +64,7 @@
 
                                         @canany(['edit roles', 'delete roles'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
                                                 {{--  --}}
 
                                                 @can('edit roles')
@@ -153,7 +153,7 @@
 
             <!-- Create Role Modal -->
             <x-modal name="create-role" class="sm:max-w-md mt-20" maxWidth="5xl">
-                <div class="p-6">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -164,21 +164,21 @@
 
                     <form id="createRoleForm">
                         @csrf
-                        <div class="mb-4">
-                            <label for="rolName" class="block text-sm font-medium text-gray-700 mb-2">
+                        <div class="mb-4 mt-6">
+                            <label for="rolName" class="block text-base font-medium">
                                 Role Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="roleName" name="name"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                                class="w-full mt-3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                                 placeholder="Enter role name">
                             <div id="roleNameError" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-base font-medium">
                                 Permissions
                             </label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
+                            <div class="grid grid-cols-1 mt-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
                                 @if (isset($permissions) && $permissions->isNotEmpty())
                                     @foreach ($permissions as $permission)
                                         <label class="flex items-center">
@@ -214,7 +214,7 @@
 
             <!-- Edit Role Modal -->
             <x-modal name="edit-role" class="sm:max-w-md mt-20" maxWidth="5xl">
-                <div class="p-8">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -227,8 +227,8 @@
                         @csrf
                         <input type="hidden" id="editRoleId" name="role_id">
 
-                        <div class="mb-4">
-                            <label for="editRoleName" class="block text-sm font-medium text-gray-700 mb-2">
+                        <div class="mb-4 mt-6">
+                            <label for="editRoleName" class="block text-base font-medium mb-2">
                                 Role Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="editRoleName" name="name"
@@ -238,7 +238,7 @@
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-base font-medium mb-2">
                                 Permissions
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3"
@@ -255,12 +255,12 @@
 
                         <div class="flex justify-end gap-3">
                             <button type="button"
-                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                                 x-on:click="$dispatch('close-modal', 'edit-role')">
                                 Cancel
                             </button>
                             <button type="submit" id="editRoleBtn"
-                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded ">
+                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md ">
                                 <span id="editBtnText">Update Role</span>
                                 <span id="editBtnLoading" class="hidden">
                                     <i class="fas fa-spinner fa-spin mr-1"></i>Updating...

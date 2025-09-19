@@ -206,7 +206,7 @@
 
             <!-- Create customer Modal -->
             <x-modal name="create-customer" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="p-6">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New Customer</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -218,57 +218,57 @@
                     <form id="createCustomerForm" class="space-y-4">
                         <div class="grid grid-cols-1 gap-4">
                             <!-- Name -->
-                            <div>
-                                <label for="customer_name" class="block text-sm font-medium text-gray-700">Name
+                            <div class="mt-3">
+                                <label for="customer_name" class="block text-base font-medium">Name
                                     <span class="text-red-500">*</span></label>
                                 <input type="text" id="customer_name" name="name"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
                             <!-- Phone -->
-                            <div>
-                                <label for="customer_phone" class="block text-sm font-medium text-gray-700">Phone
+                            <div class="mt-2">
+                                <label for="customer_phone" class="block text-base font-medium">Phone
                                     <span class="text-red-500">*</span></label>
                                 <input type="number" id="customer_phone" name="phone"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
 
                             <!-- Email -->
-                            <div>
+                            <div class="mt-2">
                                 <label for="customer_email"
-                                    class="block text-sm font-medium text-gray-700">Email</label>
+                                    class="block text-base font-medium">Email</label>
                                 <input type="email" id="customer_email" name="email"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
 
                             <!-- Address -->
-                            <div>
+                            <div class="mt-2">
                                 <label for="customer_address"
-                                    class="block text-sm font-medium text-gray-700">Address</label>
+                                    class="block text-base font-medium">Address</label>
                                 <textarea id="customer_address" name="address" rows="3"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                                 <div id="address-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
 
                             <!-- Company (Optional) -->
-                            <div>
+                            <div class="mt-2">
                                 <label for="customer_company"
-                                    class="block text-sm font-medium text-gray-700">Company</label>
+                                    class="block text-base font-medium">Company</label>
                                 <input type="text" id="customer_company" name="company"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="company-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
                         </div>
 
-                        <div class="flex justify-end gap-3 mt-6 pt-4 ">
+                        <div class="flex justify-end gap-3 mt-10 pt-4 ">
                             <button type="button" x-on:click="$dispatch('close-modal', 'create-customer')"
-                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                class="px-4 py-2 text-sm  bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
                                 Cancel
                             </button>
                             <button type="submit" id="save-customer-btn"
-                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                class="px-4 py-2 text-sm  bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
                                 <span id="save-customer-text">Save Customer</span>
                                 <span id="save-customer-loading" class="hidden">Saving...</span>
                             </button>
@@ -280,7 +280,7 @@
 
             <!-- Edit Customer Modal -->
             <x-modal name="edit-customer" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="p-6">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Customer</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -294,58 +294,58 @@
 
                         <div class="grid grid-cols-1 gap-4">
                             <!-- Name -->
-                            <div>
-                                <label for="edit_customer_name" class="block text-sm font-medium text-gray-700">Name
+                            <div class="mt-3">
+                                <label for="edit_customer_name" class="block text-base font-medium">Name
                                     <span class="text-red-500">*</span></label>
                                 <input type="text" id="edit_customer_name" name="name"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2  text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="edit-name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
 
                             <!-- Phone -->
-                            <div>
-                                <label for="edit_customer_phone" class="block text-sm font-medium text-gray-700">Phone
+                            <div class="mt-2">
+                                <label for="edit_customer_phone" class="block text-base font-medium">Phone
                                     <span class="text-red-500">*</span></label>
                                 <input type="number" id="edit_customer_phone" name="phone"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="edit-phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
 
                             <!-- Email -->
-                            <div>
+                            <div class="mt-2">
                                 <label for="edit_customer_email"
-                                    class="block text-sm font-medium text-gray-700">Email</label>
+                                    class="block text-base font-medium">Email</label>
                                 <input type="email" id="edit_customer_email" name="email"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="edit-email-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
 
                             <!-- Address -->
-                            <div>
+                            <div class="mt-2">
                                 <label for="edit_customer_address"
-                                    class="block text-sm font-medium text-gray-700">Address</label>
+                                    class="block text-base font-medium">Address</label>
                                 <textarea id="edit_customer_address" name="address" rows="3"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                                 <div id="edit-address-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
 
                             <!-- Company -->
-                            <div>
+                            <div class="mt-2">
                                 <label for="edit_customer_company"
-                                    class="block text-sm font-medium text-gray-700">Company</label>
+                                    class="block text-base font-medium">Company</label>
                                 <input type="text" id="edit_customer_company" name="company"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="edit-company-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
                         </div>
 
-                        <div class="flex justify-end gap-3 mt-6 pt-4">
+                        <div class="flex justify-end gap-3 mt-10 pt-4">
                             <button type="button" x-on:click="$dispatch('close-modal', 'edit-customer')"
-                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                class="px-4 py-2 text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
                                 Cancel
                             </button>
                             <button type="submit" id="update-customer-btn"
-                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
                                 <span id="update-customer-text">Update Customer</span>
                                 <span id="update-customer-loading" class="hidden">Updating...</span>
                             </button>

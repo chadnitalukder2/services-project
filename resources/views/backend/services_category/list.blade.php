@@ -57,7 +57,7 @@
 
                                         @canany(['edit service category', 'delete service category'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
 
                                                 @can('edit service category')
                                                     <a href="javascript:void(0)"
@@ -144,8 +144,8 @@
             </div>
 
             <!-- Create customer Modal -->
-            <x-modal name="create-service-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
-                <div class="p-6">
+            <x-modal name="create-service-category" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New Service Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -156,8 +156,8 @@
 
                     <form id="createServiceCategoryForm" class="space-y-4">
                         <!-- Name -->
-                        <div>
-                            <label for="category_name" class="block text-sm font-medium text-gray-700">Category Name
+                        <div class="mt-6">
+                            <label for="category_name" class="block text-base font-medium">Category Name
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="category_name" name="name"
                                 class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
@@ -166,11 +166,11 @@
 
                         <div class="flex justify-end gap-3 mt-6 pt-4">
                             <button type="button" x-on:click="$dispatch('close-modal', 'create-service-category')"
-                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                class="px-4 py-2 text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
                                 Cancel
                             </button>
                             <button type="submit" id="save-category-btn"
-                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
                                 <span id="save-category-text">Save Category</span>
                                 <span id="save-category-loading" class="hidden">Saving...</span>
                             </button>
@@ -180,8 +180,8 @@
             </x-modal>
 
             <!-- Update customer Modal -->
-            <x-modal name="edit-service-category" class="sm:max-w-md mt-20" maxWidth="lg" marginTop="20">
-                <div class="p-6">
+            <x-modal name="edit-service-category" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit service Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -192,8 +192,8 @@
 
                     <form id="editserviceCategoryForm" class="space-y-4">
                         <input type="hidden" id="edit_category_id">
-                        <div>
-                            <label for="edit_category_name" class="block text-sm font-medium text-gray-700">
+                        <div class="mt-6">
+                            <label for="edit_category_name" class="block text-base font-medium">
                                 Category Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="edit_category_name" name="name"
@@ -203,11 +203,11 @@
 
                         <div class="flex justify-end gap-3 mt-6 pt-4">
                             <button type="button" x-on:click="$dispatch('close-modal', 'edit-service-category')"
-                                class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                class="px-4 py-2 text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
                                 Cancel
                             </button>
                             <button type="submit" id="update-category-btn"
-                                class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
+                                class="px-4 text-sm py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition">
                                 <span id="update-category-text">Update Category</span>
                                 <span id="update-category-loading" class="hidden">Updating...</span>
                             </button>

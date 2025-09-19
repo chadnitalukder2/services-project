@@ -74,7 +74,7 @@
 
                                         @canany(['edit users', 'delete users'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
                                                 @can('edit users')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditUserModal({{ $user->id }})"
@@ -160,7 +160,7 @@
 
             <!-- Create User Modal -->
             <x-modal name="create-user" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="p-8">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New User</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -171,8 +171,8 @@
 
                     <form id="createUserForm">
                         @csrf
-                        <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span
+                        <div class="mb-4 mt-6">
+                            <label for="name" class="block text-base font-medium mb-2">Name <span
                                     class="text-red-500">*</span></label>
                             <input id="name" type="text" name="name"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
@@ -180,7 +180,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email <span
+                            <label for="email" class="block text-base font-medium mb-2">Email <span
                                     class="text-red-500">*</span></label>
                             <input id="email" type="email" name="email"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
@@ -188,7 +188,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password <span
+                            <label for="password" class="block text-base font-medium mb-2">Password <span
                                     class="text-red-500">*</span></label>
                             <input id="password" type="password" name="password"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
@@ -196,7 +196,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-2">Confirm
+                            <label for="confirm_password" class="block text-base font-medium mb-2">Confirm
                                 Password <span class="text-red-500">*</span></label>
                             <input id="confirm_password" type="password" name="confirm_password"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
@@ -204,7 +204,7 @@
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-base font-medium mb-2">
                                 Roles
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
@@ -225,12 +225,12 @@
 
                         <div class="flex justify-end gap-3">
                             <button type="button"
-                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                                 x-on:click="$dispatch('close-modal', 'create-user')">
                                 Cancel
                             </button>
                             <button type="submit" id="createUserBtn"
-                                class="px-4 py-2 text-sm bg-gray-800 text-white rounded hover:bg-gray-700">
+                                class="px-4 py-2 text-sm bg-gray-800 text-white rounded-md hover:bg-gray-700">
                                 <span id="createBtnText">Create User</span>
                                 <span id="createBtnLoading" class="hidden">
                                     <i class="fas fa-spinner fa-spin mr-1"></i>Creating...
@@ -243,7 +243,7 @@
 
             <!-- Edit User Modal -->
             <x-modal name="edit-user" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="p-8">
+                <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit User</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -256,22 +256,22 @@
                         @csrf
                         <input type="hidden" id="edit_id" name="id">
 
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <div class="mb-6 mt-6">
+                            <label class="block text-base font-medium mb-2">Name <span class="text-red-500">*</span></label>
                             <input id="edit_name" type="text" name="name"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md">
                             <p id="editNameError" class="text-red-500 text-sm mt-1 hidden"></p>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <div class="mb-6">
+                            <label class="block text-base font-medium mb-2">Email <span class="text-red-500">*</span></label>
                             <input id="edit_email" type="email" name="email"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md">
                             <p id="editEmailError" class="text-red-500 text-sm mt-1 hidden"></p>
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-base font-medium mb-2">
                                 Roles
                             </label>
                             <div id="edit_roles"
@@ -292,11 +292,11 @@
                         </div>
 
                         <div class="flex justify-end gap-3">
-                            <button type="button" class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded"
+                            <button type="button" class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                                 x-on:click="$dispatch('close-modal', 'edit-user')">Cancel</button>
 
                             <button type="submit" id="editUserBtn"
-                                class="px-4 py-2 text-sm bg-gray-800 text-white rounded">
+                                class="px-4 py-2 text-sm bg-gray-800 text-white rounded-md hover:bg-gray-700">
                                 <span id="editBtnText">Update User</span>
                                 <span id="editBtnLoading" class="hidden">
                                     <i class="fas fa-spinner fa-spin mr-1"></i>Updating...

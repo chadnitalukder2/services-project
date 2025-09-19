@@ -334,7 +334,7 @@
                                     <!-- Name -->
                                     <div>
                                         <label for="customer_name"
-                                            class="block text-base font-medium ">Name  <span class="text-red-500">*</span></label>
+                                            class="block text-base font-medium">Name  <span class="text-red-500">*</span></label>
                                         <input type="text" id="customer_name" name="name"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
