@@ -2,346 +2,241 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
-     <link rel="icon" sizes="32x32" href="{{ asset('storage/' . $settings->logo) }}">
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @page {
             size: A4;
-            margin: 0.5in;
+            margin: 20mm;
         }
-        
-        @media print {
-            body { margin: 0; }
-            .no-print { display: none; }
-        }
-        
-        * {
-            box-sizing: border-box;
-        }
-        
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: white;
-            color: #000;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 14px;
-            line-height: 1.4;
+            color: #000;
         }
-        
+
         .invoice {
-            max-width: 8.5in;
+            width: 100%;
             margin: 0 auto;
-            background: white;
         }
-        
+
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
+            width: 100%;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
-         
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
+
+        .header-table {
+            width: 100%;
+        }
+
+        .header-table td {
+            vertical-align: middle;
+        }
+
+        .header-title {
+            font-size: 24px;
             font-weight: bold;
         }
-        .invoice_details{
-                display: flex;
-                justify-content: space-between;
-                gap: 20px;
-                margin-bottom: 5px;
-            }
-            .invoice_details_left{
-                flex: 0 0 150px;
-            }
-            .invoice_details_right{
-                flex: 1;
-            }
-        .invoice-number {
-            font-size: 16px;
-            font-weight: bold;
+
+        .logo {
+            text-align: right;
         }
-        
-        .invoice_info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            margin-top: 15px;
-            gap: 40px;
+
+        .invoice-details {
+            margin-bottom: 20px;
         }
-        
-        .invoice_info div {
-            flex: 1;
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        
-        .invoice_info h3 {
-            margin: 0 0 8px 0;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-bottom: 1px solid #000;
-            padding-bottom: 3px;
+
+        .details-table td {
+            padding: 5px 0;
         }
-        
-        .meta {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
+
+        .invoice-info {
+            width: 100%;
+            margin-bottom: 10px;
+            border-top: 1px solid #ddd;
             padding: 10px 0;
-            border-bottom: 1px solid #ccc;
         }
-        
-        .meta div {
-            flex: 1;
-            text-align: center;
+
+        .info-table {
+            width: 100%;
         }
-        
-        .meta strong {
-            display: block;
-            font-size: 12px;
-            margin-bottom: 3px;
+
+        .info-table td {
+            width: 50%;
+            vertical-align: top;
+            padding: 5px 0px;
         }
-        
+
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
         .items {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        
-        .items th {
-            background: #f9f9f9;
-            color: #111111;
-            text-transform: uppercase;
-            padding: 12px;
-            text-align: left;
-            font-size: 12px;
-            font-weight: bold;
+        .info-content {
+            margin: 0;
+            padding-bottom: 7px;
         }
-        
+
+        .items th,
         .items td {
             padding: 12px;
-            border-bottom: 1px solid #ddd;
-            font-size: 13px;
+            font-size: 12px;
         }
-        
-        
+
+        .items th {
+            background: #f2f2f2;
+        }
+        .items td {
+            border-bottom: 1px solid #ddd;
+        }
+
         .right {
             text-align: right;
         }
-        
+
         .center {
             text-align: center;
         }
-        
+
         .summary {
             width: 250px;
             margin-left: auto;
-            margin-bottom: 20px;
+            border-collapse: collapse;
         }
-        
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 12px;
+
+        .summary td {
+            padding: 12px 0px;
             border-bottom: 1px solid #ddd;
         }
-        
-        .summary-row:last-child {
+
+        .summary tr:last-child td {
+            font-weight: bold;
             border-bottom: none;
-            background: #000;
-            color: white;
-            font-weight: bold;
         }
-        
-        .terms {
-            padding: 15px;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
-            margin-bottom: 15px;
-        }
-        
-        .terms h4 {
-            margin: 0 0 8px 0;
-            font-size: 13px;
-            font-weight: bold;
-        }
-        
-        .terms p {
-            margin: 5px 0;
-            font-size: 12px;
-        }
-        
+
         .footer {
             text-align: center;
             font-size: 11px;
             color: #666;
-            padding-top: 15px;
-            border-top: 1px solid #ddd;
-        }
-        
-        .print-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #000;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        .print-btn:hover {
-            background: #333;
-        }
-        
-        /* Mobile responsive */
-        @media (max-width: 359px) {
-            body {
-                padding: 10px;
-                font-size: 12px;
-            }
-            
-            .header {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-           
-            
-            .invoice_info {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .meta {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .meta div {
-                text-align: left;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 5px;
-            }
-            
-            .items th,
-            .items td {
-                padding: 6px 4px;
-                font-size: 11px;
-            }
-            
-            .summary {
-                width: 100%;
-            }
-            
-            .print-btn {
-                position: relative;
-                top: auto;
-                right: auto;
-                display: block;
-                margin: 10px auto;
-                width: 150px;
-            }
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <div class="invoice p-5 border">
+    <div class="invoice">
+
+        <!-- Header -->
         <div class="header">
-            <div>
-                <h1>Invoice</h1>
-            </div>
-            {{-- {{ $setting }} --}}
-            <div class="invoice-number">
-                <img src="https://png.pngtree.com/element_pic/00/16/07/06577d261edb9ec.jpg" alt="Logo" style="max-height: 50px;"><br>
-            </div>
+            <table class="header-table">
+                <tr>
+                    <td class="header-title">Invoice</td>
+                    <td class="logo">
+                        @if (isset($settings) && $settings->logo == null)
+                            <h2>{{ $settings->title }}</h2>
+                        @elseif (isset($settings) && $settings->logo != null)
+                             <img src="{{ public_path('storage/' . $settings->logo) }}" alt="Logo" style="height:60px; width:60px;">
+                        @endif
+                    </td>
+                </tr>
+            </table>
         </div>
 
-        <div style="border-bottom: 1px solid #ddd; padding-bottom: 10px;">
-            <div class="invoice_details">
-                <p class="invoice_details_left"><strong>Invoice :</strong></p>
-                <p class="invoice_details_right"> #001</p>
-            </div>
-            <div class="invoice_details">
-                 <p class="invoice_details_left"><strong>Invoice Date :</strong></p>
-                <p class="invoice_details_right">  Sep 18, 2024</p>
-            </div>
-             <div class="invoice_details">
-                 <p class="invoice_details_left"><strong>Expiry Date :</strong></p>
-                <p class="invoice_details_right"> Oct 18, 2024</p>
-            </div>
+        <!-- Invoice details -->
+        <div class="invoice-details">
+            <table class="details-table">
+                <tr>
+                    <td><span style="font-weight: bold;">Invoice :</span></td>
+                    <td>#001</td>
+                </tr>
+                <tr>
+                    <td><span style="font-weight: bold;">Invoice Date:</span></td>
+                    <td>{{ \Carbon\Carbon::parse($todayDate)->format('M d, Y') }}</td>
+                </tr>
+                <tr>
+                    <td><span style="font-weight: bold;">Expiry Date:</span></td>
+                    <td>{{ \Carbon\Carbon::parse($expiryDate)->format('M d, Y') }}</td>
+                </tr>
+            </table>
         </div>
-        
-        <div class="invoice_info">
-            <div>
-                <strong>Your Company Name</strong><br>
-                123 Business Street<br>
-                (555) 123-4567<br>
-                hello@company.com
-            </div>
-            
-            <div>
-                <strong>Client Company Name</strong><br>
-                456 Client Avenue<br>
-                (555) 987-6543<br>
-                client@email.com
-            </div>
+
+        <!-- Info -->
+        <div class="invoice-info">
+            <table class="info-table">
+                <tr>
+                    <td>
+                        <div class="info-title">{{ $settings->title ?? 'Company Name' }}</div>
+                        <p class="info-content">{{ $settings->address ?? 'Address' }}</p>
+                        <p class="info-content">{{ $settings->phone ?? '017*******' }}</p>
+                        <p class="info-content">{{ $settings->email ?? 'example@gmail.com' }}</p>
+                    </td>
+                    <td>
+                        <div class="info-title">Bill To</div>
+                        <p class="info-content">{{ $customer->name ?? 'Client Name' }}</p>
+                        <p class="info-content">{{ $customer->address ?? 'Client Address' }}</p>
+                        <p class="info-content">{{ $customer->phone ?? 'Client Phone' }}</p>
+                        <p class="info-content">{{ $customer->email ?? 'Client Email' }}</p>
+                    </td>
+                </tr>
+            </table>
         </div>
-        
-      
-        
+
+        <!-- Items -->
         <table class="items">
-            <tr>
-                <th style="width: 50%">Service</th>
-                <th style="width: 10%; text-align: center;">Qty</th>
-                <th style="width: 20%; text-align: right;">Unit Price</th>
-                <th style="width: 20%; text-align: right;">Amount</th>
+            <tr> 
+                <th style="width: 50%; text-align: left;">Service</th>
+                <th style="width: 10%" class="center">Qty</th>
+                <th style="width: 20%" class="right">Unit Price</th>
+                <th style="width: 20%" class="right">Amount</th>
             </tr>
             <tr>
-                <td>
-                    <strong>Website Design & Development</strong><br>
-                </td>
+                <td>Website Design & Development</td>
                 <td class="center">1</td>
                 <td class="right">$2,500.00</td>
                 <td class="right">$2,500.00</td>
             </tr>
             <tr>
-                <td>
-                    <strong>SEO Optimization</strong><br>
-                </td>
+                <td>SEO Optimization</td>
                 <td class="center">1</td>
-                <td class="right">$2,500.00</td>
+                <td class="right">$500.00</td>
                 <td class="right">$500.00</td>
             </tr>
-          
         </table>
-        
-        <div class="summary">
-            <div class="summary-row">
-                <span>Subtotal:</span>
-                <span>$3,600.00</span>
-            </div>
-            <div class="summary-row">
-                <span>Discount:</span>
-                <span>-$100.00</span>
-            </div>
-            <div class="summary-row">
-                <span>TOTAL:</span>
-                <span>$3,806.00</span>
-            </div>
-        </div>
-        
-        
+
+        <!-- Summary -->
+        <table class="summary">
+            <tr>
+                <td>Subtotal</td>
+                <td class="right">$3,000.00</td>
+            </tr>
+            <tr>
+                <td>Discount</td>
+                <td class="right">-$100.00</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td class="right">$2,900.00</td>
+            </tr>
+            <tr>
+                <td>Due Amount</td>
+                <td class="right">$2,900.00</td>
+            </tr>
+        </table>
+
+        <!-- Footer -->
         <div class="footer">
-            <p>Invoice generated on September 18, 2024 | support@company.com | (555) 123-4567</p>
+            Thank you for your business!
         </div>
     </div>
-    
-    <button class="print-btn no-print" onclick="window.print()">Print PDF</button>
 </body>
 </html>

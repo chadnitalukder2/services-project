@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\Order;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -88,10 +90,12 @@ class InvoiceController extends Controller implements HasMiddleware
     public function generateInvoice($id, $action = 'view')
     {
         $invoice = Invoice::findOrFail($id);
-        $setting = Setting::getSettings();
         $todayDate = Carbon::now()->format('d-m-Y');
+        $customer = Customer::find($invoice->customer_id);
+        $order = Order::find($invoice->order_id);
+        $expiryDate = Carbon::now()->addDays(7)->format('d-m-Y');
 
-        $data = ['order' => $invoice, 'todayDate' => $todayDate];
+        $data = ['order' => $invoice, 'todayDate' => $todayDate, 'expiryDate' => $expiryDate, 'customer' => $customer, 'settings' => Setting::getSettings()];
 
         $pdf = Pdf::loadView('backend.invoices.generate-invoice', $data);
 
