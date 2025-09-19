@@ -28,7 +28,7 @@
                         @csrf
                         <!-- Customer -->
                         <div class="mb-6">
-                            <label for="customer_id" class="text-base font-medium">Customer *</label>
+                            <label for="customer_id" class="text-base font-medium">Customer  <span class="text-red-500">*</span></label>
                             <div class="my-3 flex gap-3 items-start">
                                 <div class="flex-1">
                                     <select id="customer_id" name="customer_id"
@@ -59,7 +59,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Order Date -->
                             <div class="mb-6">
-                                <label for="order_date" class="text-base font-medium">Order Date *</label>
+                                <label for="order_date" class="text-base font-medium">Order Date  <span class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="date" id="order_date" name="order_date" value="{{ $order->order_date }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
@@ -68,7 +68,7 @@
 
                             <!-- Delivery Date -->
                             <div class="mb-6">
-                                <label for="delivery_date" class="text-base font-medium">Delivery Date *</label>
+                                <label for="delivery_date" class="text-base font-medium">Delivery Date  <span class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="date" id="delivery_date" name="delivery_date" value="{{ $order->delivery_date }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
@@ -92,7 +92,7 @@
 
                         <!-- Service Selection -->
                         <div class="mb-6">
-                            <label for="service_select" class="text-base font-medium">Add Services *</label>
+                            <label for="service_select" class="text-base font-medium">Add Services  <span class="text-red-500">*</span></label>
                             <div class="my-3 flex gap-3">
                                 <div class="flex-1">
                                     <select id="service_select"
@@ -240,7 +240,7 @@
                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Status -->
                             <div class="mb-6">
-                                <label for="status" class="text-base font-medium">Status *</label>
+                                <label for="status" class="text-base font-medium">Status  <span class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <select id="status" name="status"
                                         class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
@@ -255,7 +255,7 @@
 
                             <!-- Payment Method -->
                             <div class="mb-6">
-                                <label for="payment_method" class="text-base font-medium">Payment Method *</label>
+                                <label for="payment_method" class="text-base font-medium">Payment Method  <span class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     @php $paymentMethod = old('payment_method', optional($order->invoice)->payment_method) @endphp
                                     <select id="payment_method" name="payment_method"
@@ -296,8 +296,8 @@
                     </form>
 
                     <!-- Customer Creation Modal -->
-                    <x-modal name="create-customer" :show="false" maxWidth="lg" focusable>
-                        <div class="px-6 py-6">
+                    <x-modal name="create-customer" :show="false" maxWidth="2xl" focusable>
+                        <div class="px-14 py-8">
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-lg font-medium text-gray-900">
                                     Add New Customer
@@ -315,51 +315,51 @@
                                 <div class="grid grid-cols-1 gap-4">
                                     <!-- Name -->
                                     <div>
-                                        <label for="customer_name" class="block text-sm font-medium text-gray-700">Name *</label>
+                                        <label for="customer_name" class="block text-base font-medium ">Name  <span class="text-red-500">*</span></label>
                                         <input type="text" id="customer_name" name="name"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
                                     <!-- Phone -->
-                                    <div>
-                                        <label for="customer_phone" class="block text-sm font-medium text-gray-700">Phone *</label>
+                                    <div class="mt-3">
+                                        <label for="customer_phone" class="block text-base font-medium">Phone  <span class="text-red-500">*</span></label>
                                         <input type="tel" id="customer_phone" name="phone"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
 
                                     <!-- Email -->
-                                    <div>
-                                        <label for="customer_email" class="block text-sm font-medium text-gray-700">Email</label>
+                                    <div class="mt-3">
+                                        <label for="customer_email" class="block text-base font-medium">Email</label>
                                         <input type="email" id="customer_email" name="email"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
 
                                     <!-- Address -->
-                                    <div>
-                                        <label for="customer_address" class="block text-sm font-medium text-gray-700">Address</label>
+                                    <div class="mt-3">
+                                        <label for="customer_address" class="block text-base font-medium">Address</label>
                                         <textarea id="customer_address" name="address" rows="3"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                            class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900"></textarea>
                                         <div id="address-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
 
                                     <!-- Company (Optional) -->
-                                    <div>
-                                        <label for="customer_company" class="block text-sm font-medium text-gray-700">Company</label>
+                                    <div class="mt-3">
+                                        <label for="customer_company" class="block text-base font-medium">Company</label>
                                         <input type="text" id="customer_company" name="company"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="company-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
                                 </div>
 
-                                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+                                <div class="flex justify-end gap-3 mt-10 pt-4">
                                     <button type="button" x-on:click="$dispatch('close-modal', 'create-customer')"
-                                        class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md transition">
+                                        class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-gray-800 rounded-md transition">
                                         Cancel
                                     </button>
                                     <button type="submit" id="save-customer-btn"
-                                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition">
+                                        class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded-md transition">
                                         <span id="save-customer-text">Save Customer</span>
                                         <span id="save-customer-loading" class="hidden">Saving...</span>
                                     </button>
