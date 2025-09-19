@@ -3,7 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Invoice</title>
+    <link rel="icon" sizes="32x32" href="{{ asset('storage/' . $settings->logo) }}">
+
     <style>
         @page {
             size: A4;
@@ -162,7 +167,7 @@
             <table class="details-table">
                 <tr>
                     <td><span style="font-weight: bold;">Invoice :</span></td>
-                    <td>#001</td>
+                    <td> # {{ str_pad($invoice->id, 5, '0', STR_PAD_LEFT) }}</td>
                 </tr>
                 <tr>
                     <td><span style="font-weight: bold;">Invoice Date:</span></td>
@@ -208,8 +213,23 @@
                 <tr>
                     <td>{{ $item->service->name ?? 'N/A' }}</td>
                     <td class="center">{{ $item->quantity }}</td>
-                    <td class="right">${{ number_format($item->service->unit_price, 2) }}</td>
-                    <td class="right">${{ number_format($item->subtotal) }}</td>
+                    @if ($settings && $settings->currency_position == 'left')
+                        <td class="right">{{ $settings->currency ?? 'Tk' }}
+                            {{ number_format($item->service->unit_price, 2) }}
+                        </td>
+                    @else
+                        <td class="right"> {{ number_format($item->service->unit_price, 2) }}
+                            {{ $settings->currency ?? 'Tk' }}
+                        </td>
+                    @endif
+
+                    @if ($settings && $settings->currency_position == 'left')
+                        <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($item->subtotal, 2) }}
+                        </td>
+                    @else
+                        <td class="right"> {{ number_format($item->subtotal, 2) }} {{ $settings->currency ?? 'Tk' }}
+                        </td>
+                    @endif
                 </tr>
             @endforeach
 
@@ -219,23 +239,52 @@
         <table class="summary">
             <tr>
                 <td>Subtotal</td>
-                <td class="right">${{ $order->subtotal }}</td>
+                @if ($settings && $settings->currency_position == 'left')
+                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($order->subtotal, 2) }}
+                    </td>
+                @else
+                    <td class="right"> {{ number_format($order->subtotal, 2) }} {{ $settings->currency ?? 'Tk' }}
+                    </td>
+                @endif
             </tr>
             <tr>
                 <td>Discount</td>
-                <td class="right">-${{ $order->discount_amount }}</td>
+                @if ($settings && $settings->currency_position == 'left')
+                    <td class="right">{{ $settings->currency ?? 'Tk' }}
+                        {{ number_format($order->discount_amount, 2) }}</td>
+                @else
+                    <td class="right"> {{ number_format($order->discount_amount, 2) }}
+                        {{ $settings->currency ?? 'Tk' }}</td>
+                @endif
             </tr>
             <tr>
                 <td>Total</td>
-                <td class="right">${{ number_format($invoice->amount, 2) }}</td>
+                @if ($settings && $settings->currency_position == 'left')
+                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->amount, 2) }}</td>
+                @else
+                    <td class="right"> {{ number_format($invoice->amount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                    </td>
+                @endif
             </tr>
             <tr>
                 <td>Paid Amount</td>
-                <td class="right">${{ number_format($invoice->paid_amount, 2) }}</td>
+                @if ($settings && $settings->currency_position == 'left')
+                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->paid_amount, 2) }}
+                    </td>
+                @else
+                    <td class="right"> {{ number_format($invoice->paid_amount, 2) }}
+                        {{ $settings->currency ?? 'Tk' }}</td>
+                @endif
             </tr>
             <tr>
                 <td>Due Amount</td>
-                <td class="right">${{ number_format($invoice->due_amount, 2) }}</td>
+                @if ($settings && $settings->currency_position == 'left')
+                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->due_amount, 2) }}
+                    </td>
+                @else
+                    <td class="right"> {{ number_format($invoice->due_amount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                    </td>
+                @endif
             </tr>
         </table>
 
