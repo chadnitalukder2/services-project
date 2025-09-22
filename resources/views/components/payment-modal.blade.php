@@ -172,7 +172,7 @@
         document.getElementById('modalPaidAmount').textContent = parseFloat(invoice.paid_amount).toFixed(2) + ' tk';
         document.getElementById('modalDueAmount').textContent = parseFloat(invoice.due_amount).toFixed(2) + ' tk';
 
-        document.getElementById('modalCurrentStatus').textContent = invoice.status || 'Due';
+        document.getElementById('modalCurrentStatus').textContent = invoice.status || 'due';
         document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';
 
         document.getElementById('ExpiryDate').value = invoice.expiry_date || '';

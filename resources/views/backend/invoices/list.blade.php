@@ -46,7 +46,7 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Expiry Date</th>
-                                    <th
+                                <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
 
@@ -121,7 +121,7 @@
                                         </td>
 
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
-                                            @if($invoice->expiry_date)
+                                            @if ($invoice->expiry_date)
                                                 {{ \Carbon\Carbon::parse($invoice->expiry_date)->format('d M, Y') }}
                                             @else
                                                 ---
@@ -140,30 +140,33 @@
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             @can('payment invoices')
-                                                @if ($invoice->status === 'due' || $invoice->status === 'partial')
+                                                @if ($invoice->status !== 'paid' && (floatval($invoice->due_amount) > 0 || $invoice->status === 'due'))
                                                     <button
                                                         onclick="openPaymentModal({
-                                                            id: {{ $invoice->id }},
-                                                            order_id: '{{ $invoice->order_id }}',
-                                                           expiry_date: '{{ $invoice->expiry_date ?? '' }}',
-                                                            customer_name: '{{ $invoice->customer->name }}',
-                                                            customer_id: '{{ $invoice->customer->id }}',
-                                                            amount: {{ $invoice->amount }},
-                                                            paid_amount: {{ $invoice->paid_amount }},
-                                                            due_amount: {{ $invoice->due_amount }},
-                                                            payment_method: '{{ $invoice->payment_method }}',
-                                                            status: '{{ $invoice->status }}'
-                                                        })"
-                                                        class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white ">
+                                                                id: {{ $invoice->id }},
+                                                                order_id: '{{ $invoice->order_id }}',
+                                                                expiry_date: '{{ $invoice->expiry_date ?? '' }}',
+                                                                customer_name: '{{ addslashes($invoice->customer->name ?? 'Unknown') }}',
+                                                                customer_id: {{ $invoice->customer->id ?? 0 }},
+                                                                amount: {{ floatval($invoice->amount) }},
+                                                                paid_amount: {{ floatval($invoice->paid_amount) }},
+                                                                due_amount: {{ floatval($invoice->due_amount) }},
+                                                                payment_method: '{{ addslashes($invoice->payment_method ?? '') }}',
+                                                                status: '{{ $invoice->status }}'
+                                                            })"
+                                                        class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white"
+                                                        onclick="console.log('Pay button clicked for invoice {{ $invoice->id }}')">
                                                         Pay
                                                     </button>
                                                 @else
                                                     <button
                                                         class="bg-gray-400 text-sm rounded-md py-1.5 px-2.5 text-white cursor-not-allowed"
-                                                        disabled>
+                                                        disabled title="Invoice is already paid or has no due amount">
                                                         Pay
                                                     </button>
                                                 @endif
+                                            @else
+                                                <span class="text-xs text-gray-500">No permission</span>
                                             @endcan
 
 
