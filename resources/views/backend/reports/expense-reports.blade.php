@@ -1,183 +1,304 @@
 <x-app-layout>
-
-     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Page Title & Filters -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Reports & Analytics</h2>
-            
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Expense Report & Analytics</h2>
+
             <!-- Filter Section -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <form method="GET" action="{{ route('reports.expense') }}"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
-                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="all">All Reports</option>
-                            <option value="customer">Customer Report</option>
-                            <option value="service">Service Report</option>
-                            <option value="order">Order Report</option>
-                            <option value="invoice">Invoice Report</option>
-                            <option value="expense">Expense Report</option>
-                            <option value="profit">Profit & Loss</option>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Search Expense</label>
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Title, description..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select name="category_id"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Categories</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="date" name="from_date" value="{{ request('from_date') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                        <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="date" name="to_date" value="{{ request('to_date') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    <div class="flex items-end">
-                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-search mr-2"></i>Generate Report
+
+                    <div class="col-span-4 flex space-x-2 mt-2">
+                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">
+                            Filter
                         </button>
+                        <a href="{{ route('reports.expense') }}"
+                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+                            Clear
+                        </a>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
-        <!-- Report Tables -->
-        <div class="space-y-8">
-        
-            <!-- Expense Report -->
-            <div class="bg-white rounded-lg shadow-sm border">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-900">Expense Report by Category</h3>
-                        <div class="flex space-x-2">
-                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
-                                <i class="fas fa-filter mr-1"></i>Filter
-                            </button>
-                            <button class="px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
-                                <i class="fas fa-download mr-1"></i>Export
-                            </button>
-                        </div>
-                    </div>
+        <!-- Expenses Table -->
+        <div class="bg-white rounded-lg shadow-sm border">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-900">Expenses</h3>
+                <div class="flex space-x-2">
+                    <button onclick="printTable()"
+                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                        <i class="fas fa-print mr-1"></i>Print
+                    </button>
+                    <button onclick="exportToCSV()"
+                        class="px-3 py-1  bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                        <i class="fas fa-download mr-1"></i>CSV
+                    </button>
                 </div>
-                <div class="overflow-x-auto">
+            </div>
+
+            <div class="overflow-x-auto">
+                @if ($expenses->count() > 0)
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Count</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">% of Total</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg per Item</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Title</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Category</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Amount</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Description</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                            <i class="fas fa-home text-blue-600 text-sm"></i>
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-900">Office Rent</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">12</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$6,000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">48.2%</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$500</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                                            <i class="fas fa-car text-green-600 text-sm"></i>
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-900">Travel</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">28</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$3,200</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">25.7%</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$114</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                                            <i class="fas fa-bullhorn text-purple-600 text-sm"></i>
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-900">Marketing</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">15</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$2,150</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">17.3%</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$143</td>
-                            </tr>
+                            @foreach ($expenses as $expense)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->title }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->category->name ?? '-' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ \Carbon\Carbon::parse($expense->date)->format('d-m-Y') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ number_format($expense->amount, 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->description }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                   
+                @else
+                    <div class="text-center py-12">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">No expenses found</h3>
+                        <p class="text-gray-500">Try adjusting your search criteria.</p>
+                    </div>
+                @endif
+
+                 <!-- Pagination -->
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex justify-between items-center">
+                    <div class="text-sm text-gray-700">
+                        Showing <span class="font-medium">{{ $expenses->firstItem() }}</span>
+                        to <span class="font-medium">{{ $expenses->lastItem() }}</span>
+                        of <span class="font-medium">{{ $expenses->total() }}</span> results
+                    </div>
+
+                    <!-- Pagination buttons -->
+                    <div class="flex space-x-2">
+                        <!-- Previous -->
+                        @if ($expenses->onFirstPage())
+                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                disabled>
+                                Previous
+                            </button>
+                        @else
+                            <a href="{{ $expenses->previousPageUrl() }}"
+                                class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                Previous
+                            </a>
+                        @endif
+
+                        <!-- Page numbers -->
+                        @foreach ($expenses->getUrlRange(1, $expenses->lastPage()) as $page => $url)
+                            @if ($page == $expenses->currentPage())
+                                <span
+                                    class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                            @else
+                                <a href="{{ $url }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    {{ $page }}
+                                </a>
+                            @endif
+                        @endforeach
+
+                        <!-- Next -->
+                        @if ($expenses->hasMorePages())
+                            <a href="{{ $expenses->nextPageUrl() }}"
+                                class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                Next
+                            </a>
+                        @else
+                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                disabled>
+                                Next
+                            </button>
+                        @endif
+                    </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
-   
-    <x-slot name="script">
-   <script>
-        // Revenue vs Expenses Chart
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [12000, 15000, 18000, 22000, 19000, 23000],
-                    borderColor: 'rgb(59, 130, 246)',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    tension: 0.4
-                }, {
-                    label: 'Expenses',
-                    data: [8000, 9500, 11000, 12500, 10800, 12000],
-                    borderColor: 'rgb(239, 68, 68)',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
 
-        // Order Status Chart
-        const orderCtx = document.getElementById('orderChart').getContext('2d');
-        new Chart(orderCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Pending', 'Approved', 'Done', 'Cancelled'],
-                datasets: [{
-                    data: [25, 45, 85, 8],
-                    backgroundColor: [
-                        'rgb(251, 191, 36)',
-                        'rgb(59, 130, 246)',
-                        'rgb(34, 197, 94)',
-                        'rgb(239, 68, 68)'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    }
-                }
+    <!-- Print Styles -->
+    <style>
+        @media print {
+
+            /* Hide everything except the table */
+            body * {
+                visibility: hidden;
             }
-        });
+
+            /* Show only the print content */
+            .print-content,
+            .print-content * {
+                visibility: visible;
+            }
+
+            /* Position the print content */
+            .print-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+
+            /* Hide pagination and other elements during print */
+            .no-print {
+                display: none !important;
+            }
+
+            /* Table styling for print */
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+            }
+
+            .print-table th,
+            .print-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .print-table th {
+                background-color: #f5f5f5;
+                font-weight: bold;
+            }
+
+            /* Print header */
+            .print-header {
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .print-header h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            .print-header p {
+                font-size: 14px;
+                color: #666;
+            }
+        }
+    </style>
+
+    <script>
+        function exportToCSV() {
+            const table = document.querySelector('table');
+            if (!table) return;
+
+            let csv = [];
+
+            // Table headers
+            const headers = table.querySelectorAll('thead th');
+            csv.push(Array.from(headers).map(h => h.textContent.trim()).join(','));
+
+            // Table body rows
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                csv.push(Array.from(cells).map(c => `"${c.textContent.trim()}"`).join(','));
+            });
+
+            // Download CSV
+            const blob = new Blob([csv.join('\n')], {
+                type: 'text/csv'
+            });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `expense-report-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+
+        function printTable() {
+            const printContent = document.createElement('div');
+            printContent.className = 'print-content';
+
+            // Print Header for Expense
+            const header = document.createElement('div');
+            header.className = 'print-header';
+            header.innerHTML = `
+                <h1>Expense Report</h1>
+                <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                <p>Total Expenses: {{ $expenses->total() }}</p>
+             `;
+
+            // Clone the table
+            const originalTable = document.querySelector('table');
+            if (!originalTable) return;
+
+            const table = originalTable.cloneNode(true);
+            table.className = 'print-table';
+
+            // Append header + table
+            printContent.appendChild(header);
+            printContent.appendChild(table);
+
+            document.body.appendChild(printContent);
+            window.print();
+
+            // Clean up after printing
+            setTimeout(() => {
+                document.body.removeChild(printContent);
+            }, 1000);
+        }
+
     </script>
-    </x-slot>
 </x-app-layout>

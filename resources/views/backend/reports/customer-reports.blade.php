@@ -55,8 +55,8 @@
                             <i class="fas fa-print mr-1"></i>Print
                         </button>
                         <button onclick="exportToCSV()"
-                            class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">
-                            <i class="fas fa-download mr-1"></i>Export CSV
+                            class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                            <i class="fas fa-download mr-1"></i> CSV
                         </button>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
                                             {{ $customer->invoices_count ?? 0 }}
                                         </div>
                                     </td>
-                                      <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">
                                             @if ($settings->currency_position == 'left')
                                                 {{ $settings->currency ?? 'Tk' }}
@@ -187,7 +187,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                  
+
                                 </tr>
                             @endforeach
                         </tbody>
@@ -522,30 +522,43 @@
             const table = originalTable.cloneNode(true);
             table.className = 'print-table';
 
-            // Append to print content
             printContent.appendChild(header);
             printContent.appendChild(table);
 
-            // Add to body
-            document.body.appendChild(printContent);
 
-            // Print
+            document.body.appendChild(printContent);
             window.print();
 
-            // Remove print content after printing
             setTimeout(() => {
                 document.body.removeChild(printContent);
             }, 1000);
         }
 
-        function deleteCustomer(customerId) {
-            if (confirm('Are you sure you want to delete this customer?')) {
-                // Add your delete logic here
-                console.log('Delete customer:', customerId);
-                // You can make an AJAX request to delete the customer
-                // fetch(`/customers/${customerId}`, { method: 'DELETE' })...
-            }
+       
+
+        function printTable() {
+            const printContent = document.createElement('div');
+            printContent.className = 'print-content';
+
+            const header = document.createElement('div');
+            header.className = 'print-header';
+            header.innerHTML = `
+        <h1>Customer Report</h1>
+        <p>Generated on: ${new Date().toLocaleDateString()}</p>
+        <p>Total Customers: {{ $customers->total() }}</p>
+    `;
+
+            const tableClone = document.querySelector('table').cloneNode(true);
+            tableClone.className = 'print-table';
+
+            printContent.appendChild(header);
+            printContent.appendChild(tableClone);
+            document.body.appendChild(printContent);
+
+            window.print();
+            setTimeout(() => document.body.removeChild(printContent), 1000);
         }
+
 
         // Auto-submit form when date inputs change
         document.addEventListener('DOMContentLoaded', function() {
