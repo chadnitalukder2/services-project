@@ -167,7 +167,7 @@
             <table class="details-table">
                 <tr>
                     <td><span style="font-weight: bold;">Invoice :</span></td>
-                    <td> # {{ str_pad($invoice->id, 5, '0', STR_PAD_LEFT) }}</td>
+                    <td> # {{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</td>
                 </tr>
                 <tr>
                     <td><span style="font-weight: bold;">Invoice Date:</span></td>

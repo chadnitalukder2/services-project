@@ -164,7 +164,7 @@
                                 @foreach ($orders as $order)
                                     <tr class="border-b" id="order-row-{{ $order->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
+                                            #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $order->customer->name }}</td>

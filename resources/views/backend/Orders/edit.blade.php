@@ -56,7 +56,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <!-- Order Date -->
                             <div class="mb-6">
                                 <label for="order_date" class="text-base font-medium">Order Date  <span class="text-red-500">*</span></label>
@@ -71,6 +71,15 @@
                                 <label for="delivery_date" class="text-base font-medium">Delivery Date  <span class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="date" id="delivery_date" name="delivery_date" value="{{ $order->delivery_date }}"
+                                        class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
+                                </div>
+                            </div>
+
+                              <!-- Invoice expiry Date -->
+                            <div class="mb-6">
+                                <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
+                                <div class="my-3">
+                                    <input type="date" id="expiry_date" name="expiry_date" value="{{ $order->invoice->expiry_date }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -923,6 +932,16 @@
                 deliveryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 deliveryDateError.textContent = 'Delivery Date must be after Order Date';
                 deliveryDate.parentElement.appendChild(deliveryDateError);
+                valid = false;
+            }
+
+            // Expiry Date
+            const expiryDate = document.getElementById('expiry_date');
+            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(orderDate.value)) {
+                const expiryDateError = document.createElement('p');
+                expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
+                expiryDateError.textContent = 'Expiry Date must be after Order Date';
+                expiryDate.parentElement.appendChild(expiryDateError);
                 valid = false;
             }
 

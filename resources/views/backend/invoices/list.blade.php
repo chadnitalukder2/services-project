@@ -62,10 +62,10 @@
                                 @foreach ($invoices as $invoice)
                                     <tr class="border-b" id="invoice-row-{{ $invoice->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($invoice->id, 5, '0', STR_PAD_LEFT) }}
+                                            #{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($invoice->order_id, 5, '0', STR_PAD_LEFT) }}
+                                            #{{ str_pad($invoice->order_id, 4, '0', STR_PAD_LEFT) }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $invoice->customer->name ?? '---' }}
