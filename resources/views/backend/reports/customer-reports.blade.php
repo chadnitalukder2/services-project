@@ -24,11 +24,11 @@
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div class="flex items-end space-x-2">
-                        <button type="submit" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-search mr-2"></i>Filter
+                        <button type="submit" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition-colors">
+                            Filter
                         </button>
                         <a href="{{ url('/customer/reports') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
-                            <i class="fas fa-times"></i>
+                            Clear
                         </a>
                     </div>
                 </form>
@@ -49,7 +49,7 @@
                         <button onclick="printTable()" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
                             <i class="fas fa-print mr-1"></i>Print
                         </button>
-                        <button onclick="exportToCSV()" class="px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+                        <button onclick="exportToCSV()" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">
                             <i class="fas fa-download mr-1"></i>Export CSV
                         </button>
                     </div>
@@ -61,6 +61,9 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ID
+                                </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" 
                                        class="flex items-center hover:text-gray-700">
@@ -78,14 +81,6 @@
                                     </a>
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Invoices</th>
-                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <!-- sort total amount from invoices -->
-                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" 
-                                       class="flex items-center hover:text-gray-700">
-                                        Total Amount
-                                        <i class="fas fa-sort ml-1 text-xs"></i>
-                                    </a>
-                                </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <!-- sort total paid amount from invoices -->
                                      <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_paid_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" 
@@ -102,22 +97,28 @@
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-                               
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <!-- sort total amount from invoices -->
+                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" 
+                                       class="flex items-center hover:text-gray-700">
+                                        Total Amount
+                                        <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($customers as $customer)
                             <tr class="hover:bg-gray-50">
+                                <td>
+                                    <div class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                       #{{ $customer->id }}
+                                    </div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
-                                            <span class="text-white font-medium text-sm">
-                                                {{ strtoupper(substr($customer->name, 0, 2)) }}
-                                            </span>
-                                        </div>
-                                        <div class="ml-4">
+                                        <div class="">
                                             <div class="text-sm font-medium text-gray-900">{{ $customer->name }}</div>
-                                            <div class="text-sm text-gray-500">#{{ $customer->id }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -133,15 +134,6 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
                                         {{ $customer->invoices_count ?? 0 }}
-                                    </div>
-                                </td>
-                                  <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">
-                                        @if ($settings->currency_position == 'left')
-                                            {{ $settings->currency ?? 'Tk' }} {{ number_format($customer->invoices_sum_amount ?? 0, 2) }}
-                                        @else
-                                            {{ number_format($customer->invoices_sum_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
-                                        @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -162,7 +154,15 @@
                                         @endif
                                     </div>
                                 </td>
-                              
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">
+                                        @if ($settings->currency_position == 'left')
+                                            {{ $settings->currency ?? 'Tk' }} {{ number_format($customer->invoices_sum_amount ?? 0, 2) }}
+                                        @else
+                                            {{ number_format($customer->invoices_sum_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                        @endif
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -186,18 +186,59 @@
             </div>
 
             <!-- Pagination -->
-            @if($customers->hasPages())
-            <div class="px-6 py-4 border-t border-gray-200 no-print">
-                <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-700">
-                        Showing {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of {{ $customers->total() }} results
-                    </div>
-                    <div>
-                        {{ $customers->links() }}
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">{{ $customers->firstItem() }}</span>
+                            to <span class="font-medium">{{ $customers->lastItem() }}</span>
+                            of <span class="font-medium">{{ $customers->total() }}</span> results
+                        </div>
+
+                        <!-- Pagination buttons -->
+                        <div class="flex space-x-2">
+                            <!-- Previous -->
+                            @if ($customers->onFirstPage())
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Previous
+                                </button>
+                            @else
+                                <a href="{{ $customers->previousPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Previous
+                                </a>
+                            @endif
+
+                            <!-- Page numbers -->
+                            @foreach ($customers->getUrlRange(1, $customers->lastPage()) as $page => $url)
+                                @if ($page == $customers->currentPage())
+                                    <span
+                                        class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $url }}"
+                                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                        {{ $page }}
+                                    </a>
+                                @endif
+                            @endforeach
+
+                            <!-- Next -->
+                            @if ($customers->hasMorePages())
+                                <a href="{{ $customers->nextPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Next
+                                </a>
+                            @else
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Next
+                                </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            @endif
         </div>
     </div>
 

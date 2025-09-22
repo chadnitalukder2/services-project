@@ -47,7 +47,7 @@ class ReportController extends Controller
         }
         
         $customers = $customers->orderBy($sort, $order)
-                    ->paginate(1)
+                    ->paginate(15)
                     ->appends($request->query());
 
         return view('backend.reports.customer-reports', compact('customers'));

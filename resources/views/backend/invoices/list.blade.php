@@ -139,14 +139,13 @@
                                                 class="text-yellow-500 hover:text-yellow-600" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
-
                                             @can('payment invoices')
-                                                @if ($invoice->due_amount > 0)
+                                                @if ($invoice->status === 'due' || $invoice->status === 'partial')
                                                     <button
                                                         onclick="openPaymentModal({
                                                             id: {{ $invoice->id }},
                                                             order_id: '{{ $invoice->order_id }}',
-                                                            expiry_date: '{{ $invoice->expiry_date }}',
+                                                           expiry_date: '{{ $invoice->expiry_date ?? '' }}',
                                                             customer_name: '{{ $invoice->customer->name }}',
                                                             customer_id: '{{ $invoice->customer->id }}',
                                                             amount: {{ $invoice->amount }},
