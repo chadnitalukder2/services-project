@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\Invoice;
+use App\Models\Order;
+use App\Models\ServiceCategory;
+use App\Models\Services;
+use App\Models\Setting;
+use Sabberworm\CSS\Settings;
 
 class ReportController extends Controller
 {
@@ -57,14 +63,67 @@ class ReportController extends Controller
 
     public function serviceReport(Request $request)
     {
+        $query = Services::with('category');
 
-        return view('backend.reports.service-reports');
+        if ($request->search) {
+            $search = $request->search;
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('description', 'like', "%$search%");
+        }
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->category_id) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $services = $query->orderBy('id', 'desc')->paginate(10);
+
+        $categories = ServiceCategory::all();
+        return view('backend.reports.service-reports', compact('services', 'categories'));
     }
 
     public function orderReport(Request $request)
     {
+        $query = Order::with('customer'); // eager load customer
 
-        return view('backend.reports.order-reports');
+        // Search filter (order ID, customer name, status)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('phone', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Date filter
+        if ($request->filled('from_date')) {
+            $query->whereDate('order_date', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('order_date', '<=', $request->to_date);
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'id'); // default sort by ID
+        $order = $request->get('order', 'desc'); // default descending
+        $allowedSort = ['id', 'order_date', 'delivery_date', 'status', 'total_amount'];
+        if (!in_array($sort, $allowedSort)) $sort = 'id';
+        if (!in_array($order, ['asc', 'desc'])) $order = 'desc';
+
+        $query->orderBy($sort, $order);
+
+        // Pagination
+        $orders = $query->paginate(15)->appends($request->all());
+        return view('backend.reports.order-reports', compact('orders'));
     }
 
     public function expenseReport(Request $request)
@@ -103,8 +162,37 @@ class ReportController extends Controller
 
     public function invoiceReport(Request $request)
     {
+        $query = Invoice::with('customer', 'order');
 
-        return view('backend.reports.invoice-reports');
+        // Filter by customer search
+        if ($search = $request->search) {
+            $query->whereHas('customer', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('phone', 'like', "%$search%");
+            });
+        }
+
+        // Filter by date
+        if ($from = $request->from_date) {
+            $query->whereDate('created_at', '>=', $from);
+        }
+        if ($to = $request->to_date) {
+            $query->whereDate('created_at', '<=', $to);
+        }
+
+        // Sorting
+        if ($sort = $request->sort) {
+            $order = $request->order ?? 'asc';
+            $query->orderBy($sort, $order);
+        } else {
+            $query->latest();
+        }
+
+        $invoices = $query->paginate(20);
+
+        $settings = Setting::first();
+        return view('backend.reports.invoice-reports', compact('invoices', 'settings'));
     }
 
     public function profitLossReport(Request $request)

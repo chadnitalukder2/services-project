@@ -6,7 +6,7 @@
 
             <!-- Filter Section -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
-                <form method="GET" action="{{ url('/customer/reports') }}"
+                <form method="GET" action="{{ route('reports.customer') }}"
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Search Customer</label>
@@ -500,40 +500,6 @@
             link.click();
             document.body.removeChild(link);
         }
-
-        function printTable() {
-            // Create print content
-            const printContent = document.createElement('div');
-            printContent.className = 'print-content';
-
-            // Add header
-            const header = document.createElement('div');
-            header.className = 'print-header';
-            header.innerHTML = `
-            <h1>Customer Report</h1>
-            <p>Generated on: ${new Date().toLocaleDateString()}</p>
-            <p>Total Customers: {{ $customers->total() }}</p>
-            `;
-
-            // Clone the table
-            const originalTable = document.querySelector('table');
-            if (!originalTable) return;
-
-            const table = originalTable.cloneNode(true);
-            table.className = 'print-table';
-
-            printContent.appendChild(header);
-            printContent.appendChild(table);
-
-
-            document.body.appendChild(printContent);
-            window.print();
-
-            setTimeout(() => {
-                document.body.removeChild(printContent);
-            }, 1000);
-        }
-
        
 
         function printTable() {
@@ -543,10 +509,10 @@
             const header = document.createElement('div');
             header.className = 'print-header';
             header.innerHTML = `
-        <h1>Customer Report</h1>
-        <p>Generated on: ${new Date().toLocaleDateString()}</p>
-        <p>Total Customers: {{ $customers->total() }}</p>
-    `;
+                <h1>Customer Report</h1>
+                <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                <p>Total Customers: {{ $customers->total() }}</p>
+            `;
 
             const tableClone = document.querySelector('table').cloneNode(true);
             tableClone.className = 'print-table';
