@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 50, 2);
+            $table->date('expiry_date')->nullable();
             $table->decimal('paid_amount', 50, 2)->nullable();
             $table->decimal('due_amount', 50, 2)->nullable();
             $table->string('status')->nullable();

@@ -29,7 +29,10 @@ class InvoiceController extends Controller implements HasMiddleware
     public function index()
     {
         $invoices = Invoice::with('customer')->orderBy('created_at', 'desc')->paginate(15);
-        return view('backend.invoices.list', compact('invoices'));
+        $totalAmount = Invoice::sum('amount');
+        $totalPaid   = Invoice::sum('paid_amount');
+        $totalDue    = Invoice::sum('due_amount');
+        return view('backend.invoices.list', compact('invoices', 'totalAmount', 'totalPaid', 'totalDue'));
     }
 
 
@@ -41,6 +44,7 @@ class InvoiceController extends Controller implements HasMiddleware
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required|integer',
             'order_id' => 'required|integer',
+            'expiry_date' => 'nullable|date',
             'amount' => 'nullable|numeric|min:0',
             'paid_amount' => 'nullable|numeric|min:0',
             'due_amount' => 'nullable|numeric|min:0',
@@ -55,6 +59,7 @@ class InvoiceController extends Controller implements HasMiddleware
         if ($validator->passes()) {
             $invoice->customer_id = $request->customer_id;
             $invoice->order_id = $request->order_id;
+            $invoice->expiry_date = $request->expiry_date;
             $invoice->amount = $request->amount;
             $invoice->paid_amount = $request->paid_amount;
             $invoice->due_amount = $request->due_amount;
@@ -93,12 +98,10 @@ class InvoiceController extends Controller implements HasMiddleware
         $todayDate = Carbon::now()->format('d-m-Y');
         $customer = Customer::find($invoice->customer_id);
         $order = Order::with('orderItems.service', 'service')->find($invoice->order_id);
-        $expiryDate = Carbon::now()->addDays(7)->format('d-m-Y');
 
         $data = [
             'invoice' => $invoice,
             'todayDate' => $todayDate,
-            'expiryDate' => $expiryDate,
             'customer' => $customer,
             'order' => $order,
             'orderItems' => $order->orderItems

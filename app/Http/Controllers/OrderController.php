@@ -63,8 +63,9 @@ class OrderController extends Controller implements HasMiddleware
             'completed_orders' => $completedOrders,
             'total_revenue' => number_format($totalRevenue, 2)
         ];
+        $totalOrderAmount = Order::sum('total_amount');
 
-        return view('backend.orders.list', compact('orders', 'summary'));
+        return view('backend.orders.list', compact('orders', 'summary', 'totalOrderAmount'));
     }
 
     public function create()
@@ -105,6 +106,7 @@ class OrderController extends Controller implements HasMiddleware
             'services.*.unit_price' => 'required|numeric|min:0',
             'services.*.subtotal' => 'required|numeric|min:0',
 
+            'expiry_date' => 'nullable|date|after:order_date',
             'payment_method' => 'nullable|string',
             'payment_status' => 'nullable|string',
         ]);
@@ -141,7 +143,9 @@ class OrderController extends Controller implements HasMiddleware
             }
 
             $invoice = Invoice::create([
+                
                 'order_id' => $order->id,
+                'expiry_date' => $request->expiry_date,
                 'customer_id' => $request->customer_id,
                 'amount' => $request->total_amount,
                 'paid_amount' => $request->paid_amount,
@@ -198,6 +202,7 @@ class OrderController extends Controller implements HasMiddleware
             'services.*.unit_price' => 'required|numeric|min:0',
             'services.*.subtotal' => 'required|numeric|min:0',
 
+            'expiry_date' => 'nullable|date|after:order_date',
             'payment_method' => 'nullable|string',
             'payment_status' => 'nullable|string',
         ]);
@@ -246,7 +251,6 @@ class OrderController extends Controller implements HasMiddleware
                     'subtotal' => $service['subtotal'],
                 ]);
             } else {
-                // create new if not exists
                 $order->orderItems()->create([
                     'service_id' => $service['id'],
                     'quantity' => $service['quantity'],
@@ -261,6 +265,7 @@ class OrderController extends Controller implements HasMiddleware
         if ($invoice) {
             $invoice->update([
                 'order_id' => $order->id,
+                'expiry_date' => $request->expiry_date,
                 'customer_id' => $request->customer_id,
                 'paid_amount' => $request->paid_amount,
                 'due_amount' => $request->due_amount,

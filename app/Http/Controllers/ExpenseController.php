@@ -34,8 +34,8 @@ class ExpenseController extends Controller implements HasMiddleware
 
         $categories = ExpenseCategory::orderBy('created_at', 'asc')->get();
         $expenseCategories = ExpenseCategory::orderBy('created_at', 'asc')->get();
-
-        return view('backend.expenses.list', compact('expenses', 'categories', 'expenseCategories'));
+        $totalExpense = Expense::sum('amount');
+        return view('backend.expenses.list', compact('expenses', 'categories', 'expenseCategories', 'totalExpense'));
     }
 
  

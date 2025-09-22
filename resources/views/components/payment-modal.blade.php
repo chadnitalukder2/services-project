@@ -70,6 +70,14 @@
                 </div>
 
                 <div class="mb-4">
+                    <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-2">Invoice Expiry
+                        Date</label>
+                    <input type="date" name="expiry_date" id="ExpiryDate"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900 focus:border-transparent">
+
+                </div>
+
+                <div class="mb-4">
                     <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-2">Payment
                         Method</label>
                     <select id="paymentMethod" name="payment_method"
@@ -91,7 +99,7 @@
                         Cancel
                     </button>
                     <button type="submit" id="submitPaymentBtn"
-                        class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded-md hover:bg-blue-700 disabled:opacity-50">
+                        class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded-md disabled:opacity-50">
                         Process Payment
                     </button>
                 </div>
@@ -113,11 +121,13 @@
             padding-right: 17px !important;
         }
     }
+
     @supports (-webkit-appearance: none) {
         body.modal-open {
             padding-right: 17px !important;
         }
     }
+
     @-moz-document url-prefix() {
         body.modal-open {
             padding-right: 17px !important;
@@ -164,6 +174,16 @@
 
         document.getElementById('modalCurrentStatus').textContent = invoice.status || 'Due';
         document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';
+
+        document.getElementById('ExpiryDate').value = invoice.expiry_date || '';
+        if (invoice.expiry_date) {
+            const date = new Date(invoice.expiry_date);
+            const formattedDate = date.toISOString().split('T')[0]; // YYYY-MM-DD
+            document.getElementById('ExpiryDate').value = formattedDate;
+        } else {
+            document.getElementById('ExpiryDate').value = '';
+        }
+
 
         if (invoice.payment_method) {
             document.getElementById('paymentMethod').value = invoice.payment_method;
@@ -287,6 +307,7 @@
                 paid_amount: Number(currentPaidAmount + paymentAmount),
                 due_amount: Number(totalAmount - (currentPaidAmount + paymentAmount)),
                 payment_method: document.getElementById('paymentMethod').value,
+                expiry_date: document.getElementById('ExpiryDate').value,
                 status: newStatus,
             };
 

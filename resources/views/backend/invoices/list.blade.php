@@ -27,23 +27,26 @@
                                     Order Id</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Customer Name</th>
+                                    Customer</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Amount</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Paid Amount</th>
+                                    Paid</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Due Amount</th>
+                                    Due</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Payment Method</th>
+                                    Method</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Payment Status</th>
+                                    Status</th>
                                 <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Expiry Date</th>
+                                    <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
 
@@ -76,7 +79,7 @@
                                                 {{ $settings->currency ?? 'Tk' }}
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                        <td class="px-6 py-4 text-left text-sm font-medium text-green-700">
                                             @if ($settings->currency_position == 'left')
                                                 {{ $settings->currency ?? 'Tk' }}
                                                 {{ number_format($invoice->paid_amount, 2) }}
@@ -118,6 +121,14 @@
                                         </td>
 
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                            @if($invoice->expiry_date)
+                                                {{ \Carbon\Carbon::parse($invoice->expiry_date)->format('d M, Y') }}
+                                            @else
+                                                ---
+                                            @endif
+                                        </td>
+
+                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($invoice->created_at)->format('d M, Y') }}</td>
 
 
@@ -135,6 +146,7 @@
                                                         onclick="openPaymentModal({
                                                             id: {{ $invoice->id }},
                                                             order_id: '{{ $invoice->order_id }}',
+                                                            expiry_date: '{{ $invoice->expiry_date }}',
                                                             customer_name: '{{ $invoice->customer->name }}',
                                                             customer_id: '{{ $invoice->customer->id }}',
                                                             amount: {{ $invoice->amount }},
@@ -168,6 +180,42 @@
                                 </tr>
                             @endif
                         </tbody>
+                        <tfoot class="bg-gray-100">
+                            <tr>
+                                <td colspan="3" class="px-6 py-3 text-base  text-right font-bold text-gray-900">
+                                    Totals:</td>
+
+                                <!-- Total Amount -->
+                                <td class="px-6 text-sm py-3 text-left font-bold text-gray-900">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalAmount, 2) }}
+                                    @else
+                                        {{ number_format($totalAmount, 2) }} {{ $settings->currency ?? '৳' }}
+                                    @endif
+                                </td>
+
+                                <!-- Total Paid -->
+                                <td class="px-6 py-3 text-sm text-left font-bold text-green-700">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalPaid, 2) }}
+                                    @else
+                                        {{ number_format($totalPaid, 2) }} {{ $settings->currency ?? '৳' }}
+                                    @endif
+                                </td>
+
+                                <!-- Total Due -->
+                                <td
+                                    class="px-6 py-3 text-sm text-left font-bold {{ $totalDue > 0 ? 'text-red-600' : 'text-green-600' }}">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalDue, 2) }}
+                                    @else
+                                        {{ number_format($totalDue, 2) }} {{ $settings->currency ?? '৳' }}
+                                    @endif
+                                </td>
+
+                                <td colspan="5"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 

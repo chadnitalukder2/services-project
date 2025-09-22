@@ -13,6 +13,7 @@ class Invoice extends Model
         'paid_amount',
         'due_amount',
         'status',
+        'expiry_date',
         'payment_method',
     ];
 

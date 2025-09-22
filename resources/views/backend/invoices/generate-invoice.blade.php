@@ -175,7 +175,7 @@
                 </tr>
                 <tr>
                     <td><span style="font-weight: bold;">Expiry Date:</span></td>
-                    <td>{{ \Carbon\Carbon::parse($expiryDate)->format('M d, Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($invoice->expiry_date)->format('M d, Y') }}</td>
                 </tr>
             </table>
         </div>

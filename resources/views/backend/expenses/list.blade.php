@@ -157,7 +157,7 @@
                                                 @endcan
                                                 @can('delete expenses')
                                                     <a href="javascript:void(0)" onclick="deleteExpense({{ $expense->id }})"
-                                                        class=" text-red-700 hover:text-red-600" title="Delate expense">
+                                                        class=" text-red-700  hover:text-red-600" title="Delate expense">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
                                                 @endcan
@@ -172,6 +172,19 @@
                                 </tr>
                             @endif
                         </tbody>
+                        <tfoot class="bg-gray-100">
+                            <tr>
+                                <td colspan="4" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total Expense:</td>
+                                <td class="px-6 text-sm py-3 text-left font-bold text-gray-900">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }} {{ number_format($totalExpense, 2) }}
+                                    @else
+                                        {{ number_format($totalExpense, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 

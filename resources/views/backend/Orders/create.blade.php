@@ -22,13 +22,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="px-[4rem] py-[3.5rem] text-gray-900">
                     <form id="order-form" method="POST" action="{{ route('orders.store') }}">
                         @csrf
                         <!-- Customer -->
                         <div class="mb-6">
-                            <label for="customer_id" class="text-base font-medium">Customer <span class="text-red-500">*</span></label>
+                            <label for="customer_id" class="text-base font-medium">Customer <span
+                                    class="text-red-500">*</span></label>
                             <div class="my-3 flex gap-3 items-start">
                                 <div class="flex-1">
                                     <select id="customer_id" name="customer_id"
@@ -54,10 +55,11 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <!-- Order Date -->
                             <div class="mb-6">
-                                <label for="order_date" class="text-base font-medium">Order Date <span class="text-red-500">*</span></label>
+                                <label for="order_date" class="text-base font-medium">Order Date <span
+                                        class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="date" id="order_date" name="order_date" value="{{ date('Y-m-d') }}"
                                         class="block text-sm  p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
@@ -66,10 +68,20 @@
 
                             <!-- Delivery Date -->
                             <div class="mb-6">
-                                <label for="delivery_date" class="text-base font-medium">Delivery Date  <span class="text-red-500">*</span></label>
+                                <label for="delivery_date" class="text-base font-medium">Delivery Date <span
+                                        class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="date" id="delivery_date" name="delivery_date"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
+                                </div>
+                            </div>
+
+                            <!-- Expiry Date -->
+                            <div class="mb-6">
+                                <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
+                                <div class="my-3">
+                                    <input type="date" id="expiry_date" name="expiry_date"
+                                        class="block text-sm  p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
                         </div>
@@ -91,7 +103,8 @@
 
                         <!-- Service Selection -->
                         <div class="mb-6">
-                            <label for="service_select" class="text-base font-medium">Add Services  <span class="text-red-500">*</span></label>
+                            <label for="service_select" class="text-base font-medium">Add Services <span
+                                    class="text-red-500">*</span></label>
                             <div class="my-3 flex gap-3">
                                 <div class="flex-1">
                                     <select id="service_select"
@@ -251,7 +264,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Status -->
                             <div class="mb-6">
-                                <label for="status" class="text-base font-medium">Status  <span class="text-red-500">*</span></label>
+                                <label for="status" class="text-base font-medium">Status <span
+                                        class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <select id="status" name="status"
                                         class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
@@ -266,7 +280,8 @@
 
                             <!-- Payment Method -->
                             <div class="mb-6">
-                                <label for="payment_method" class="text-base font-medium">Payment Method  <span class="text-red-500">*</span></label>
+                                <label for="payment_method" class="text-base font-medium">Payment Method <span
+                                        class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <select id="payment_method" name="payment_method"
                                         class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
@@ -333,16 +348,16 @@
                                 <div class="grid grid-cols-1 gap-4">
                                     <!-- Name -->
                                     <div>
-                                        <label for="customer_name"
-                                            class="block text-base font-medium">Name  <span class="text-red-500">*</span></label>
+                                        <label for="customer_name" class="block text-base font-medium">Name <span
+                                                class="text-red-500">*</span></label>
                                         <input type="text" id="customer_name" name="name"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
                                     <!-- Phone -->
                                     <div class="mt-3">
-                                        <label for="customer_phone"
-                                            class="block text-base font-medium ">Phone  <span class="text-red-500">*</span></label>
+                                        <label for="customer_phone" class="block text-base font-medium ">Phone <span
+                                                class="text-red-500">*</span></label>
                                         <input type="tel" id="customer_phone" name="phone"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -350,8 +365,7 @@
 
                                     <!-- Email -->
                                     <div class="mt-3">
-                                        <label for="customer_email"
-                                            class="block text-base font-medium ">Email</label>
+                                        <label for="customer_email" class="block text-base font-medium ">Email</label>
                                         <input type="email" id="customer_email" name="email"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -455,10 +469,12 @@
                 //currency position
 
                 // Update displays
-                document.getElementById('subtotal').textContent = ` ${subtotal.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
+                document.getElementById('subtotal').textContent =
+                    ` ${subtotal.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
                 document.getElementById('display_subtotal').textContent = ` ${subtotal.toFixed(2)}`;
                 document.getElementById('display_discount').textContent = `- ${discountAmount.toFixed(2)}`;
-                document.getElementById('display_total').textContent = ` ${totalAmount.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
+                document.getElementById('display_total').textContent =
+                    ` ${totalAmount.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
                 document.getElementById('paid_amount').value = totalAmount.toFixed(2);
 
 
@@ -908,6 +924,16 @@
                 deliveryDate.parentElement.appendChild(deliveryDateError);
                 valid = false;
             }
+            // Expiry Date
+            const expiryDate = document.getElementById('expiry_date');
+            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(orderDate.value)) {
+                const expiryDateError = document.createElement('p');
+                expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
+                expiryDateError.textContent = 'Expiry Date must be after Order Date';
+                expiryDate.parentElement.appendChild(expiryDateError);
+                valid = false;
+            }
+            
             const paymentMethod = document.getElementById('payment_method');
             if (paymentMethod.value === '') {
                 const paymentMethodError = document.createElement('p');

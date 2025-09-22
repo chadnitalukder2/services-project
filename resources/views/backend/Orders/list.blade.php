@@ -203,9 +203,11 @@
                                         <td
                                             class="px-6 py-4 text-left  whitespace-nowrap text-sm font-medium text-gray-900">
                                             @if ($settings->currency_position == 'left')
-                                                  {{ $settings->currency ?? 'Tk' }} {{ number_format($order->total_amount, 2) }}
+                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($order->total_amount, 2) }}
                                             @else
-                                                {{ number_format($order->total_amount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($order->total_amount, 2) }}
+                                                {{ $settings->currency ?? 'Tk' }}
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
@@ -242,6 +244,20 @@
                                 </tr>
                             @endif
                         </tbody>
+                        <tfoot class="bg-gray-100">
+                            <tr>
+                                <td colspan="5" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total Order
+                                    Amount:</td>
+                                <td class="px-6 py-3 text-sm text-left font-bold text-gray-900">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalOrderAmount, 2) }}
+                                    @else
+                                        {{ number_format($totalOrderAmount, 2) }} {{ $settings->currency ?? '৳' }}
+                                    @endif
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 
