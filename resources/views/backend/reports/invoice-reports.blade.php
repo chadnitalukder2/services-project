@@ -59,6 +59,7 @@
 
         <!-- Invoice Table -->
         <div class="bg-white rounded-lg shadow-sm border">
+            
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-gray-900">Invoices</h3>
                 <div class="flex space-x-2">
@@ -133,46 +134,59 @@
                     <div class="text-center py-12">No invoices found</div>
                 @endif
             </div>
-  <!-- Pagination buttons -->
-            <div class="flex space-x-2">
-                <!-- Previous -->
-                @if ($invoices->onFirstPage())
-                    <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed" disabled>
-                        Previous
-                    </button>
-                @else
-                    <a href="{{ $invoices->previousPageUrl() }}"
-                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
-                        Previous
-                    </a>
-                @endif
+           <!-- Pagination -->
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex justify-between items-center">
+                    <div class="text-sm text-gray-700">
+                        Showing <span class="font-medium">{{ $invoices->firstItem() }}</span>
+                        to <span class="font-medium">{{ $invoices->lastItem() }}</span>
+                        of <span class="font-medium">{{ $invoices->total() }}</span> results
+                    </div>
 
-                <!-- Page numbers -->
-                @foreach ($invoices->getUrlRange(1, $invoices->lastPage()) as $page => $url)
-                    @if ($page == $invoices->currentPage())
-                        <span
-                            class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
-                    @else
-                        <a href="{{ $url }}"
-                            class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
-                            {{ $page }}
-                        </a>
-                    @endif
-                @endforeach
+                    <!-- Pagination buttons -->
+                    <div class="flex space-x-2">
+                        <!-- Previous -->
+                        @if ($invoices->onFirstPage())
+                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                disabled>
+                                Previous
+                            </button>
+                        @else
+                            <a href="{{ $invoices->previousPageUrl() }}"
+                                class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                Previous
+                            </a>
+                        @endif
 
-                <!-- Next -->
-                @if ($invoices->hasMorePages())
-                    <a href="{{ $invoices->nextPageUrl() }}"
-                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
-                        Next
-                    </a>
-                @else
-                    <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed" disabled>
-                        Next
-                    </button>
-                @endif
+                        <!-- Page numbers -->
+                        @foreach ($invoices->getUrlRange(1, $invoices->lastPage()) as $page => $url)
+                            @if ($page == $invoices->currentPage())
+                                <span
+                                    class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                            @else
+                                <a href="{{ $url }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    {{ $page }}
+                                </a>
+                            @endif
+                        @endforeach
+
+                        <!-- Next -->
+                        @if ($invoices->hasMorePages())
+                            <a href="{{ $invoices->nextPageUrl() }}"
+                                class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                Next
+                            </a>
+                        @else
+                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                disabled>
+                                Next
+                            </button>
+                        @endif
+                    </div>
+                </div>
             </div>
-          
+
         </div>
     </div>
 
