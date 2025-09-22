@@ -39,7 +39,7 @@
                     <div>
                         <p class="text-sm font-medium text-gray-600">Net Profit</p>
                         <p class="text-2xl font-bold text-blue-600">  <i class="fa-solid fa-bangladeshi-taka-sign"></i> {{ number_format($netProfit, 2) }}</p>
-                          <p class="text-sm text-blue-600 mt-1">  {{ $expenseGrowth >= 0 ? '↗' : '↘' }} {{ number_format($expenseGrowth, 1) }}% from last month</p>
+                          <p class="text-sm text-blue-600 mt-1">  {{ $profitGrowth >= 0 ? '↗' : '↘' }} {{ number_format($expenseGrowth, 1) }}% from last month</p>
                     </div>
                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-chart-line text-blue-600 text-xl"></i>
@@ -68,7 +68,7 @@
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-900">Revenue vs Expenses</h3>
                     <button class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-download"></i>
+                        {{-- <i class="fas fa-download"></i> --}}
                     </button>
                 </div>
                 <canvas style="height: 400px; width: 100%;" id="revenueChart"></canvas>
@@ -79,7 +79,7 @@
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-900">Order Status Distribution</h3>
                     <button class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-download"></i>
+                        {{-- <i class="fas fa-download"></i> --}}
                     </button>
                 </div>
                 <canvas id="orderChart" style="height: 400px; width: 100%;"></canvas>

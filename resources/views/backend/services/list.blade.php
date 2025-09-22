@@ -147,11 +147,13 @@
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             @if ($settings->currency_position == 'left')
-                                               {{ $settings->currency ?? 'Tk' }} {{ number_format($service->unit_price, 2) }} 
+                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($service->unit_price, 2) }}
                                             @else
-                                               {{ number_format($service->unit_price, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($service->unit_price, 2) }}
+                                                {{ $settings->currency ?? 'Tk' }}
                                             @endif
-                                          
+
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             @if ($service->status == 'active')
@@ -197,6 +199,24 @@
                                 </tr>
                             @endif
                         </tbody>
+                        <tfoot class="bg-gray-50">
+                            <tr>
+                                <td colspan="3" class="px-6 py-3 text-right text-sm font-bold text-gray-700">
+                                    Total:
+                                </td>
+                                <td class="px-6 py-3 text-left text-sm font-bold text-gray-900">
+                                    @php
+                                        $totalServiceAmount = $services->sum('unit_price');
+                                    @endphp
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }} {{ number_format($totalServiceAmount, 2) }}
+                                    @else
+                                        {{ number_format($totalServiceAmount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 
@@ -280,8 +300,7 @@
 
                         {{-- Category --}}
                         <div>
-                            <label for="modal_category_id"
-                                class="block text-base font-medium mt-6">Category <span
+                            <label for="modal_category_id" class="block text-base font-medium mt-6">Category <span
                                     class="text-red-500">*</span></label>
                             <select id="modal_category_id" name="category_id"
                                 class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
@@ -382,7 +401,7 @@
                             </select>
                             <div id="edit_category-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
-                        
+
                         <!-- Price -->
                         <div>
                             <label for="edit_price" class="block text-base font-medium mt-6">

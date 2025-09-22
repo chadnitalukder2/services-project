@@ -15,7 +15,8 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $totalRevenue   = Invoice::sum('paid_amount');
+        $totalRevenue = Order::whereIn('status', ['approved', 'done'])->sum('total_amount');
+
         $totalExpenses  = Expense::sum('amount');
         $netProfit      = $totalRevenue - $totalExpenses;
 
@@ -52,7 +53,7 @@ class DashboardController extends Controller
             ? (($thisMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100
             : 0;
 
-        // 🔹 Expenses: this month vs last month
+
         $thisMonthExpenses = Expense::whereMonth('date', Carbon::now()->month)
             ->sum('amount');
         $lastMonthExpenses = Expense::whereMonth('date', Carbon::now()->subMonth()->month)
@@ -60,6 +61,13 @@ class DashboardController extends Controller
 
         $expenseGrowth = $lastMonthExpenses > 0
             ? (($thisMonthExpenses - $lastMonthExpenses) / $lastMonthExpenses) * 100
+            : 0;
+
+        $thisMonthProfit = $thisMonthRevenue - $thisMonthExpenses;
+        $lastMonthProfit = $lastMonthRevenue - $lastMonthExpenses;
+
+        $profitGrowth = $lastMonthProfit > 0
+            ? (($thisMonthProfit - $lastMonthProfit) / $lastMonthProfit) * 100
             : 0;
 
         return view('dashboard', compact(
@@ -72,7 +80,8 @@ class DashboardController extends Controller
             'monthlyExpenses',
             'orderStatus',
             'revenueGrowth',
-            'expenseGrowth'
+            'expenseGrowth',
+            'profitGrowth'
         ));
     }
 }

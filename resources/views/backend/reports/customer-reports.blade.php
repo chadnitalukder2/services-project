@@ -78,6 +78,14 @@
                                     </a>
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Invoices</th>
+                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <!-- sort total amount from invoices -->
+                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" 
+                                       class="flex items-center hover:text-gray-700">
+                                        Total Amount
+                                        <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <!-- sort total paid amount from invoices -->
                                      <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_paid_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" 
@@ -94,14 +102,7 @@
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <!-- sort total amount from invoices -->
-                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}" 
-                                       class="flex items-center hover:text-gray-700">
-                                        Total Amount
-                                        <i class="fas fa-sort ml-1 text-xs"></i>
-                                    </a>
-                                </th>
+                               
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -134,6 +135,15 @@
                                         {{ $customer->invoices_count ?? 0 }}
                                     </div>
                                 </td>
+                                  <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">
+                                        @if ($settings->currency_position == 'left')
+                                            {{ $settings->currency ?? 'Tk' }} {{ number_format($customer->invoices_sum_amount ?? 0, 2) }}
+                                        @else
+                                            {{ number_format($customer->invoices_sum_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                        @endif
+                                    </div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-green-500">
                                         @if ($settings->currency_position == 'left')
@@ -152,15 +162,7 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">
-                                        @if ($settings->currency_position == 'left')
-                                            {{ $settings->currency ?? 'Tk' }} {{ number_format($customer->invoices_sum_amount ?? 0, 2) }}
-                                        @else
-                                            {{ number_format($customer->invoices_sum_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
-                                        @endif
-                                    </div>
-                                </td>
+                              
                             </tr>
                             @endforeach
                         </tbody>
