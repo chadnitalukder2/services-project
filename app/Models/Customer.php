@@ -13,4 +13,14 @@ class Customer extends Model
         'address',
         'company',
     ];
+    
+        public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

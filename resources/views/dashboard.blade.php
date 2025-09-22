@@ -62,16 +62,16 @@
         </div>
 
         <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <!-- Revenue vs Expenses Chart -->
-            <div class="bg-white p-6 rounded-lg shadow-sm border">
+            <div class="bg-white p-6 lg:col-span-2 rounded-lg shadow-sm border">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-900">Revenue vs Expenses</h3>
                     <button class="text-gray-400 hover:text-gray-600">
                         <i class="fas fa-download"></i>
                     </button>
                 </div>
-                <canvas id="revenueChart" width="400" height="200"></canvas>
+                <canvas style="height: 400px; width: 100%;" id="revenueChart"></canvas>
             </div>
 
             <!-- Order Status Distribution -->
@@ -82,7 +82,7 @@
                         <i class="fas fa-download"></i>
                     </button>
                 </div>
-                <canvas id="orderChart" width="400" height="200"></canvas>
+                <canvas id="orderChart" style="height: 400px; width: 100%;"></canvas>
             </div>
         </div>
 
@@ -103,11 +103,19 @@
         data: {
             labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
             datasets: [
-                { label: 'Revenue', data: revenueData, borderColor: 'rgb(59, 130, 246)' },
-                { label: 'Expenses', data: expenseData, borderColor: 'rgb(239, 68, 68)' }
+                { label: 'Revenue', data: revenueData, borderColor: 'rgb(59, 130, 246)', borderWidth: 1 },
+                { label: 'Expenses', data: expenseData, borderColor: 'rgb(239, 68, 68)', borderWidth: 1 }
             ]
         },
-        options: { responsive: true }
+        options: { 
+            responsive: false,
+            maintainAspectRatio: false,          // respect canvas size
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+         }
     });
 
     // Order Status Chart
@@ -121,7 +129,11 @@
                 backgroundColor: ['#fbbf24','#3b82f6','#22c55e','#ef4444']
             }]
         },
-        options: { responsive: true }
+        options: {
+            responsive: false,           // respect canvas size
+            maintainAspectRatio: false,  
+            cutout: "70%",
+        }
     });
 </script>
 
