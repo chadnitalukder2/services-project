@@ -402,9 +402,7 @@
         // Body rows
         table.querySelectorAll('tbody tr').forEach(row => {
             const rowData = Array.from(row.querySelectorAll('td')).map(td => {
-                // Remove extra whitespace and currency symbols
                 let text = td.textContent.trim();
-                // Optional: remove Tk or $ symbols if present
                 text = text.replace(/[^\d.,-]/g, '');
                 return text;
             });

@@ -412,9 +412,14 @@
                                 <!-- Items will be loaded here -->
                             </tbody>
                             <tfoot class="bg-gray-50">
+                                 <tr>
+                                    <td colspan="3" class="px-4 text-sm text-right font-semibold"
+                                        style="padding-top: 15px">Subtotal :</td>
+                                    <td class="px-4 text-sm text-right font-bold" id="modalSubtotal">0.00</td>
+                                </tr>
                                 <tr>
                                     <td colspan="3" class="px-4 text-sm text-right font-semibold"
-                                        style="padding-top: 15px">Discount :</td>
+                                        style="padding-top: 2px">Discount :</td>
                                     <td class="px-4 text-sm text-right font-bold" id="modalDiscount">- 0.00</td>
                                 </tr>
                                 <tr>
@@ -502,6 +507,7 @@
             "delivery_date": "{{ $order->delivery_date }}",
             "status": "{{ $order->status }}",
             "total_amount": "{{ $order->total_amount }}",
+            "subtotal" : "{{ $order->subtotal }}",
             "discount_amount": "{{ $order->discount_amount }}",
             "notes": "{{ $order->notes ?? '' }}",
             "order_items": [
@@ -547,7 +553,7 @@
 
             function populateModal(order) {
                 // Update modal title and order info
-                document.getElementById('modalTitle').textContent = `Order #${String(order.id).padStart(5, '0')}`;;
+                document.getElementById('modalTitle').textContent = `Order #${String(order.id).padStart(4, '0')}`;;
                 document.getElementById('modalCustomer').textContent = order.customer.name;
                 document.getElementById('modalCustomerPhone').textContent = order.customer.phone;
                 document.getElementById('modalCustomerAddress').textContent = order.customer.address;
@@ -567,7 +573,7 @@
 
                 //document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} tk`;
 
-
+             document.getElementById('modalSubtotal').textContent = `${parseFloat(order.subtotal).toFixed(2)}`;
                 document.getElementById('modalDiscount').textContent = `- ${parseFloat(order.discount_amount).toFixed(2)}`;
 
                 // Populate order items
