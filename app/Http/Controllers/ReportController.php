@@ -248,7 +248,24 @@ class ReportController extends Controller
 
     public function profitLossReport(Request $request)
     {
+             $startDate = $request->input('start_date');
+        $endDate   = $request->input('end_date');
 
-        return view('backend.reports.profit-loss-reports');
+        // Orders: only approved or done
+        $orders = Order::whereIn('status', ['approved', 'done'])
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('order_date', [$startDate, $endDate]);
+            })
+            ->sum('total_amount');
+
+        // Expenses
+        $expenses = Expense::when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('date', [$startDate, $endDate]);
+            })
+            ->sum('amount');
+
+        // Profit / Loss
+        $profitLoss = $orders - $expenses;
+        return view('backend.reports.profit-loss-reports', compact('orders', 'expenses', 'profitLoss', 'startDate', 'endDate'));
     }
 }
