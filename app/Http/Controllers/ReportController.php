@@ -115,9 +115,9 @@ class ReportController extends Controller
 
     public function orderReport(Request $request)
     {
-        $query = Order::with('customer'); // eager load customer
+        $query = Order::with('customer');
 
-        // Search filter (order ID, customer name, status)
+        // Search filter 
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -141,17 +141,26 @@ class ReportController extends Controller
         }
 
         // Sorting
-        $sort = $request->get('sort', 'id'); // default sort by ID
-        $order = $request->get('order', 'desc'); // default descending
-        $allowedSort = ['id', 'order_date', 'delivery_date', 'status', 'total_amount'];
-        if (!in_array($sort, $allowedSort)) $sort = 'id';
-        if (!in_array($order, ['asc', 'desc'])) $order = 'desc';
+        $sort = $request->get('sort', 'id');
+        $order = $request->get('order', 'desc');
+        $orders = $query->orderBy($sort, $order)->paginate(15);
 
-        $query->orderBy($sort, $order);
+        //  Summary counts
+        $summary = [
+        'total_orders'       => Order::count(),
+        'total_amount' => Order::sum('total_amount'), 
 
-        // Pagination
-        $orders = $query->paginate(15)->appends($request->all());
-        return view('backend.reports.order-reports', compact('orders'));
+        'pending_orders'     => Order::where('status', 'pending')->count(),
+        'pending_amount'     => Order::where('status', 'pending')->sum('total_amount'),
+
+        'completed_order'    => Order::whereIn('status', ['approved', 'done'])->count(),
+        'completed_amount'   => Order::whereIn('status', ['approved', 'done'])->sum('total_amount'),
+        
+        'cancelled_orders'   => Order::where('status', 'canceled')->count(),
+        'cancelled_amount'   => Order::where('status', 'canceled')->sum('total_amount'),
+    ];
+
+        return view('backend.reports.order-reports', compact('orders', 'summary'));
     }
 
     public function expenseReport(Request $request)
