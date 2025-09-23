@@ -6,19 +6,19 @@
             <!-- Filter Section -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('reports.expense') }}"
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Search Expense</label>
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Title, description..."
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
                         <select name="category_id"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                             <option value="">All Categories</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}"
@@ -32,21 +32,21 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
                         <input type="date" name="from_date" value="{{ request('from_date') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
                         <input type="date" name="to_date" value="{{ request('to_date') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
-
-                    <div class="col-span-4 flex space-x-2 mt-2">
-                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md">
+                    <div class="flex items-end space-x-2">
+                        <button type="submit"
+                            class="flex-1 text-sm bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition-colors">
                             Filter
                         </button>
-                        <a href="{{ route('reports.expense') }}"
-                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+                        <a href="{{ url('/expense/reports') }}"
+                            class="px-4 py-2 text-sm bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
                             Clear
                         </a>
                     </div>
@@ -57,7 +57,13 @@
         <!-- Expenses Table -->
         <div class="bg-white rounded-lg shadow-sm border">
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-semibold text-gray-900">Expenses</h3>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Expenses Reports</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Showing {{ $expenses->firstItem() ?? 0 }} to {{ $expenses->lastItem() ?? 0 }} of
+                        {{ $expenses->total() }} expenses
+                    </p>
+                </div>
                 <div class="flex space-x-2">
                     <button onclick="printTable()"
                         class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
@@ -73,45 +79,89 @@
             <div class="overflow-x-auto">
                 @if ($expenses->count() > 0)
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                        <thead class="bg-gray-50 ">
                             <tr>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID</th>
+                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        ID
+                                        <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Title</th>
+                                    class="px-6 py-3 text-left  text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    
+                                      <a href="{{ request()->fullUrlWithQuery(['sort' => 'title', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        Title
+                                        <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left  text-sm font-medium text-gray-500 uppercase tracking-wider">
                                     Category</th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                                     Date</th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount</th>
+                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    
+                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        Amount
+                                        <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Description</th>
+                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    Created</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($expenses as $expense)
-                                <tr class="hover:bg-gray-50">
+                                <tr class="hover:bg-gray-50 text-sm">
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $expense->id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $expense->title }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $expense->category->name ?? '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($expense->date)->format('d-m-Y') }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ number_format($expense->amount, 2) }}
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($settings->currency_position == 'left')
+                                            {{ $settings->currency ?? 'Tk' }}
+                                            {{ number_format($expense->amount, 2) }}
+                                        @else
+                                            {{ number_format($expense->amount, 2) }}
+                                            {{ $settings->currency ?? 'Tk' }}
+                                        @endif
+
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->description }}</td>
+                                     <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                        {{ \Carbon\Carbon::parse($expense->created_at)->format('d M, Y') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot class="bg-gray-100 font-semibold text-sm">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="px-6 py-3 text-right">Total Expense:</td>
+                                <td class="px-6 py-3">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }}
+                                        {{ number_format($expenses->sum('amount'), 2) }}
+                                    @else
+                                        {{ number_format($expenses->sum('amount'), 2) }}
+                                        {{ $settings->currency ?? 'Tk' }}
+                                    @endif
+
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
-                   
                 @else
                     <div class="text-center py-12">
                         <h3 class="text-lg font-medium text-gray-900 mb-2">No expenses found</h3>
@@ -119,58 +169,60 @@
                     </div>
                 @endif
 
-                 <!-- Pagination -->
-            <div class="px-6 py-4 border-t border-gray-200">
-                <div class="flex justify-between items-center">
-                    <div class="text-sm text-gray-700">
-                        Showing <span class="font-medium">{{ $expenses->firstItem() }}</span>
-                        to <span class="font-medium">{{ $expenses->lastItem() }}</span>
-                        of <span class="font-medium">{{ $expenses->total() }}</span> results
-                    </div>
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-700">
+                            {{-- Showing <span class="font-medium">{{ $expenses->firstItem() }}</span>
+                            to <span class="font-medium">{{ $expenses->lastItem() }}</span>
+                            of <span class="font-medium">{{ $expenses->total() }}</span> results --}}
+                        </div>
 
-                    <!-- Pagination buttons -->
-                    <div class="flex space-x-2">
-                        <!-- Previous -->
-                        @if ($expenses->onFirstPage())
-                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
-                                disabled>
-                                Previous
-                            </button>
-                        @else
-                            <a href="{{ $expenses->previousPageUrl() }}"
-                                class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
-                                Previous
-                            </a>
-                        @endif
-
-                        <!-- Page numbers -->
-                        @foreach ($expenses->getUrlRange(1, $expenses->lastPage()) as $page => $url)
-                            @if ($page == $expenses->currentPage())
-                                <span
-                                    class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                        <!-- Pagination buttons -->
+                        <div class="flex space-x-2">
+                            <!-- Previous -->
+                            @if ($expenses->onFirstPage())
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Previous
+                                </button>
                             @else
-                                <a href="{{ $url }}"
+                                <a href="{{ $expenses->previousPageUrl() }}"
                                     class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
-                                    {{ $page }}
+                                    Previous
                                 </a>
                             @endif
-                        @endforeach
 
-                        <!-- Next -->
-                        @if ($expenses->hasMorePages())
-                            <a href="{{ $expenses->nextPageUrl() }}"
-                                class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
-                                Next
-                            </a>
-                        @else
-                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
-                                disabled>
-                                Next
-                            </button>
-                        @endif
+                            <!-- Page numbers -->
+                            @foreach ($expenses->getUrlRange(1, $expenses->lastPage()) as $page => $url)
+                                @if ($page == $expenses->currentPage())
+                                    <span
+                                        class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $url }}"
+                                        class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                        {{ $page }}
+                                    </a>
+                                @endif
+                            @endforeach
+
+                            <!-- Next -->
+                            @if ($expenses->hasMorePages())
+                                <a href="{{ $expenses->nextPageUrl() }}"
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
+                                    Next
+                                </a>
+                            @else
+                                <button
+                                    class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm cursor-not-allowed"
+                                    disabled>
+                                    Next
+                                </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>
@@ -299,6 +351,5 @@
                 document.body.removeChild(printContent);
             }, 1000);
         }
-
     </script>
 </x-app-layout>
