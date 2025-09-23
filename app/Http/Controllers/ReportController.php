@@ -147,18 +147,18 @@ class ReportController extends Controller
 
         //  Summary counts
         $summary = [
-        'total_orders'       => Order::count(),
-        'total_amount' => Order::sum('total_amount'), 
+            'total_orders'       => Order::count(),
+            'total_amount' => Order::sum('total_amount'),
 
-        'pending_orders'     => Order::where('status', 'pending')->count(),
-        'pending_amount'     => Order::where('status', 'pending')->sum('total_amount'),
+            'pending_orders'     => Order::where('status', 'pending')->count(),
+            'pending_amount'     => Order::where('status', 'pending')->sum('total_amount'),
 
-        'completed_order'    => Order::whereIn('status', ['approved', 'done'])->count(),
-        'completed_amount'   => Order::whereIn('status', ['approved', 'done'])->sum('total_amount'),
-        
-        'cancelled_orders'   => Order::where('status', 'canceled')->count(),
-        'cancelled_amount'   => Order::where('status', 'canceled')->sum('total_amount'),
-    ];
+            'completed_order'    => Order::whereIn('status', ['approved', 'done'])->count(),
+            'completed_amount'   => Order::whereIn('status', ['approved', 'done'])->sum('total_amount'),
+
+            'cancelled_orders'   => Order::where('status', 'canceled')->count(),
+            'cancelled_amount'   => Order::where('status', 'canceled')->sum('total_amount'),
+        ];
 
         return view('backend.reports.order-reports', compact('orders', 'summary'));
     }
@@ -226,10 +226,24 @@ class ReportController extends Controller
             $query->latest();
         }
 
-        $invoices = $query->paginate(20);
+        $invoices = $query->paginate(15);
+        $paidInvoices = Invoice::where('status', 'paid');
+        $partialInvoices = Invoice::where('status', 'partial');
+        $dueInvoices = Invoice::where('status', 'due');
+
+        $summary = [
+            'paid_count'    => $paidInvoices->count(),
+            'paid_amount'   => $paidInvoices->sum('paid_amount'),
+
+            'partial_count' => $partialInvoices->count(),
+            'partial_amount' => $partialInvoices->sum('due_amount'),
+
+            'due_count'     => $dueInvoices->count(),
+            'due_amount'    => $dueInvoices->sum('due_amount'),
+        ];
 
         $settings = Setting::first();
-        return view('backend.reports.invoice-reports', compact('invoices', 'settings'));
+        return view('backend.reports.invoice-reports', compact('invoices', 'settings', 'summary'));
     }
 
     public function profitLossReport(Request $request)

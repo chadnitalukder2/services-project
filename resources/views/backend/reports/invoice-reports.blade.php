@@ -11,23 +11,52 @@
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                         <div class="text-center p-4 bg-green-50 rounded-lg">
-                            <div class="text-2xl font-bold text-green-600">156</div>
+                            <div class="text-2xl font-bold text-green-600">{{ $summary['paid_count'] }}</div>
                             <div class="text-sm text-green-700">Paid Invoices</div>
-                            <div class="text-xs text-green-600 mt-1">$42,350 total</div>
+                            <div class="text-xs text-green-600 mt-1">
+                                Total:
+                                @if ($settings->currency_position == 'left')
+                                    {{ $settings->currency ?? 'Tk' }}
+                                    {{ number_format($summary['paid_amount'], 2) }}
+                                @else
+                                    {{ number_format($summary['paid_amount'], 2) }}
+                                    {{ $settings->currency ?? 'Tk' }}
+                                @endif
+                            </div>
                         </div>
                         <div class="text-center p-4 bg-yellow-50 rounded-lg">
-                            <div class="text-2xl font-bold text-yellow-600">24</div>
+                            <div class="text-2xl font-bold text-yellow-600">{{ $summary['partial_count'] }}</div>
                             <div class="text-sm text-yellow-700">Partial Paid</div>
-                            <div class="text-xs text-yellow-600 mt-1">$6,890 remaining</div>
+                            <div class="text-xs text-yellow-600 mt-1">
+                                Remaining:
+                                @if ($settings->currency_position == 'left')
+                                    {{ $settings->currency ?? 'Tk' }}
+                                    {{ number_format($summary['partial_amount'], 2) }}
+                                @else
+                                    {{ number_format($summary['partial_amount'], 2) }}
+                                    {{ $settings->currency ?? 'Tk' }}
+                                @endif
+                            </div>
                         </div>
                         <div class="text-center p-4 bg-red-50 rounded-lg">
-                            <div class="text-2xl font-bold text-red-600">18</div>
-                            <div class="text-sm text-red-700">Unpaid Invoices</div>
-                            <div class="text-xs text-red-600 mt-1">$8,940 outstanding</div>
+                            <div class="text-2xl font-bold text-red-600">{{ $summary['due_count'] }}</div>
+                            <div class="text-sm text-red-700">Due Invoices</div>
+                            <div class="text-xs text-red-600 mt-1">
+                                Outstanding: 
+                                @if ($settings->currency_position == 'left')
+                                    {{ number_format($summary['due_amount'], 2) }}
+                                    {{ number_format($totalAmount, 2) }}
+                                @else
+                                   {{ number_format($summary['due_amount'], 2) }}
+                                    {{ $settings->currency ?? 'Tk' }}
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('reports.invoice') }}"
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
@@ -59,7 +88,7 @@
 
         <!-- Invoice Table -->
         <div class="bg-white rounded-lg shadow-sm border">
-            
+
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-gray-900">Invoices</h3>
                 <div class="flex space-x-2">
@@ -110,31 +139,88 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($invoices as $invoice)
-                                <tr class="hover:bg-gray-50">
+                                <tr class="hover:bg-gray-50 text-sm">
                                     <td class="px-6 py-4">{{ $invoice->id }}</td>
                                     <td class="px-6 py-4">{{ $invoice->customer->name }}</td>
                                     <td class="px-6 py-4">#{{ $invoice->order_id }}</td>
                                     <td class="px-6 py-4">
-                                        {{ $settings->currency_position == 'left' ? $settings->currency . ' ' . $invoice->amount : $invoice->amount . ' ' . $settings->currency }}
+                                        @if ($settings->currency_position == 'left')
+                                            {{ $settings->currency ?? 'Tk' }}
+                                            {{ number_format($invoice->amount, 2) }}
+                                        @else
+                                            {{ number_format($invoice->amount, 2) }}
+                                            {{ $settings->currency ?? 'Tk' }}
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 text-green-500">
-                                        {{ $settings->currency_position == 'left' ? $settings->currency . ' ' . $invoice->paid_amount : $invoice->paid_amount . ' ' . $settings->currency }}
+                                        @if ($settings->currency_position == 'left')
+                                            {{ $settings->currency ?? 'Tk' }}
+                                            {{ number_format($invoice->paid_amount, 2) }}
+                                        @else
+                                            {{ number_format($invoice->paid_amount, 2) }}
+                                            {{ $settings->currency ?? 'Tk' }}
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 text-red-500">
-                                        {{ $settings->currency_position == 'left' ? $settings->currency . ' ' . $invoice->due_amount : $invoice->due_amount . ' ' . $settings->currency }}
+                                        @if ($settings->currency_position == 'left')
+                                            {{ $settings->currency ?? 'Tk' }}
+                                            {{ number_format($invoice->due_amount, 2) }}
+                                        @else
+                                            {{ number_format($invoice->due_amount, 2) }}
+                                            {{ $settings->currency ?? 'Tk' }}
+                                        @endif
                                     </td>
-                                    <td class="px-6 py-4">{{ $invoice->status }}</td>
+                                    <td
+                                        class="px-6 py-4 capitalize 
+                                            @if ($invoice->status == 'paid') text-green-600
+                                            @elseif($invoice->status == 'due') text-red-600
+                                            @elseif($invoice->status == 'partial') text-yellow-500
+                                            @else text-gray-900 @endif">
+                                        {{ ucfirst($invoice->status) }}
+                                    </td>
+
                                     <td class="px-6 py-4">{{ $invoice->payment_method }}</td>
                                     <td class="px-6 py-4">{{ $invoice->created_at->format('d-m-Y') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot class="bg-gray-100 text-sm font-semibold">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="px-6 py-3 text-right">Total:</td>
+                                <td class="px-6 py-3">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }}{{ number_format($invoices->sum('amount'), 2) }}
+                                    @else
+                                        {{ number_format($invoices->sum('amount'), 2) }}{{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-3 text-green-500">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }}{{ number_format($invoices->sum('paid_amount'), 2) }}
+                                    @else
+                                        {{ number_format($invoices->sum('paid_amount'), 2) }}{{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-3 text-red-500">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }}{{ number_format($invoices->sum('due_amount'), 2) }}
+                                    @else
+                                        {{ number_format($invoices->sum('due_amount'), 2) }}{{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 @else
                     <div class="text-center py-12">No invoices found</div>
                 @endif
             </div>
-           <!-- Pagination -->
+            <!-- Pagination -->
             <div class="px-6 py-4 border-t border-gray-200">
                 <div class="flex justify-between items-center">
                     <div class="text-sm text-gray-700">
