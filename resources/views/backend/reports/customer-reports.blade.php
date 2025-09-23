@@ -11,18 +11,18 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Search Customer</label>
                         <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Name, email, phone, address, company..."
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            placeholder=" Search by name address..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
                         <input type="date" name="from_date" value="{{ request('from_date') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
                         <input type="date" name="to_date" value="{{ request('to_date') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
                         <button type="submit"
@@ -87,19 +87,19 @@
                                     <!-- sort orders count -->
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'orders_count', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
-                                        Total Orders
+                                        Orders
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Total Invoices</th>
+                                    Invoices</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <!-- sort total amount from invoices -->
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
-                                        Total Amount
+                                        Amount
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
@@ -108,7 +108,7 @@
                                     <!-- sort total paid amount from invoices -->
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_paid_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
-                                        Total Paid
+                                        Paid
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
@@ -117,11 +117,13 @@
                                     <!-- sort total due amount from invoices -->
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'invoices_sum_due_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
-                                        Total Due
+                                        Due
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -187,10 +189,48 @@
                                             @endif
                                         </div>
                                     </td>
-
+                                    <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                        {{ \Carbon\Carbon::parse($customer->created_at)->format('d M, Y') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot class="bg-gray-100 font-semibold text-sm">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="px-6 py-4 text-right">Totals:</td>
+                                <td class="px-6 py-4 text-left">{{ $totalOrders }}</td>
+                                <td class="px-6 py-4 text-left">{{ $totalInvoices }}</td>
+                                <td class="px-6 py-4">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }}
+                                        {{ number_format($totalAmount, 2) }}
+                                    @else
+                                        {{ number_format($totalAmount, 2) }}
+                                        {{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-green-600">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }}
+                                        {{ number_format($totalPaid, 2) }}
+                                    @else
+                                        {{ number_format($totalPaid, 2) }}
+                                        {{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-red-600">
+                                    @if ($settings->currency_position == 'left')
+                                        {{ $settings->currency ?? 'Tk' }}
+                                        {{ number_format($totalDue, 2) }}
+                                    @else
+                                        {{ number_format($totalDue, 2) }}
+                                        {{ $settings->currency ?? 'Tk' }}
+                                    @endif
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 @else
                     <div class="text-center py-12">
@@ -215,9 +255,9 @@
             <div class="px-6 py-4 border-t border-gray-200">
                 <div class="flex justify-between items-center">
                     <div class="text-sm text-gray-700">
-                        Showing <span class="font-medium">{{ $customers->firstItem() }}</span>
+                        {{-- Showing <span class="font-medium">{{ $customers->firstItem() }}</span>
                         to <span class="font-medium">{{ $customers->lastItem() }}</span>
-                        of <span class="font-medium">{{ $customers->total() }}</span> results
+                        of <span class="font-medium">{{ $customers->total() }}</span> results --}}
                     </div>
 
                     <!-- Pagination buttons -->
@@ -500,7 +540,7 @@
             link.click();
             document.body.removeChild(link);
         }
-       
+
 
         function printTable() {
             const printContent = document.createElement('div');
@@ -524,26 +564,5 @@
             window.print();
             setTimeout(() => document.body.removeChild(printContent), 1000);
         }
-
-
-        // Auto-submit form when date inputs change
-        document.addEventListener('DOMContentLoaded', function() {
-            const fromDate = document.querySelector('input[name="from_date"]');
-            const toDate = document.querySelector('input[name="to_date"]');
-
-            if (fromDate && toDate) {
-                fromDate.addEventListener('change', function() {
-                    if (this.value && toDate.value) {
-                        this.closest('form').submit();
-                    }
-                });
-
-                toDate.addEventListener('change', function() {
-                    if (this.value && fromDate.value) {
-                        this.closest('form').submit();
-                    }
-                });
-            }
-        });
     </script>
 </x-app-layout>

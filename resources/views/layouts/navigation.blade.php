@@ -9,7 +9,7 @@
                         @if (isset($settings->logo) && $settings->logo != '')
                             <img src="{{ asset('storage/' . $settings->logo) }}" alt="Site Logo" class="h-11 w-11" />
                         @else
-                            <h2 class="text-3xl font-extrabold ">{{ $settings->title ?? 'Purobi SMS' }}</h2>
+                            <h2 class="text-2xl font-extrabold ">{{ $settings->title ?? 'Purobi' }}</h2>
                         @endif
                     </a>
                 </div>

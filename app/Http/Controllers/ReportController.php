@@ -58,7 +58,13 @@ class ReportController extends Controller
             ->paginate(15)
             ->appends($request->query());
 
-        return view('backend.reports.customer-reports', compact('customers'));
+        $totalInvoices = $customers->sum('invoices_count');
+        $totalOrders = $customers->sum('orders_count');
+        $totalAmount = $customers->sum('invoices_sum_amount');
+        $totalPaid   = $customers->sum('invoices_sum_paid_amount');
+        $totalDue    = $customers->sum('invoices_sum_due_amount');
+
+        return view('backend.reports.customer-reports', compact('customers', 'totalInvoices', 'totalOrders', 'totalAmount', 'totalPaid', 'totalDue'));
     }
 
     public function serviceReport(Request $request)
