@@ -7,7 +7,7 @@
         </div>
 
         <!-- Quick Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <div class="bg-white p-6 rounded-lg shadow-sm border">
                 <div class="flex items-center justify-between">
                     <div>
@@ -41,23 +41,8 @@
             <div class="bg-white p-6 rounded-lg shadow-sm border">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">Net Profit</p>
-                        <p class="text-2xl font-bold text-blue-600"> <i class="fa-solid fa-bangladeshi-taka-sign"></i>
-                            {{ number_format($netProfit, 2) }}</p>
-                        <p class="text-sm text-blue-600 mt-1"> {{ $profitGrowth >= 0 ? '↗' : '↘' }}
-                            {{ number_format($profitGrowth, 1) }}% from last month</p>
-                    </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-chart-line text-blue-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow-sm border">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Pending Invoices</p>
-                        <p class="text-2xl font-bold text-orange-600"> {{ $pendingInvoices }}</p>
+                        <p class="text-sm font-medium text-gray-600">Pending Orders</p>
+                        <p class="text-2xl font-bold text-orange-600"> {{ $pendingOrder }}</p>
                         <p class="text-sm text-orange-500 mt-1"> <i class="fa-solid fa-bangladeshi-taka-sign"></i>
                             {{ number_format($outstanding, 2) }} outstanding</p>
                     </div>

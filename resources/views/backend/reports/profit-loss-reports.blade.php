@@ -4,6 +4,56 @@
         <div class="mb-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Profit & Loss Report</h2>
 
+            <!-- Quick Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Revenue</p>
+                            <p class="text-2xl font-bold text-green-600"><i class="fa-solid fa-bangladeshi-taka-sign"></i>
+                                {{ number_format($totalRevenue, 2) }}</p>
+                            <p class="text-sm text-green-500 mt-1"> {{ $revenueGrowth >= 0 ? '↗' : '↘' }}
+                                {{ number_format($revenueGrowth, 1) }}% from last month</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-bangladeshi-taka-sign text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Expenses</p>
+                            <p class="text-2xl font-bold text-red-600"> <i
+                                    class="fa-solid fa-bangladeshi-taka-sign"></i>
+                                {{ number_format($totalExpenses, 2) }}</p>
+                            <p class="text-sm text-red-500 mt-1"> {{ $expenseGrowth >= 0 ? '↗' : '↘' }}
+                                {{ number_format($expenseGrowth, 1) }}% from last month</p>
+                        </div>
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-credit-card text-red-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Net Profit</p>
+                            <p class="text-2xl font-bold text-blue-600"> <i
+                                    class="fa-solid fa-bangladeshi-taka-sign"></i>
+                                {{ number_format($netProfit, 2) }}</p>
+                            <p class="text-sm text-blue-600 mt-1"> {{ $profitGrowth >= 0 ? '↗' : '↘' }}
+                                {{ number_format($profitGrowth, 1) }}% from last month</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Filter Section -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('reports.profit-loss') }}"
@@ -60,9 +110,12 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Orders</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Expenses</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Profit / Loss</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Orders
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Expenses
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Profit / Loss
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -73,7 +126,8 @@
                             <td class="px-6 py-4 text-sm text-gray-900">
                                 {{ number_format($expenses, 2) }}
                             </td>
-                            <td class="px-6 py-4 font-bold text-sm {{ $profitLoss >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            <td
+                                class="px-6 py-4 font-bold text-sm {{ $profitLoss >= 0 ? 'text-green-600' : 'text-red-600' }}">
                                 {{ number_format($profitLoss, 2) }}
                             </td>
                         </tr>
@@ -83,7 +137,7 @@
         </div>
     </div>
 
-   <!-- Print Styles -->
+    <!-- Print Styles -->
     <style>
         @media print {
 
@@ -148,32 +202,34 @@
         }
     </style>
     <script>
-    function exportToCSV() {
-        const rows = [];
-        const headers = ["Total Orders", "Total Expenses", "Profit / Loss"];
-        rows.push(headers);
+        function exportToCSV() {
+            const rows = [];
+            const headers = ["Total Orders", "Total Expenses", "Profit / Loss"];
+            rows.push(headers);
 
-        const row = [
-            "{{ $orders ?? 0 }}",
-            "{{ $expenses ?? 0 }}",
-            "{{ $profitLoss ?? 0 }}"
-        ];
-        rows.push(row);
+            const row = [
+                "{{ $orders ?? 0 }}",
+                "{{ $expenses ?? 0 }}",
+                "{{ $profitLoss ?? 0 }}"
+            ];
+            rows.push(row);
 
-        // Convert to CSV string
-        let csvContent = rows.map(e => e.join(",")).join("\n");
+            // Convert to CSV string
+            let csvContent = rows.map(e => e.join(",")).join("\n");
 
-        // Create blob and download
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", `profit-loss-report-${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = "hidden";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+            // Create blob and download
+            const blob = new Blob([csvContent], {
+                type: "text/csv;charset=utf-8;"
+            });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `profit-loss-report-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = "hidden";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
         function printTable() {
             const printContent = document.createElement("div");

@@ -26,16 +26,14 @@ class DashboardController extends Controller
         $netProfit      = $totalRevenue - $totalExpenses;
 
         // Pending Invoices
-        $pendingInvoices = Invoice::where(function ($q) {
-            $q->where('status', 'pending')
-                ->orWhere('due_amount', '>', 0);
+        $pendingOrder = Order::where(function ($q) {
+            $q->where('status', 'pending');
         })->count();
 
         // Outstanding Amount
-        $outstanding = Invoice::where(function ($q) {
-            $q->where('status', 'pending')
-                ->orWhere('due_amount', '>', 0);
-        })->sum('due_amount');
+        $outstanding = Order::where(function ($q) {
+            $q->where('status', 'pending');
+        })->sum('total_amount');
 
         $year = now()->year;
 
@@ -102,7 +100,7 @@ class DashboardController extends Controller
             'totalRevenue',
             'totalExpenses',
             'netProfit',
-            'pendingInvoices',
+            'pendingOrder',
             'outstanding',
             'monthlyRevenue',
             'monthlyExpenses',
