@@ -24,10 +24,26 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                     
+                        <div class="text-center p-4 bg-red-50 rounded-lg">
+                            <div class="text-2xl font-bold text-red-600">{{ $summary['due_count'] }}</div>
+                            <div class="text-sm text-red-700">Due Invoices</div>
+                            <div class="text-xs text-red-600 mt-1">
+                                Outstanding:
+                                @if ($settings->currency_position == 'left')
+                                    {{ number_format($summary['due_amount'], 2) }}
+                                    {{ number_format($totalAmount, 2) }}
+                                @else
+                                    {{ number_format($summary['due_amount'], 2) }}
+                                    {{ $settings->currency ?? 'Tk' }}
+                                @endif
+                            </div>
+                        </div>
+
+                           <div class="text-center p-4 bg-yellow-50 rounded-lg">
                             <div class="text-2xl font-bold text-yellow-600">{{ $summary['partial_count'] }}</div>
                             <div class="text-sm text-yellow-700">Partial Paid</div>
-                            <div class="text-xs text-yellow-600 mt-1">
+                            {{-- <div class="text-xs text-yellow-600 mt-1">
                                 Remaining:
                                 @if ($settings->currency_position == 'left')
                                     {{ $settings->currency ?? 'Tk' }}
@@ -36,21 +52,7 @@
                                     {{ number_format($summary['partial_amount'], 2) }}
                                     {{ $settings->currency ?? 'Tk' }}
                                 @endif
-                            </div>
-                        </div>
-                        <div class="text-center p-4 bg-red-50 rounded-lg">
-                            <div class="text-2xl font-bold text-red-600">{{ $summary['due_count'] }}</div>
-                            <div class="text-sm text-red-700">Due Invoices</div>
-                            <div class="text-xs text-red-600 mt-1">
-                                Outstanding: 
-                                @if ($settings->currency_position == 'left')
-                                    {{ number_format($summary['due_amount'], 2) }}
-                                    {{ number_format($totalAmount, 2) }}
-                                @else
-                                   {{ number_format($summary['due_amount'], 2) }}
-                                    {{ $settings->currency ?? 'Tk' }}
-                                @endif
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -90,7 +92,13 @@
         <div class="bg-white rounded-lg shadow-sm border">
 
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="text-lg font-semibold text-gray-900">Invoices</h3>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Invoices</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Showing {{ $invoices->firstItem() ?? 0 }} to {{ $invoices->lastItem() ?? 0 }} of
+                        {{ $invoices->total() }} invoices
+                    </p>
+                </div>
                 <div class="flex space-x-2">
                     <button onclick="printTable()"
                         class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm hover:bg-gray-200">
@@ -110,22 +118,43 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID</th>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        ID <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Customer</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Order ID</th>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'order_id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        Order ID <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount</th>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        Amount <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Paid</th>
+                                    
+                                         <a href="{{ request()->fullUrlWithQuery(['sort' => 'paid_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        Paid <i class="fas fa-sort ml-1 text-xs"></i>
+                                    </a>
+                                </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Due</th>
+                                    
+                                      <a href="{{ request()->fullUrlWithQuery(['sort' => 'due_amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                        Due <i class="fas fa-sort ml-1 text-xs"></i>
+                                </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status</th>
@@ -140,9 +169,10 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($invoices as $invoice)
                                 <tr class="hover:bg-gray-50 text-sm">
-                                    <td class="px-6 py-4">{{ $invoice->id }}</td>
+                                    <td class="px-6 py-4"> #{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</td>
                                     <td class="px-6 py-4">{{ $invoice->customer->name }}</td>
-                                    <td class="px-6 py-4">#{{ $invoice->order_id }}</td>
+                                    <td class="px-6 py-4"> #{{ str_pad($invoice->order_id, 4, '0', STR_PAD_LEFT) }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         @if ($settings->currency_position == 'left')
                                             {{ $settings->currency ?? 'Tk' }}
@@ -179,7 +209,7 @@
                                         {{ ucfirst($invoice->status) }}
                                     </td>
 
-                                    <td class="px-6 py-4">{{ $invoice->payment_method }}</td>
+                                    <td class="px-6 py-4 capitalize">{{ $invoice->payment_method }}</td>
                                     <td class="px-6 py-4">{{ $invoice->created_at->format('d-m-Y') }}</td>
                                 </tr>
                             @endforeach
@@ -224,9 +254,9 @@
             <div class="px-6 py-4 border-t border-gray-200">
                 <div class="flex justify-between items-center">
                     <div class="text-sm text-gray-700">
-                        Showing <span class="font-medium">{{ $invoices->firstItem() }}</span>
+                        {{-- Showing <span class="font-medium">{{ $invoices->firstItem() }}</span>
                         to <span class="font-medium">{{ $invoices->lastItem() }}</span>
-                        of <span class="font-medium">{{ $invoices->total() }}</span> results
+                        of <span class="font-medium">{{ $invoices->total() }}</span> results --}}
                     </div>
 
                     <!-- Pagination buttons -->

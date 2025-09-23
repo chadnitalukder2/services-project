@@ -233,13 +233,13 @@ class ReportController extends Controller
 
         $summary = [
             'paid_count'    => $paidInvoices->count(),
-            'paid_amount'   => $paidInvoices->sum('paid_amount'),
+            'paid_amount'   => Invoice::sum('paid_amount'),
 
             'partial_count' => $partialInvoices->count(),
             'partial_amount' => $partialInvoices->sum('due_amount'),
 
             'due_count'     => $dueInvoices->count(),
-            'due_amount'    => $dueInvoices->sum('due_amount'),
+            'due_amount'    => Invoice::sum('due_amount'),
         ];
 
         $settings = Setting::first();
