@@ -12,17 +12,17 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Search Customer</label>
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder=" Search by name address..."
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
                         <input type="date" name="from_date" value="{{ request('from_date') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
                         <input type="date" name="to_date" value="{{ request('to_date') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
                         <button type="submit"
@@ -69,7 +69,10 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-gray-700">
+                                         ID <i class="fas fa-sort ml-1 text-xs"></i> 
+                                    </a>
                                 </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

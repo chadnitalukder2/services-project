@@ -70,26 +70,48 @@ class ReportController extends Controller
     public function serviceReport(Request $request)
     {
         $query = Services::with('category');
-
-        if ($request->search) {
+        //search filter
+        if ($request->filled('search')) {
             $search = $request->search;
-            $query->where('name', 'like', "%$search%")
-                ->orWhere('description', 'like', "%$search%");
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('description', 'like', "%$search%");
+            });
         }
 
-        if ($request->status) {
+        //Status filter
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        if ($request->category_id) {
+        // Category filter
+        if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
-        $services = $query->orderBy('id', 'desc')->paginate(10);
+        // Date range filter
+        if ($request->filled('from_date') && $request->filled('to_date')) {
+            $query->whereBetween('created_at', [
+                $request->from_date . " 00:00:00",
+                $request->to_date . " 23:59:59"
+            ]);
+        } elseif ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        } elseif ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+        $sort = $request->get('sort', 'id');
+        $order = $request->get('order', 'desc');
+
+        $services = $query->orderBy($sort, $order)->paginate(15);
 
         $categories = ServiceCategory::all();
-        return view('backend.reports.service-reports', compact('services', 'categories'));
+
+        $totalPrice = $query->sum('unit_price');
+
+        return view('backend.reports.service-reports', compact('services', 'categories', 'totalPrice'));
     }
+
 
     public function orderReport(Request $request)
     {
