@@ -10,6 +10,14 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
+            //reports
+            'view customer report',
+            'view service report',
+            'view order report',
+            'view expense report',
+            'view invoice report',
+            'view profit loss report',
+
             //roles
             'create roles',
             'view roles',

@@ -10,7 +10,7 @@
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-semibold text-gray-900">Expense Category List</h3>
                         <div class="flex space-x-2">
-                            @can('create expense category')
+                            @can('create expense categories')
                                 <button onclick="openCreateExCategoryModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <i class="fa-solid fa-plus"></i>

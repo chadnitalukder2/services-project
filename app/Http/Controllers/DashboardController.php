@@ -9,9 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class DashboardController extends Controller
+class DashboardController extends Controller 
 {
-
 
     public function index()
     {

@@ -15,7 +15,7 @@
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select name="category_id" id="category_id"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
                             <option value="">All Categories</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}"
@@ -39,25 +39,25 @@
                     <div>
                         <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">Created From</label>
                         <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
                     </div>
 
                     <!-- Created At Date To -->
                     <div>
                         <label for="date_to" class="block text-sm font-medium text-gray-700 mb-1">Created To</label>
                         <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
                     </div>
 
 
 
                     <!-- Filter Buttons -->
                     <div class="flex items-end space-x-2">
-                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
+                        <button type="submit" class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
                             Filter
                         </button>
                         <a href="{{ route('expenses.index') }}"
-                            class="bg-gray-500 text-white px-12 py-2 rounded-md hover:bg-gray-600">
+                            class="bg-gray-500 text-white text-sm px-12 py-2 rounded-md hover:bg-gray-600">
                             Clear
                         </a>
                     </div>

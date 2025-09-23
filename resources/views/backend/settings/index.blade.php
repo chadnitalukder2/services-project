@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-message />
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-        <h2 class="text-xl font-bold text-gray-900 mb-6">Setting</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Settings</h2>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
             <div class=" p-14">
@@ -74,9 +74,9 @@
                                 <!-- Current Logo -->
                                 @if (!empty($setting->logo))
                                     <div id="currentLogo">
-                                        <p class="text-sm text-gray-600 mb-2">Current Logo</p>
+                                        <p class="text-sm text-gray-600 mb-2 ">Current Logo</p>
                                         <img src="{{ asset('storage/' . $setting->logo) }}" alt="Current Logo"
-                                            class="w-[110px] h-[110px] border rounded shadow-sm ">
+                                            class="w-[110px] h-[110px] border rounded shadow-sm object-cover ">
                                     </div>
                                 @endif
 

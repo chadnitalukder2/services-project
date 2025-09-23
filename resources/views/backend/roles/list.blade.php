@@ -37,7 +37,7 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-                                 @canany(['edit roles', 'delete roles'])
+                                @canany(['edit roles', 'delete roles'])
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions</th>
@@ -175,23 +175,27 @@
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-base font-medium">
-                                Permissions
-                            </label>
-                            <div class="grid grid-cols-1 mt-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
-                                @if (isset($permissions) && $permissions->isNotEmpty())
-                                    @foreach ($permissions as $permission)
-                                        <label class="flex items-center">
-                                            <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
-                                                style="--tw-ring-shadow: none;"
-                                                class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
-                                            <span class="text-sm text-gray-700">{{ $permission->name }}</span>
-                                        </label>
-                                    @endforeach
-                                @else
-                                    <p class="text-gray-500 text-sm">No permissions available</p>
-                                @endif
-                            </div>
+                            @php
+                                $modules = $permissions->pluck('module')->unique();
+                            @endphp
+
+                            @foreach ($modules as $module)
+                                <div class="mb-4">
+                                    <label class="block text-base font-medium mb-2 capitalize">{{ $module }}
+                                        Permissions</label>
+                                    <div
+                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50">
+                                        @foreach ($permissions->where('module', $module) as $permission)
+                                            <label class="flex items-center">
+                                                <input type="checkbox" name="permissions[]"
+                                                    value="{{ $permission->name }}"
+                                                    class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
+                                                <span class="text-sm text-gray-700">{{ $permission->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
 
                         <div class="flex justify-end gap-3">
@@ -238,19 +242,27 @@
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-base font-medium mb-2">
-                                Permissions
-                            </label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3"
-                                id="editRolePermissions">
-                                @foreach ($permissions as $permission)
-                                    <label class="flex items-center">
-                                        <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
-                                            class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
-                                        <span class="text-sm text-gray-700">{{ $permission->name }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
+                            @php
+                                $modules = $permissions->pluck('module')->unique();
+                            @endphp
+
+                            @foreach ($modules as $module)
+                                <div class="mb-4">
+                                    <label class="block text-base font-medium mb-2 capitalize">{{ $module }}
+                                        Permissions</label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50"
+                                        id="editRolePermissions-{{ $module }}">
+                                        @foreach ($permissions->where('module', $module) as $permission)
+                                            <label class="flex items-center">
+                                                <input type="checkbox" name="permissions[]"
+                                                    value="{{ $permission->name }}"
+                                                    class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
+                                                <span class="text-sm text-gray-700">{{ $permission->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
 
                         <div class="flex justify-end gap-3">

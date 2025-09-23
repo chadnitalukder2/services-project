@@ -289,8 +289,9 @@
         </table>
 
         <!-- Footer -->
-        <div class="footer">
-            Thank you for your business!
+        <div class="footer text-left">
+           {{ $settings->message ?? 'Thank you for your business!' }}
+            
         </div>
     </div>
 </body>

@@ -7,30 +7,26 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         @if (isset($settings->logo) && $settings->logo != '')
-                            <img src="{{ asset('storage/' . $settings->logo) }}" alt="Site Logo" class="h-11 w-11" />
+                            <img src="{{ asset('storage/' . $settings->logo) }}" alt="Site Logo"
+                                class="h-11 w-11 object-cover" />
                         @else
                             <h2 class="text-2xl font-extrabold ">{{ $settings->title ?? 'Purobi' }}</h2>
                         @endif
                     </a>
                 </div>
 
-                {{-- <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div> --}}
-
-                <!-- Report -->
-                {{-- @can('view reports')
+                <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
-                            {{ __('Reports') }}
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
-                @endcan --}}
 
-                @canany(['view reports'])
+
+
+
+                @canany(['view customer report', 'view service report', 'view order report', 'view expense report',
+                    'view invoice report', 'view profit loss report'])
                     <div class="hidden sm:flex sm:items-center sm:ms-8">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -50,7 +46,7 @@
 
                             <x-slot name="content">
 
-                                @can('view users')
+                                @can('view customer report')
                                     <x-dropdown-link :href="route('reports.customer')" :class="request()->routeIs('users.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Customer Report') }}
@@ -58,7 +54,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                @can('view roles')
+                                @can('view service report')
                                     <x-dropdown-link :href="route('reports.service')" :class="request()->routeIs('roles.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Service Report ') }}
@@ -66,7 +62,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                @can('view permissions')
+                                @can('view order report')
                                     <x-dropdown-link :href="route('reports.order')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Order Report') }}
@@ -74,7 +70,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                @can('view permissions')
+                                @can('view invoice report')
                                     <x-dropdown-link :href="route('reports.invoice')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Invoice Report ') }}
@@ -82,7 +78,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                @can('view permissions')
+                                @can('view expense report')
                                     <x-dropdown-link :href="route('reports.expense')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Expense Report ') }}
@@ -90,7 +86,7 @@
                                     </x-dropdown-link>
                                 @endcan
 
-                                @can('view permissions')
+                                @can('view profit loss report')
                                     <x-dropdown-link :href="route('reports.profit-loss')" :class="request()->routeIs('permissions.*') ? 'bg-gray-100' : ''">
                                         <div class="flex items-center">
                                             {{ __('Profit & Loss') }}
@@ -163,7 +159,9 @@
                 @endcan
 
                 <!-- Services Dropdown -->
-                @can('view services', 'view service category')
+                @canany(['view services', 'view service category'])
+                    
+               
                     <div class="hidden sm:flex sm:items-center sm:ms-8">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -196,7 +194,7 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
-                @endcan
+                @endcanany
 
                 <!-- Expense Management Dropdown -->
                 @canany(['view expense categories', 'view expenses'])

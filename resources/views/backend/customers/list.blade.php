@@ -14,13 +14,13 @@
                     <div class="flex-1 min-w-64">
                         <input type="text" name="search" placeholder="Search by name, email, phone, or address..."
                             value="{{ request('search') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            class="w-full text-sm border-gray-300 rounded-md shadow-sm  focus:ring-1 focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
                     </div>
 
                     <!-- Sort Dropdown -->
                     <div>
                         <select name="sort"
-                            class="border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            class="border-gray-300 rounded-md shadow-sm text-sm focus:ring-1 focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
                             <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First
                             </option>
                             <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First
@@ -30,11 +30,11 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-2">
-                        <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md ">
+                        <button type="submit" class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-4 py-2 rounded-md ">
                             Search
                         </button>
                         <a href="{{ route('customers.index') }}"
-                            class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                            class="bg-gray-500 text-sm text-white px-4 py-2 rounded-md hover:bg-gray-600">
                             Clear
                         </a>
                     </div>

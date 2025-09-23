@@ -4,6 +4,63 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Invoices Management</h2>
+
+            <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+                <form method="GET" action="{{ route('invoices.index') }}"
+                    class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 items-end">
+
+                    <!-- Date From -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">From</label>
+                        <input type="date" name="from_date" value="{{ request('from_date') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-gray-900 focus:border-gray-900">
+                    </div>
+
+                    <!-- Date To -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">To</label>
+                        <input type="date" name="to_date" value="{{ request('to_date') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-gray-900 focus:border-gray-900">
+                    </div>
+
+                    <!-- Customer -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Customer</label>
+                        <select name="customer_id"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-gray-900 focus:border-gray-900">
+                            <option value="">All Customers</option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}"
+                                    {{ request('customer_id') == $customer->id ? 'selected' : '' }}>
+                                    {{ $customer->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Status -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select name="status"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-gray-900 focus:border-gray-900">
+                            <option value="">All Status</option>
+                            <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                            <option value="partial" {{ request('status') == 'partial' ? 'selected' : '' }}>Partial
+                            </option>
+                            <option value="due" {{ request('status') == 'due' ? 'selected' : '' }}>Due</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex space-x-2">
+                        <button type="submit"
+                            class="px-4 py-2 flex-1 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700">Filter</button>
+                        <a href="{{ route('invoices.index') }}"
+                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-400">Clear</a>
+                    </div>
+                </form>
+            </div>
+
             {{-- Invoice table --}}
             <div class="bg-white rounded-lg shadow-sm border">
                 <div class="px-6 py-4 border-b border-gray-200">

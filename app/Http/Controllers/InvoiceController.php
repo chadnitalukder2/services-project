@@ -26,13 +26,41 @@ class InvoiceController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::with('customer')->orderBy('created_at', 'desc')->paginate(15);
-        $totalAmount = Invoice::sum('amount');
-        $totalPaid   = Invoice::sum('paid_amount');
-        $totalDue    = Invoice::sum('due_amount');
-        return view('backend.invoices.list', compact('invoices', 'totalAmount', 'totalPaid', 'totalDue'));
+        // Start query
+        $query = Invoice::with('customer')->orderBy('created_at', 'desc');
+
+        // Filter by date range
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+
+        // Filter by customer
+        if ($request->filled('customer_id')) {
+            $query->where('customer_id', $request->customer_id);
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Paginate filtered results
+        $invoices = $query->paginate(15)->withQueryString();
+
+        // Totals for filtered invoices
+        $totalAmount = $query->sum('amount');
+        $totalPaid   = $query->sum('paid_amount');
+        $totalDue    = $query->sum('due_amount');
+
+        // For customer dropdown filter
+        $customers = Customer::all();
+
+        return view('backend.invoices.list', compact('invoices', 'totalAmount', 'totalPaid', 'totalDue', 'customers'));
     }
 
 

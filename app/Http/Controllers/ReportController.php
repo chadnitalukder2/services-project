@@ -12,11 +12,23 @@ use App\Models\Order;
 use App\Models\ServiceCategory;
 use App\Models\Services;
 use App\Models\Setting;
-use Sabberworm\CSS\Settings;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ReportController extends Controller
+class ReportController extends Controller implements HasMiddleware
 {
 
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view customer report', only: ['customerReport']),
+            new Middleware('permission:view service report', only: ['serviceReport']),
+            new Middleware('permission:view order report', only: ['orderReport']),
+            new Middleware('permission:view expense report', only: ['expenseReport']),
+            new Middleware('permission:view invoice report', only: ['invoiceReport']),
+            new Middleware('permission:view profit loss report', only: ['profitLossReport']),
+        ];
+    }
 
     public function customerReport(Request $request)
     {
@@ -267,7 +279,7 @@ class ReportController extends Controller
         // Profit / Loss
         $profitLoss = $orders - $expenses;
 
-             //  ================= // Total Revenue (approved এবং done status orders)
+        //  ================= // Total Revenue (approved এবং done status orders)
         $totalRevenue = Order::whereIn('status', ['approved', 'done'])
             ->sum('total_amount');
 
@@ -338,10 +350,14 @@ class ReportController extends Controller
             ? (($thisMonthProfit - $lastMonthProfit) / abs($lastMonthProfit)) * 100
             : ($thisMonthProfit != 0 ? 100 : 0);
 
-    
+
 
         return view('backend.reports.profit-loss-reports', compact(
-            'orders', 'expenses', 'profitLoss', 'startDate', 'endDate', 
+            'orders',
+            'expenses',
+            'profitLoss',
+            'startDate',
+            'endDate',
             'totalRevenue',
             'totalExpenses',
             'netProfit',
