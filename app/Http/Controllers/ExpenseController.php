@@ -47,7 +47,7 @@ class ExpenseController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required',
-            'category_id' => 'required|exists:expense_categories,id',
+            'category_id' => 'nullable|exists:expense_categories,id',
             'amount' => 'required|numeric|min:0',
             'date' => 'required|date',
             'description' => 'nullable|string|max:255',

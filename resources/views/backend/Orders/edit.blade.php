@@ -1,10 +1,9 @@
 <x-app-layout>
-   
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                  <div class="px-6 py-4 border-b border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-semibold text-gray-900">Orders / Edit</h3>
                         <div class="flex space-x-2">
@@ -28,14 +27,16 @@
                         @csrf
                         <!-- Customer -->
                         <div class="mb-6">
-                            <label for="customer_id" class="text-base font-medium">Customer  <span class="text-red-500">*</span></label>
+                            <label for="customer_id" class="text-base font-medium">Customer <span
+                                    class="text-red-500">*</span></label>
                             <div class="my-3 flex gap-3 items-start">
                                 <div class="flex-1">
                                     <select id="customer_id" name="customer_id"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <option value="" class="bg-gray-100">Select a customer</option>
                                         @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}" {{ $customer->id == $order->customer_id ? 'selected' : '' }}>
+                                            <option value="{{ $customer->id }}"
+                                                {{ $customer->id == $order->customer_id ? 'selected' : '' }}>
                                                 {{ $customer->name }}
                                             </option>
                                         @endforeach
@@ -56,30 +57,56 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                            <!-- Status -->
+                            <div class="mb-6">
+                                <label for="status" class="text-base font-medium">Status <span
+                                        class="text-red-500">*</span></label>
+                                <div class="my-3">
+                                    <select id="status" name="status"
+                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="">Select a status</option>
+                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>
+                                            Pending</option>
+                                        <option value="approved" {{ $order->status == 'approved' ? 'selected' : '' }}>
+                                            Approved</option>
+                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>
+                                            Cancelled</option>
+                                        <option value="done" {{ $order->status == 'done' ? 'selected' : '' }}>Done
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Order Date -->
                             <div class="mb-6">
-                                <label for="order_date" class="text-base font-medium">Order Date  <span class="text-red-500">*</span></label>
+                                <label for="order_date" class="text-base font-medium">Order Date <span
+                                        class="text-red-500">*</span></label>
                                 <div class="my-3">
-                                    <input type="date" id="order_date" name="order_date" value="{{ $order->order_date }}"
+                                    <input type="date" id="order_date" name="order_date"
+                                        value="{{ $order->order_date }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
 
                             <!-- Delivery Date -->
                             <div class="mb-6">
-                                <label for="delivery_date" class="text-base font-medium">Delivery Date  <span class="text-red-500">*</span></label>
+                                <label for="delivery_date" class="text-base font-medium">Delivery Date <span
+                                        class="text-red-500">*</span></label>
                                 <div class="my-3">
-                                    <input type="date" id="delivery_date" name="delivery_date" value="{{ $order->delivery_date }}"
+                                    <input type="date" id="delivery_date" name="delivery_date"
+                                        value="{{ $order->delivery_date }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
 
-                              <!-- Invoice expiry Date -->
+                            <!-- Invoice expiry Date -->
                             <div class="mb-6">
                                 <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
                                 <div class="my-3">
-                                    <input type="date" id="expiry_date" name="expiry_date" value="{{ $order->invoice->expiry_date }}"
+                                    <input type="date" id="expiry_date" name="expiry_date"
+                                        value="{{ $order->invoice->expiry_date }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -101,7 +128,8 @@
 
                         <!-- Service Selection -->
                         <div class="mb-6">
-                            <label for="service_select" class="text-base font-medium">Add Services  <span class="text-red-500">*</span></label>
+                            <label for="service_select" class="text-base font-medium">Add Services <span
+                                    class="text-red-500">*</span></label>
                             <div class="my-3 flex gap-3">
                                 <div class="flex-1">
                                     <select id="service_select"
@@ -164,136 +192,163 @@
                         </div>
 
                         <!-- Discount Section -->
-                        <div class="mb-6 pt-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Discount Type -->
-                                <div>
-                                    <label for="discount_type" class="text-base font-medium">Discount Type</label>
-                                    <div class="my-2">
-                                        <select id="discount_type" name="discount_type"
-                                            class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
-                                            <option value="none" {{ ($order->discount_type ?? 'none') === 'none' ? 'selected' : '' }}>No Discount</option>
-                                            <option value="percentage" {{ ($order->discount_type ?? '') === 'percentage' ? 'selected' : '' }}>Percentage (%)</option>
-                                            <option value="fixed" {{ ($order->discount_type ?? '') === 'fixed' ? 'selected' : '' }}>Fixed Amount </option>
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <!-- Discount Value -->
-                                <div>
-                                    <label for="discount_value" class="text-base font-medium">Discount Value</label>
-                                    <div class="my-2">
-                                        <input type="number" step="0.01" min="0" id="discount_value"
-                                            name="discount_value"
-                                            class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
-                                            value="{{ $order->discount_value ?? 0 }}" disabled />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Total Calculation Display -->
-                            <div class="mt-6 bg-gray-50 p-4 rounded-lg">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="text-right">
-                                        <div class="py-1">Subtotal:</div>
-                                        <div class="py-1">Discount:</div>
-                                        <div class="py-1 text-base border-t border-gray-300">Total Amount:</div>
-                                    </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div></div>
+                            <div class="mb-6 pt-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Discount Type -->
                                     <div>
-                                        <div class="py-1 ml-2.5" id="display_subtotal"> {{ number_format($order->subtotal ?? 0, 2) }}</div>
-                                        <div class="py-1" id="display_discount">- {{ number_format($order->discount_amount ?? 0, 2) }}</div>
-                                        <div class="py-1 ml-2.5 text-base font-bold border-t border-gray-300" id="display_total"> {{ number_format($order->total_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}</div>
+                                        <label for="discount_type" class="text-base font-medium">Discount Type</label>
+                                        <div class="my-2">
+                                            <select id="discount_type" name="discount_type"
+                                                class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                                <option value="none"
+                                                    {{ ($order->discount_type ?? 'none') === 'none' ? 'selected' : '' }}>
+                                                    No Discount</option>
+                                                <option value="percentage"
+                                                    {{ ($order->discount_type ?? '') === 'percentage' ? 'selected' : '' }}>
+                                                    Percentage (%)</option>
+                                                <option value="fixed"
+                                                    {{ ($order->discount_type ?? '') === 'fixed' ? 'selected' : '' }}>
+                                                    Fixed Amount </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Discount Value -->
+                                    <div>
+                                        <label for="discount_value" class="text-base font-medium">Discount
+                                            Value</label>
+                                        <div class="my-2">
+                                            <input type="number" step="0.01" min="0" id="discount_value"
+                                                name="discount_value"
+                                                class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
+                                                value="{{ $order->discount_value ?? 0 }}" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Total Calculation Display -->
+                                <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="text-right">
+                                            <div class="py-1">Subtotal:</div>
+                                            <div class="py-1">Discount:</div>
+                                            <div class="py-1 text-base border-t border-gray-300">Total Amount:</div>
+                                        </div>
+                                        <div>
+                                            <div class="py-1 ml-2.5" id="display_subtotal">
+                                                {{ number_format($order->subtotal ?? 0, 2) }}</div>
+                                            <div class="py-1" id="display_discount">-
+                                                {{ number_format($order->discount_amount ?? 0, 2) }}</div>
+                                            <div class="py-1 ml-2.5 text-base font-bold border-t border-gray-300"
+                                                id="display_total"> {{ number_format($order->total_amount ?? 0, 2) }}
+                                                {{ $settings->currency ?? 'Tk' }}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <!-- Payment Information Section -->
-                        <div class="mb-6 pt-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Paid Amount -->
-                                <div>
-                                    <label for="paid_amount" class="text-base font-medium">Paid Amount</label>
-                                    <div class="my-2">
-                                        <input type="number" step="0.01" min="0" id="paid_amount"
-                                            name="paid_amount"
-                                            class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
-                                            value="{{ $order->invoice->paid_amount ?? 0 }}" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div></div>
+                            <div class="mb-6 pt-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Paid Amount -->
+                                    <div>
+                                        <label for="paid_amount" class="text-base font-medium">Paid Amount</label>
+                                        <div class="my-2">
+                                            <input type="number" step="0.01" min="0" id="paid_amount"
+                                                name="paid_amount"
+                                                class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
+                                                value="{{ $order->invoice->paid_amount ?? 0 }}" />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Payment Status (Auto-calculated) -->
-                                <div style="display: none;">
-                                    <label for="payment_status" class="text-base font-medium">Payment Status</label>
-                                    <div class="my-2">
-                                        <select id="payment_status" name="payment_status"
-                                            class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm bg-gray-50 pointer-events-none focus:border-gray-900 focus:ring-gray-900">
-                                            <option value="due" {{ ($order->invoice->status ?? 'due') === 'due' ? 'selected' : '' }}>Due</option>
-                                            <option value="partial" {{ ($order->invoice->status ?? '') === 'partial' ? 'selected' : '' }}>Partial</option>
-                                            <option value="paid" {{ ($order->invoice->status ?? '') === 'paid' ? 'selected' : '' }}>Paid</option>
-                                        </select>
+                                    <!-- Payment Status (Auto-calculated) -->
+                                    <div style="display: none;">
+                                        <label for="payment_status" class="text-base font-medium">Payment
+                                            Status</label>
+                                        <div class="my-2">
+                                            <select id="payment_status" name="payment_status"
+                                                class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm bg-gray-50 pointer-events-none focus:border-gray-900 focus:ring-gray-900">
+                                                <option value="due"
+                                                    {{ ($order->invoice->status ?? 'due') === 'due' ? 'selected' : '' }}>
+                                                    Due</option>
+                                                <option value="partial"
+                                                    {{ ($order->invoice->status ?? '') === 'partial' ? 'selected' : '' }}>
+                                                    Partial</option>
+                                                <option value="paid"
+                                                    {{ ($order->invoice->status ?? '') === 'paid' ? 'selected' : '' }}>
+                                                    Paid
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Due Amount (Display only) -->
-                                <div>
-                                    <label class="text-base font-medium">Due Amount</label>
-                                    <div class="my-2">
-                                        <div class="block text-sm p-2.5 w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 bg-gray-50"
-                                            id="due_amount_display"> {{ number_format($order->invoice->due_amount ?? 0, 2) }}</div>
+                                    <!-- Due Amount (Display only) -->
+                                    <div>
+                                        <label class="text-base font-medium">Due Amount</label>
+                                        <div class="my-2">
+                                            <div class="block text-sm p-2.5 w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 bg-gray-50"
+                                                id="due_amount_display">
+                                                {{ number_format($order->invoice->due_amount ?? 0, 2) }}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Status -->
-                            <div class="mb-6">
-                                <label for="status" class="text-base font-medium">Status  <span class="text-red-500">*</span></label>
-                                <div class="my-3">
-                                    <select id="status" name="status"
-                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
-                                        <option value="">Select a status</option>
-                                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                        <option value="approved" {{ $order->status == 'approved' ? 'selected' : '' }}>Approved</option>
-                                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                        <option value="done" {{ $order->status == 'done' ? 'selected' : '' }}>Done</option>
-                                    </select>
-                                </div>
-                            </div>
-
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div></div>
                             <!-- Payment Method -->
                             <div class="mb-6">
-                                <label for="payment_method" class="text-base font-medium">Payment Method  <span class="text-red-500">*</span></label>
+                                <label for="payment_method" class="text-base font-medium">Payment Method <span
+                                        class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     @php $paymentMethod = old('payment_method', optional($order->invoice)->payment_method) @endphp
                                     <select id="payment_method" name="payment_method"
                                         class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <option value="">Select a payment method</option>
-                                        <option value="card" {{ $paymentMethod == 'card' ? 'selected' : '' }}>Card</option>
-                                        <option value="bkash" {{ $paymentMethod == 'bkash' ? 'selected' : '' }}>bKash</option>
-                                        <option value="nagad" {{ $paymentMethod == 'nagad' ? 'selected' : '' }}>Nagad</option>
-                                        <option value="rocket" {{ $paymentMethod == 'rocket' ? 'selected' : '' }}>Rocket</option>
-                                        <option value="upay" {{ $paymentMethod == 'upay' ? 'selected' : '' }}>Upay</option>
-                                        <option value="cash on delivery" {{ $paymentMethod == 'cash on delivery' ? 'selected' : '' }}>Cash on Delivery</option>
+                                        <option value="card" {{ $paymentMethod == 'card' ? 'selected' : '' }}>Card
+                                        </option>
+                                        <option value="bkash" {{ $paymentMethod == 'bkash' ? 'selected' : '' }}>bKash
+                                        </option>
+                                        <option value="nagad" {{ $paymentMethod == 'nagad' ? 'selected' : '' }}>Nagad
+                                        </option>
+                                        <option value="rocket" {{ $paymentMethod == 'rocket' ? 'selected' : '' }}>
+                                            Rocket</option>
+                                        <option value="upay" {{ $paymentMethod == 'upay' ? 'selected' : '' }}>Upay
+                                        </option>
+                                        <option value="cash on delivery"
+                                            {{ $paymentMethod == 'cash on delivery' ? 'selected' : '' }}>Cash on
+                                            Delivery</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Notes -->
-                        <div class="mb-6">
-                            <label for="notes" class="text-base font-medium">Notes</label>
-                            <div class="my-3">
-                                <textarea id="notes" name="notes"
-                                    class="block text-sm mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
-                                    rows="6">{{ old('notes', $order->notes) }}</textarea>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div></div>
+                            <div class="mb-6">
+                                <label for="notes" class="text-base font-medium">Notes</label>
+                                <div class="my-3">
+                                    <textarea id="notes" name="notes"
+                                        class="block text-sm mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
+                                        rows="6">{{ old('notes', $order->notes) }}</textarea>
+                                </div>
                             </div>
                         </div>
 
+
                         <!-- Hidden inputs for services and calculations -->
                         <div id="hidden_services"></div>
-                        <input type="hidden" id="hidden_due_amount" name="due_amount" value="{{ $order->invoice->due_amount ?? 0 }}">
+                        <input type="hidden" id="hidden_due_amount" name="due_amount"
+                            value="{{ $order->invoice->due_amount ?? 0 }}">
 
                         <div class="text-right pt-[23px]" style="text-align: -webkit-right;">
                             <button type="submit" id="submit-order-btn"
@@ -324,14 +379,16 @@
                                 <div class="grid grid-cols-1 gap-4">
                                     <!-- Name -->
                                     <div>
-                                        <label for="customer_name" class="block text-base font-medium ">Name  <span class="text-red-500">*</span></label>
+                                        <label for="customer_name" class="block text-base font-medium ">Name <span
+                                                class="text-red-500">*</span></label>
                                         <input type="text" id="customer_name" name="name"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                     </div>
                                     <!-- Phone -->
                                     <div class="mt-3">
-                                        <label for="customer_phone" class="block text-base font-medium">Phone  <span class="text-red-500">*</span></label>
+                                        <label for="customer_phone" class="block text-base font-medium">Phone <span
+                                                class="text-red-500">*</span></label>
                                         <input type="tel" id="customer_phone" name="phone"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -347,7 +404,8 @@
 
                                     <!-- Address -->
                                     <div class="mt-3">
-                                        <label for="customer_address" class="block text-base font-medium">Address</label>
+                                        <label for="customer_address"
+                                            class="block text-base font-medium">Address</label>
                                         <textarea id="customer_address" name="address" rows="3"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900"></textarea>
                                         <div id="address-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -355,7 +413,8 @@
 
                                     <!-- Company (Optional) -->
                                     <div class="mt-3">
-                                        <label for="customer_company" class="block text-base font-medium">Company</label>
+                                        <label for="customer_company"
+                                            class="block text-base font-medium">Company</label>
                                         <input type="text" id="customer_company" name="company"
                                             class="block mt-2 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <div id="company-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -382,7 +441,7 @@
     </div>
 
     @php
-        $existingServicesData = $order->orderItems->map(function($item) {
+        $existingServicesData = $order->orderItems->map(function ($item) {
             return [
                 'id' => $item->service_id,
                 'name' => optional($item->service)->name ?? '',
@@ -405,7 +464,7 @@
             const servicesTbody = document.getElementById('services_tbody');
             const noServicesDiv = document.getElementById('no_services');
             const hiddenServicesDiv = document.getElementById('hidden_services');
-            
+
             // Discount and payment elements
             const discountType = document.getElementById('discount_type');
             const discountValue = document.getElementById('discount_value');
@@ -427,7 +486,7 @@
                 addServiceToTable(service);
             });
 
-            if(selectedServices.length > 0) {
+            if (selectedServices.length > 0) {
                 servicesTable.style.display = 'table';
                 noServicesDiv.style.display = 'none';
             } else {
@@ -495,7 +554,8 @@
                             customerForm.reset();
 
                             const customerSelect = document.getElementById('customer_id');
-                            const option = new Option(response.customer.name, response.customer.id, true, true);
+                            const option = new Option(response.customer.name, response.customer
+                                .id, true, true);
                             customerSelect.appendChild(option);
                             customerSelect.value = response.customer.id;
                         }
@@ -545,14 +605,14 @@
 
             function handleDiscountTypeChange() {
                 const discountValueInput = document.getElementById('discount_value');
-                
+
                 if (discountType.value === 'none') {
                     discountValueInput.disabled = true;
                     discountValueInput.value = 0;
                 } else {
                     discountValueInput.disabled = false;
                 }
-                
+
                 calculateTotals();
             }
 
@@ -578,10 +638,12 @@
                 const totalAmount = subtotal - discountAmount;
 
                 // Update displays
-                document.getElementById('subtotal').textContent = ` ${subtotal.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
+                document.getElementById('subtotal').textContent =
+                    ` ${subtotal.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
                 document.getElementById('display_subtotal').textContent = ` ${subtotal.toFixed(2)}`;
                 document.getElementById('display_discount').textContent = `- ${discountAmount.toFixed(2)}`;
-                document.getElementById('display_total').textContent = ` ${totalAmount.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
+                document.getElementById('display_total').textContent =
+                    ` ${totalAmount.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
 
                 calculatePaymentStatus();
                 updateHiddenInputs();
@@ -707,7 +769,8 @@
 
                         // Update row total
                         const serviceTotal = row.querySelector('.service-total');
-                        serviceTotal.textContent = `${(selectedServices[serviceIndex].unit_price * quantity).toFixed(2)}`;
+                        serviceTotal.textContent =
+                            `${(selectedServices[serviceIndex].unit_price * quantity).toFixed(2)}`;
 
                         // Update totals
                         calculateTotals();
@@ -725,7 +788,8 @@
 
                         // Update row total
                         const serviceTotal = row.querySelector('.service-total');
-                        serviceTotal.textContent = `${(unitPrice * selectedServices[serviceIndex].quantity).toFixed(2)}`;
+                        serviceTotal.textContent =
+                            `${(unitPrice * selectedServices[serviceIndex].quantity).toFixed(2)}`;
 
                         calculateTotals();
                     }
@@ -839,7 +903,7 @@
         // Custom fields functionality
         function loadExistingCustomFields() {
             const existingCustomFields = @json($customFields ?? []);
-            
+
             if (existingCustomFields && Object.keys(existingCustomFields).length > 0) {
                 Object.keys(existingCustomFields).forEach(key => {
                     const field = existingCustomFields[key];
@@ -885,7 +949,7 @@
         }
 
         // Form validation=======================================
-         const orderForm = document.getElementById('order-form');
+        const orderForm = document.getElementById('order-form');
         const submitOrderBtn = document.getElementById('submit-order-btn');
         const submitOrderText = document.getElementById('submit-order-text');
         const submitOrderLoading = document.getElementById('submit-order-loading');
@@ -937,7 +1001,8 @@
 
             // Expiry Date
             const expiryDate = document.getElementById('expiry_date');
-            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(orderDate.value)) {
+            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(
+                    orderDate.value)) {
                 const expiryDateError = document.createElement('p');
                 expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 expiryDateError.textContent = 'Expiry Date must be after Order Date';
@@ -966,13 +1031,13 @@
                 serviceError.classList.add('hidden');
             }
 
-             if (!valid) {
-                 e.preventDefault();
+            if (!valid) {
+                e.preventDefault();
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
-               
+
                 submitOrderBtn.disabled = false;
                 submitOrderText.classList.remove('hidden');
                 submitOrderLoading.classList.add('hidden');

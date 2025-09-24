@@ -129,7 +129,7 @@
                                             {{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $expense->category->name }}
+                                            {{ $expense->category->name  ?? '---'}}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                              @if ($settings->currency_position == 'left')
@@ -268,8 +268,7 @@
 
                         <div>
                             <label for="modal_category_id"
-                                class="block text-base font-medium mt-6">Category <span
-                                    class="text-red-500">*</span></label>
+                                class="block text-base font-medium mt-6">Category</label>
                             <select id="modal_category_id" name="category_id"
                                 class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Category</option>
@@ -349,8 +348,7 @@
 
                         <div>
                             <label for="edit_category_id"
-                                class="block text-base font-medium">Category <span
-                                    class="text-red-500">*</span></label>
+                                class="block text-base font-medium">Category </label>
                             <select id="edit_category_id" name="category_id"
                                 class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Category</option>

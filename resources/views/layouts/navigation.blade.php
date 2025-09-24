@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -8,7 +8,7 @@
                     <a href="{{ route('dashboard') }}">
                         @if (isset($settings->logo) && $settings->logo != '')
                             <img src="{{ asset('storage/' . $settings->logo) }}" alt="Site Logo"
-                                class="h-11 w-11 object-cover" />
+                                class="h-11 w-13 object-contain" />
                         @else
                             <h2 class="text-2xl font-extrabold ">{{ $settings->title ?? 'Purobi' }}</h2>
                         @endif

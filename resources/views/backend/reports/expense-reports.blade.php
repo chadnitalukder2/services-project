@@ -79,10 +79,10 @@
             <div class="overflow-x-auto">
                 @if ($expenses->count() > 0)
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50 ">
+                        <thead class="bg-gray-50 text-xs ">
                             <tr>
                                 <th
-                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
                                         ID
@@ -90,7 +90,7 @@
                                     </a>
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left  text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
                                     
                                       <a href="{{ request()->fullUrlWithQuery(['sort' => 'title', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
@@ -99,13 +99,13 @@
                                     </a>
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left  text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
                                     Category</th>
                                 <th
-                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
                                     Date</th>
                                 <th
-                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
                                     
                                      <a href="{{ request()->fullUrlWithQuery(['sort' => 'amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
@@ -114,16 +114,16 @@
                                     </a>
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white divide-y divide-gray-200 text-sm">
                             @foreach ($expenses as $expense)
-                                <tr class="hover:bg-gray-50 text-sm">
+                                <tr class="hover:bg-gray-50 ">
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $expense->id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $expense->title }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->category->name ?? '-' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->category->name ?? '---' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($expense->date)->format('d-m-Y') }}
                                     </td>

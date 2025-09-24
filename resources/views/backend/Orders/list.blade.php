@@ -162,46 +162,46 @@
                         <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($orders->isNotEmpty())
                                 @foreach ($orders as $order)
-                                    <tr class="border-b" id="order-row-{{ $order->id }}">
-                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                    <tr id="order-row-{{ $order->id }}" class="border-b">
+                                        <td
+                                            class="px-6 py-4 text-left text-sm font-medium {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
                                             #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
                                         </td>
-                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $order->customer->name }}</td>
-                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
-                                            {{ \Carbon\Carbon::parse($order->order_date)->format('d M, Y') }}</td>
-                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
-                                            {{ \Carbon\Carbon::parse($order->delivery_date)->format('d M, Y') }}</td>
-
-                                        </td>
-                                        <td class="px-6 py-4 text-left">
-                                            <select onchange="updateOrderStatus({{ $order->id }}, this.value)"
-                                                data-original-value="{{ $order->status }}"
-                                                class="px-10-2 py-1 border rounded text-sm focus:border-gray-900 focus:ring-gray-900">
-                                                <option value="pending"
-                                                    @if ($order->status == 'pending') selected @endif>
-                                                    Pending</option>
-                                                <option value="approved"
-                                                    @if ($order->status == 'approved') selected @endif>
-                                                    Approved</option>
-                                                <option value="done"
-                                                    @if ($order->status == 'done') selected @endif>
-                                                    Done</option>
-                                                <option value="canceled"
-                                                    @if ($order->status == 'canceled') selected @endif>
-                                                    Canceled</option>
-                                            </select>
-                                            {{-- <span
-                                        class="px-2 py-1 text-xs rounded-full 
-                                        @if ($order->status == 'pending') bg-yellow-100 text-yellow-800
-                                        @elseif($order->status == 'approved') bg-blue-100 text-blue-800
-                                        @elseif($order->status == 'done') bg-green-100 text-green-800
-                                        @else bg-red-100 text-red-800 @endif">
-                                        {{ ucfirst($order->status) }}
-                                    </span> --}}
+                                        <td
+                                            class="px-6 py-4 text-left text-sm font-medium {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
+                                            {{ $order->customer->name }}
                                         </td>
                                         <td
-                                            class="px-6 py-4 text-left  whitespace-nowrap text-sm font-medium text-gray-900">
+                                            class="px-6 py-4 text-left whitespace-nowrap text-sm {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
+                                            {{ \Carbon\Carbon::parse($order->order_date)->format('d M, Y') }}
+                                        </td>
+                                        <td
+                                            class="px-6 py-4 text-left whitespace-nowrap text-sm {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
+                                            {{ \Carbon\Carbon::parse($order->delivery_date)->format('d M, Y') }}
+                                        </td>
+                                        <td class="px-6 py-4 text-left">
+                                            <select
+                                                onchange="updateOrderStatus({{ $order->id }}, this.value); changeSelectColor(this);"
+                                                data-original-value="{{ $order->status }}" style="padding-right: 35px"
+                                                class="px-2 py-1 border rounded text-sm focus:border-gray-900 focus:ring-gray-900 {{ $order->status == 'pending'
+                                                    ? 'text-yellow-700'
+                                                    : ($order->status == 'approved'
+                                                        ? 'text-blue-700'
+                                                        : ($order->status == 'done'
+                                                            ? 'text-green-700'
+                                                            : 'text-red-700')) }}">
+                                                <option value="pending"
+                                                    @if ($order->status == 'pending') selected @endif>Pending</option>
+                                                <option value="approved"
+                                                    @if ($order->status == 'approved') selected @endif>Approved</option>
+                                                <option value="done"
+                                                    @if ($order->status == 'done') selected @endif>Done</option>
+                                                <option value="canceled"
+                                                    @if ($order->status == 'canceled') selected @endif>Canceled</option>
+                                            </select>
+                                        </td>
+                                        <td
+                                            class="px-6 py-4 text-left whitespace-nowrap text-sm font-medium {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
                                             @if ($settings->currency_position == 'left')
                                                 {{ $settings->currency ?? 'Tk' }}
                                                 {{ number_format($order->total_amount, 2) }}
@@ -210,14 +210,14 @@
                                                 {{ $settings->currency ?? 'Tk' }}
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
-                                            {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}</td>
-
                                         <td
-                                            class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-3">
-
+                                            class="px-6 py-4 text-left whitespace-nowrap text-sm {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
+                                            {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}
+                                        </td>
+                                        <td
+                                            class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
                                             <button onclick="showOrderItems({{ $order->id }})"
-                                                class=" text-blue-600 hover:text-blue-900" title="View Details">
+                                                class="text-blue-600 hover:text-blue-900" title="View Details">
                                                 <i class="fas fa-eye"></i>
                                             </button>
 
@@ -229,12 +229,11 @@
                                             @endcan
                                             @can('delete orders')
                                                 <a href="javascript:void(0)" onclick="deleteOrder({{ $order->id }})"
-                                                    class=" text-red-700 hover:text-red-600" title="Delate Order">
+                                                    class="text-red-700 hover:text-red-600" title="Delete Order">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </a>
                                             @endcan
                                         </td>
-
                                     </tr>
                                 @endforeach
                             @else
@@ -246,7 +245,8 @@
                         </tbody>
                         <tfoot class="bg-gray-100">
                             <tr>
-                                <td colspan="5" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total Order
+                                <td colspan="5" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total
+                                    Order
                                     Amount:</td>
                                 <td class="px-6 py-3 text-sm text-left font-bold text-gray-900">
                                     @if ($settings->currency_position == 'left')
@@ -412,7 +412,7 @@
                                 <!-- Items will be loaded here -->
                             </tbody>
                             <tfoot class="bg-gray-50">
-                                 <tr>
+                                <tr>
                                     <td colspan="3" class="px-4 text-sm text-right font-semibold"
                                         style="padding-top: 15px">Subtotal :</td>
                                     <td class="px-4 text-sm text-right font-bold" id="modalSubtotal">0.00</td>
@@ -573,7 +573,7 @@
 
                 //document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} tk`;
 
-             document.getElementById('modalSubtotal').textContent = `${parseFloat(order.subtotal).toFixed(2)}`;
+                document.getElementById('modalSubtotal').textContent = `${parseFloat(order.subtotal).toFixed(2)}`;
                 document.getElementById('modalDiscount').textContent = `- ${parseFloat(order.discount_amount).toFixed(2)}`;
 
                 // Populate order items
@@ -767,6 +767,24 @@
                         selectElement.value = originalValue;
                     }
                 });
+            }
+
+            function changeSelectColor(select) {
+                select.classList.remove('text-yellow-700', 'text-blue-700', 'text-green-700', 'text-red-700');
+                switch (select.value) {
+                    case 'pending':
+                        select.classList.add('text-yellow-700');
+                        break;
+                    case 'approved':
+                        select.classList.add('text-blue-700');
+                        break;
+                    case 'done':
+                        select.classList.add('text-green-700');
+                        break;
+                    case 'canceled':
+                        select.classList.add('text-red-700');
+                        break;
+                }
             }
             //filter==============================================
             document.addEventListener('DOMContentLoaded', function() {

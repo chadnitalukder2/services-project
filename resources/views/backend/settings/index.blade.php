@@ -76,7 +76,7 @@
                                     <div id="currentLogo">
                                         <p class="text-sm text-gray-600 mb-2 ">Current Logo</p>
                                         <img src="{{ asset('storage/' . $setting->logo) }}" alt="Current Logo"
-                                            class="w-[110px] h-[110px] border rounded shadow-sm object-cover ">
+                                            class="w-[110px] h-[110px] border rounded shadow-sm object-contain ">
                                     </div>
                                 @endif
 
@@ -85,7 +85,7 @@
                                     <p class="text-sm text-gray-600 mb-2 ">New Logo</p>
                                     <div class="relative inline-block">
                                         <img id="imagePreview" src="" alt="Preview"
-                                            class="w-[110px] h-[110px]  border rounded shadow-sm">
+                                            class="w-[110px] h-[110px]  border rounded shadow-sm object-contain">
                                         <button type="button" id="removePreview"
                                             class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition duration-200">
                                             ×

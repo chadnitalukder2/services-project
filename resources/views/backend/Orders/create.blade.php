@@ -55,7 +55,23 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <!-- Status -->
+                            <div class="mb-6">
+                                <label for="status" class="text-base font-medium">Status <span
+                                        class="text-red-500">*</span></label>
+                                <div class="my-3">
+                                    <select id="status" name="status"
+                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="">Select a status</option>
+                                        <option value="pending" selected>Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="cancelled">Cancelled</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Order Date -->
                             <div class="mb-6">
                                 <label for="order_date" class="text-base font-medium">Order Date <span
@@ -81,7 +97,8 @@
                                 <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
                                 <div class="my-3">
                                     <input type="date" id="expiry_date" name="expiry_date"
-                                        class="block text-sm  p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
+                                        value="{{ \Carbon\Carbon::today()->addDays(30)->toDateString() }}"
+                                        class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
                         </div>
@@ -272,22 +289,8 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div></div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Status -->
-                                <div class="mb-6">
-                                    <label for="status" class="text-base font-medium">Status <span
-                                            class="text-red-500">*</span></label>
-                                    <div class="my-3">
-                                        <select id="status" name="status"
-                                            class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
-                                            <option value="">Select a status</option>
-                                            <option value="pending" selected>Pending</option>
-                                            <option value="approved">Approved</option>
-                                            <option value="cancelled">Cancelled</option>
-                                            <option value="done">Done</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="">
+
 
                                 <!-- Payment Method -->
                                 <div class="mb-6">
@@ -310,6 +313,7 @@
                             </div>
                         </div>
 
+                        <!-- Notes -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div></div>
                             <div class="mb-6">
@@ -326,7 +330,7 @@
                             </div>
                         </div>
 
-                        <!-- Notes -->
+
 
 
                         <!-- Hidden inputs for services and calculations -->
