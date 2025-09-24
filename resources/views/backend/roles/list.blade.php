@@ -55,10 +55,17 @@
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900 capitalize">
                                             {{ $role->name }}</td>
                                         <td class="px-6 py-3 text-left">
-                                            {{ $role->permissions->isNotEmpty() ? $role->permissions->pluck('name')->implode(', ') : '---' }}
+                                            @if ($role->permissions->isNotEmpty())
+                                                @foreach ($role->permissions as $permission)
+                                                    <span
+                                                        class="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded mr-1 mb-1">
+                                                        {{ $permission->name }}
+                                                    </span>
+                                                @endforeach
+                                            @else
+                                                ---
+                                            @endif
                                         </td>
-
-
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             {{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
 
@@ -320,13 +327,15 @@
                 document.getElementById('editRoleId').value = roleId;
                 document.getElementById('editRoleName').value = roleName;
 
-                const selectedPermissions = permissionsText.split(',').map(p => p.trim());
+                // const selectedPermissions = permissionsText.split(',').map(p => p.trim());
+                const selectedPermissions = Array.from(row.querySelectorAll('td:nth-child(3) span'))
+                    .map(span => span.textContent.trim());
 
                 // Uncheck all first
-                document.querySelectorAll('#editRolePermissions input[type="checkbox"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('#editRoleForm input[name="permissions[]"]').forEach(cb => cb.checked = false);
 
                 // Check those that exist in the role
-                document.querySelectorAll('#editRolePermissions input[type="checkbox"]').forEach(cb => {
+                document.querySelectorAll('#editRoleForm input[name="permissions[]"]').forEach(cb => {
                     if (selectedPermissions.includes(cb.value)) cb.checked = true;
                 });
 
