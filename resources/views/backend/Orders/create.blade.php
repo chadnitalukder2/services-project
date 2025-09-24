@@ -243,11 +243,11 @@
 
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div></div>
                             <!-- Payment Information Section -->
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 " >
                                 <!-- Paid Amount -->
                                 <div>
                                     <label for="paid_amount" class="text-base font-medium">Paid Amount</label>
