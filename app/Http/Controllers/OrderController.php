@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated;
 use App\Models\Invoice;
+use App\Models\ServiceCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -64,6 +65,7 @@ class OrderController extends Controller implements HasMiddleware
             'total_revenue' => number_format($totalRevenue, 2)
         ];
         $totalOrderAmount = Order::sum('total_amount');
+      
 
         return view('backend.orders.list', compact('orders', 'summary', 'totalOrderAmount'));
     }
@@ -71,9 +73,9 @@ class OrderController extends Controller implements HasMiddleware
     public function create()
     {
         $customers = Customer::all();
-        $services = Services::where('status', 'active')->get();
-
-        return view('backend.orders.create', compact('customers', 'services'));
+        $services = Services::where('status', 'active')->orderBy('created_at', 'desc')->get();
+        $serviceCategories = ServiceCategory::orderBy('created_at', 'desc')->get();
+        return view('backend.orders.create', compact('customers', 'services', 'serviceCategories'));
     }
     public function store(Request $request)
     {
@@ -164,15 +166,15 @@ class OrderController extends Controller implements HasMiddleware
     {
         $order = Order::with(['orderItems.service', 'invoice'])->findOrFail($id);
         $customers = Customer::all();
-        $services = Services::where('status', 'active')->get();
-
+        $services = Services::where('status', 'active')->orderBy('created_at', 'desc')->get();
+        $serviceCategories = ServiceCategory::orderBy('created_at', 'desc')->get();
         // Decode custom fields if they exist
         $customFields = null;
         if ($order->custom_fields) {
             $customFields = json_decode($order->custom_fields, true);
         }
 
-        return view('backend.orders.edit', compact('order', 'customers', 'services', 'customFields'));
+        return view('backend.orders.edit', compact('order', 'customers', 'services', 'customFields', 'serviceCategories'));
     }
 
     public function update(Request $request, $id)

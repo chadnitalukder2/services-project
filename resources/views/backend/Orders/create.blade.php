@@ -136,9 +136,15 @@
                                 </div>
 
                                 <button type="button" id="add_service"
-                                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-4 py-2 text-white">
-                                    Add Service
+                                    class="bg-gray-500 hover:bg-gray-600 text-sm rounded-md px-4 py-2 text-white">
+                                    Select Service
                                 </button>
+                                @can('create services')
+                                    <button onclick="openCreateServiceModal()"
+                                        class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                        <i class="fa-solid fa-plus"></i>
+                                        Add Service</button>
+                                @endcan
 
                             </div>
                             <p id="service-error" class="text-red-500 font-medium text-sm "></p>
@@ -247,7 +253,7 @@
                             <div></div>
                             <!-- Payment Information Section -->
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 " >
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ">
                                 <!-- Paid Amount -->
                                 <div>
                                     <label for="paid_amount" class="text-base font-medium">Paid Amount</label>
@@ -422,6 +428,93 @@
                             </form>
                         </div>
                     </x-modal>
+
+                    <!-- Create Service Modal -->
+                    <x-modal name="create-service" class="sm:max-w-md mt-20" maxWidth="2xl">
+                        <div class="px-14 py-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-lg font-semibold text-gray-900">Add New Service</h2>
+                                <button type="button" class="text-gray-400 hover:text-gray-600"
+                                    x-on:click="$dispatch('close-modal', 'create-service')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+
+                            <form id="createServiceForm" class="space-y-4">
+
+                                <!-- Name -->
+                                <div class="mt-6">
+                                    <label for="modal_name" class="block text-base font-medium">Service Name
+                                        <span class="text-red-500">*</span></label>
+                                    <input type="text" id="modal_name" name="name"
+                                        class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    <div id="modal_name-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                </div>
+
+                                {{-- Category --}}
+                                <div>
+                                    <label for="modal_category_id" class="block text-base font-medium mt-6">
+                                        Category</label>
+                                    <select id="modal_category_id" name="category_id"
+                                        class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="">Select Category</option>
+                                        @foreach ($serviceCategories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div id="modal_category-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                </div>
+
+                                <!-- Price -->
+                                <div>
+                                    <label for="modal_price" class="block text-base font-medium mt-6">Price
+                                        <span class="text-red-500">*</span></label>
+                                    <input type="number" id="modal_price" name="unit_price"
+                                        class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                    <div id="modal_price-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                </div>
+
+                                <!-- Status -->
+                                <div>
+                                    <label for="modal_status" class="block text-base font-medium mt-6">Status
+                                        <span class="text-red-500">*</span></label>
+                                    <select id="modal_status" name="status"
+                                        class="block text-sm  mt-1 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                        <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>
+                                            Active
+                                        </option>
+                                        <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>
+                                            Inactive</option>
+                                    </select>
+                                    <div id="modal_date-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                </div>
+
+                                <!-- Description -->
+                                <div>
+                                    <label for="modal_description"
+                                        class="block text-base font-medium mt-6">Description</label>
+                                    <textarea id="modal_description" name="description" rows="5"
+                                        class="mt-3 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
+                                    <div id="modal_description-error" class="text-red-500 text-sm mt-1 hidden"></div>
+                                </div>
+
+                                <div class="flex justify-end gap-3 mt-6 pt-4">
+                                    <button type="button" x-on:click="$dispatch('close-modal', 'create-service')"
+                                        class="px-4 py-2 text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" id="save-service-btn"
+                                        class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md">
+                                        <span id="save-service-text">Save service</span>
+                                        <span id="save-service-loading" class="hidden">Saving...</span>
+                                    </button>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </x-modal>
+
                 </div>
             </div>
         </div>
@@ -992,6 +1085,121 @@
                 submitOrderText.classList.add('hidden');
                 submitOrderLoading.classList.remove('hidden');
             }
+        });
+
+        //add service===============================================
+        function openCreateServiceModal() {
+            document.getElementById('createServiceForm').reset();
+
+            ['category', 'name', 'unit_price', 'status', 'description'].forEach(id => {
+                const el = document.getElementById(`modal_${id}-error`);
+                if (el) {
+                    el.textContent = '';
+                    el.classList.add('hidden');
+                }
+            });
+
+
+            window.dispatchEvent(new CustomEvent('open-modal', {
+                detail: 'create-service'
+            }));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('createServiceForm');
+            const saveBtn = document.getElementById('save-service-btn');
+            const saveText = document.getElementById('save-service-text');
+            const saveLoading = document.getElementById('save-service-loading');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                ['category', 'name', 'unit_price', 'status', 'description'].forEach(id => {
+                    const el = document.getElementById(`modal_${id}-error`);
+                    if (el) {
+                        el.textContent = '';
+                        el.classList.add('hidden');
+                    }
+                });
+
+
+                saveBtn.disabled = true;
+                saveText.classList.add('hidden');
+                saveLoading.classList.remove('hidden');
+
+                const data = {
+                    category_id: document.getElementById('modal_category_id').value,
+                    name: document.getElementById('modal_name').value,
+                    unit_price: document.getElementById('modal_price').value,
+                    status: document.getElementById('modal_status').value,
+                    description: document.getElementById('modal_description').value,
+                };
+
+                $.ajax({
+                    url: '{{ route('services.store') }}',
+                    type: 'POST',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.status === true) {
+                            showNotification(response.message ||
+                                'service created successfully!', 'success');
+                            window.dispatchEvent(new CustomEvent('close-modal', {
+                                detail: 'create-service'
+                            }));
+                            setTimeout(() => location.reload(), 1000);
+                        } else {
+                            showNotification(response.message || 'Error creating service!',
+                                'error');
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+
+                            // Show validation errors
+                            if (errors.category_id) {
+                                const el = document.getElementById('modal_category-error');
+                                if (el) {
+                                    el.textContent = errors.category_id[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                            if (errors.unit_price) {
+                                const el = document.getElementById('modal_price-error');
+                                if (el) {
+                                    el.textContent = errors.unit_price[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                            if (errors.name) {
+                                const el = document.getElementById('modal_name-error');
+                                if (el) {
+                                    el.textContent = errors.name[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                            if (errors.status) {
+                                const el = document.getElementById('modal_status-error');
+                                if (el) {
+                                    el.textContent = errors.status[0];
+                                    el.classList.remove('hidden');
+                                }
+                            }
+                        } else {
+                            showNotification('An error occurred while creating the service!',
+                                'error');
+                        }
+                    },
+                    complete: function() {
+                        saveBtn.disabled = false;
+                        saveText.classList.remove('hidden');
+                        saveLoading.classList.add('hidden');
+                    }
+                });
+            });
         });
     </script>
 </x-app-layout>
