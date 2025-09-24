@@ -46,7 +46,7 @@ class ServiceCategoryController extends Controller implements HasMiddleware
 
         return response()->json([
             'status' => true,
-            'message' => 'Service Category created successfully',
+            'message' => 'Service Category saved successfully',
         ]);
     }
 

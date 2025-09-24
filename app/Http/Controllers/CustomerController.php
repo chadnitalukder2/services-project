@@ -79,7 +79,7 @@ class CustomerController extends Controller implements HasMiddleware
 
         return response()->json([
             'status' => true,
-            'message' => 'Customer created successfully',
+            'message' => 'Customer saved successfully',
         ]);
     }
     public function OrderCustomerStore(Request $request)

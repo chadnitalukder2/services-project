@@ -154,7 +154,7 @@ class OrderController extends Controller implements HasMiddleware
                 'payment_method' => $request->payment_method,
             ]);
 
-            return redirect()->route('orders.index')->with('success', 'Order created successfully');
+            return redirect()->route('orders.index')->with('success', 'Order saved successfully');
         } else {
             return redirect()->route('orders.create')->withErrors($validator)->withInput();
         }

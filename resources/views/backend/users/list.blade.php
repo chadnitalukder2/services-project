@@ -15,7 +15,7 @@
                                 <button onclick="openCreateUserModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <i class="fa-solid fa-plus"></i>
-                                    Create User</button>
+                                    Add User</button>
                             @endcan
                         </div>
                     </div>
@@ -231,7 +231,7 @@
                             </button>
                             <button type="submit" id="createUserBtn"
                                 class="px-4 py-2 text-sm bg-gray-800 text-white rounded-md hover:bg-gray-700">
-                                <span id="createBtnText">Create User</span>
+                                <span id="createBtnText">Add User</span>
                                 <span id="createBtnLoading" class="hidden">
                                     <i class="fas fa-spinner fa-spin mr-1"></i>Creating...
                                 </span>

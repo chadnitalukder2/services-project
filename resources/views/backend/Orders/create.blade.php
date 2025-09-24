@@ -6,7 +6,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-900">Orders / Create</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Orders / Add</h3>
                         <div class="flex space-x-2">
                             @can('create orders')
                                 <a href="{{ route('orders.index') }}"
@@ -85,8 +85,6 @@
                                 </div>
                             </div>
                         </div>
-
-
 
                         <div class="mb-6">
                             <h3 class="text-base font-medium mb-4">Event Details</h3>
@@ -174,54 +172,63 @@
                             {{-- <h3 class="text-lg font-medium mb-4">Discount & Total Calculation</h3> --}}
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Discount Type -->
-                                <div>
-                                    <label for="discount_type" class="text-base font-medium">Discount Type</label>
-                                    <div class="my-2">
-                                        <select id="discount_type" name="discount_type"
-                                            class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
-                                            <option value="none">No Discount</option>
-                                            <option value="percentage">Percentage (%)</option>
-                                            <option value="fixed">Fixed Amount</option>
-                                        </select>
+                                <div></div>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <!-- Discount Type -->
+                                    <div>
+                                        <label for="discount_type" class="text-base font-medium">Discount Type</label>
+                                        <div class="my-2">
+                                            <select id="discount_type" name="discount_type"
+                                                class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                                <option value="none">No Discount</option>
+                                                <option value="percentage">Percentage (%)</option>
+                                                <option value="fixed">Fixed Amount</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Discount Value -->
+                                    <div>
+                                        <label for="discount_value" class="text-base font-medium">Discount
+                                            Value</label>
+                                        <div class="my-2">
+                                            <input type="number" step="0.01" min="0" id="discount_value"
+                                                name="discount_value"
+                                                class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900"
+                                                value="0" disabled />
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Discount Value -->
-                                <div>
-                                    <label for="discount_value" class="text-base font-medium">Discount Value</label>
-                                    <div class="my-2">
-                                        <input type="number" step="0.01" min="0" id="discount_value"
-                                            name="discount_value"
-                                            class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900"
-                                            value="0" disabled />
-                                    </div>
-                                </div>
                             </div>
 
-                            <!-- Total Calculation Display -->
-                            <div class="mt-6 bg-gray-50 p-4 rounded-lg">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="text-right">
-                                        <div class="py-1">Subtotal:</div>
-                                        <div class="py-1">Discount:</div>
-                                        <div class="py-1 text-base border-t border-gray-300">Total
-                                            Amount:</div>
-                                    </div>
-                                    <div>
-                                        <div class="py-1 ml-2.5" id="display_subtotal"> 0.00</div>
-                                        <div class="py-1" id="display_discount">0.00 </div>
-                                        <div class="py-1 ml-2.5 text-base  font-bold border-t border-gray-300"
-                                            id="display_total"> 0.00 {{ $settings->currency ?? 'Tk' }}
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div></div>
+                                <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="text-right">
+                                            <div class="py-1">Subtotal:</div>
+                                            <div class="py-1">Discount:</div>
+                                            <div class="py-1 text-base border-t border-gray-300">Total
+                                                Amount:</div>
+                                        </div>
+                                        <div>
+                                            <div class="py-1 ml-2.5" id="display_subtotal"> 0.00</div>
+                                            <div class="py-1" id="display_discount">0.00 </div>
+                                            <div class="py-1 ml-2.5 text-base  font-bold border-t border-gray-300"
+                                                id="display_total"> 0.00 {{ $settings->currency ?? 'Tk' }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Total Calculation Display -->
+
                         </div>
 
-                        <!-- Payment Information Section -->
-                        <div class="mb-6 pt-6">
-                            {{-- <h3 class="text-lg font-medium mb-4">Payment Information</h3> --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div></div>
+                            <!-- Payment Information Section -->
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Paid Amount -->
@@ -238,7 +245,8 @@
 
                                 <!-- Payment Status (Auto-calculated) -->
                                 <div style="display: none;">
-                                    <label for="payment_status" class="text-base font-medium">Payment Status</label>
+                                    <label for="payment_status" class="text-base font-medium">Payment
+                                        Status</label>
                                     <div class="my-2">
                                         <select id="payment_status" name="payment_status"
                                             class="block w-full text-sm p-2.5 border-gray-300 rounded-md shadow-sm bg-gray-50 pointer-events-none  focus:border-gray-900 focus:ring-gray-900">
@@ -259,61 +267,67 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Status -->
-                            <div class="mb-6">
-                                <label for="status" class="text-base font-medium">Status <span
-                                        class="text-red-500">*</span></label>
-                                <div class="my-3">
-                                    <select id="status" name="status"
-                                        class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
-                                        <option value="">Select a status</option>
-                                        <option value="pending" selected>Pending</option>
-                                        <option value="approved">Approved</option>
-                                        <option value="cancelled">Cancelled</option>
-                                        <option value="done">Done</option>
-                                    </select>
+                            <div></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Status -->
+                                <div class="mb-6">
+                                    <label for="status" class="text-base font-medium">Status <span
+                                            class="text-red-500">*</span></label>
+                                    <div class="my-3">
+                                        <select id="status" name="status"
+                                            class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                            <option value="">Select a status</option>
+                                            <option value="pending" selected>Pending</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="cancelled">Cancelled</option>
+                                            <option value="done">Done</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Payment Method -->
-                            <div class="mb-6">
-                                <label for="payment_method" class="text-base font-medium">Payment Method <span
-                                        class="text-red-500">*</span></label>
-                                <div class="my-3">
-                                    <select id="payment_method" name="payment_method"
-                                        class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
-                                        <option value="">Select a payment method</option>
-                                        <option value="card">Card</option>
-                                        <option value="bkash">bKash</option>
-                                        <option value="nagad">Nagad</option>
-                                        <option value="rocket">Rocket</option>
-                                        <option value="upay">Upay</option>
-                                        <option value="cash on delivery" selected>Cash on Delivery</option>
-                                    </select>
+                                <!-- Payment Method -->
+                                <div class="mb-6">
+                                    <label for="payment_method" class="text-base font-medium">Payment Method <span
+                                            class="text-red-500">*</span></label>
+                                    <div class="my-3">
+                                        <select id="payment_method" name="payment_method"
+                                            class="block p-2.5 text-sm w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                            <option value="">Select a payment method</option>
+                                            <option value="card">Card</option>
+                                            <option value="bkash">bKash</option>
+                                            <option value="nagad">Nagad</option>
+                                            <option value="rocket">Rocket</option>
+                                            <option value="upay">Upay</option>
+                                            <option value="cash on delivery" selected>Cash on Delivery</option>
+                                        </select>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Custom Fields Section -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div></div>
+                            <div class="mb-6">
+                                <label for="notes" class="text-base font-medium">Notes</label>
+                                <div class="my-3">
+                                    <textarea id="notes" name="notes"
+                                        class="block text-sm mt-1 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900"
+                                        rows="6"></textarea>
 
+                                    @error('notes')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Notes -->
-                        <div class="mb-6">
-                            <label for="notes" class="text-base font-medium">Notes</label>
-                            <div class="my-3">
-                                <textarea id="notes" name="notes"
-                                    class="block text-sm mt-1 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900"
-                                    rows="6"></textarea>
 
-                                @error('notes')
-                                    <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
 
                         <!-- Hidden inputs for services and calculations -->
                         <div id="hidden_services"></div>
@@ -926,14 +940,15 @@
             }
             // Expiry Date
             const expiryDate = document.getElementById('expiry_date');
-            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(orderDate.value)) {
+            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(
+                    orderDate.value)) {
                 const expiryDateError = document.createElement('p');
                 expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 expiryDateError.textContent = 'Expiry Date must be after Order Date';
                 expiryDate.parentElement.appendChild(expiryDateError);
                 valid = false;
             }
-            
+
             const paymentMethod = document.getElementById('payment_method');
             if (paymentMethod.value === '') {
                 const paymentMethodError = document.createElement('p');

@@ -47,7 +47,7 @@ class ExpenseCategoryController extends Controller implements HasMiddleware
 
         return response()->json([
             'status' => true,
-            'message' => 'Expense Category created successfully',
+            'message' => 'Expense Category saved successfully',
         ]);
     }
 

@@ -95,7 +95,7 @@ class ServicesController extends Controller implements HasMiddleware
 
         return response()->json([
             'status' => true,
-            'message' => 'Service created successfully',
+            'message' => 'Service saved successfully',
         ]);
     }
     public function update(Request $request, string $id)

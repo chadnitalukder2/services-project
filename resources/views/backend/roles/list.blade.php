@@ -14,7 +14,7 @@
                                 <button onclick="openCreateRoleModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <i class="fa-solid fa-plus"></i>
-                                    Create Role</button>
+                                    Add Role</button>
                             @endcan
                         </div>
                     </div>
@@ -162,7 +162,7 @@
             <x-modal name="create-role" class="sm:max-w-md mt-20" maxWidth="5xl">
                 <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-gray-900">Create New Role</h2>
+                        <h2 class="text-lg font-semibold text-gray-900">Add New Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
                             x-on:click="$dispatch('close-modal', 'create-role')">
                             <i class="fas fa-times"></i>
@@ -213,7 +213,7 @@
                             </button>
                             <button type="submit" id="createRoleBtn"
                                 class="px-4 py-2 text-sm bg-gray-800 text-white rounded hover:bg-gray-700">
-                                <span id="createBtnText">Create Role</span>
+                                <span id="createBtnText">Add Role</span>
                                 <span id="createBtnLoading" class="hidden">
                                     <i class="fas fa-spinner fa-spin mr-1"></i>Creating...
                                 </span>

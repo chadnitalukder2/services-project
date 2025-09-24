@@ -51,7 +51,7 @@ class RoleController extends Controller implements HasMiddleware
 
         return response()->json([
             'status' => true,
-            'message' => 'Role created successfully',
+            'message' => 'Role saved successfully',
             'role' => $role,
         ]);
     }

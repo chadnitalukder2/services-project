@@ -14,7 +14,7 @@
                                 <button onclick="openCreateExCategoryModal()"
                                     class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
                                     <i class="fa-solid fa-plus"></i>
-                                    Create Category</button>
+                                    Add Category</button>
                             @endcan
                         </div>
                     </div>
@@ -147,7 +147,7 @@
             <x-modal name="create-expense-category" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
                 <div class="px-14 py-8">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-gray-900">Create New Expense Category</h2>
+                        <h2 class="text-lg font-semibold text-gray-900">Add New Expense Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
                             x-on:click="$dispatch('close-modal', 'create-expense-category')">
                             <i class="fas fa-times"></i>

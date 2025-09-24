@@ -56,7 +56,7 @@ class UserController extends Controller implements HasMiddleware
 
         return response()->json([
             'status' => true,
-            'message' => 'User created successfully',
+            'message' => 'User saved successfully',
         ]);
     }
 

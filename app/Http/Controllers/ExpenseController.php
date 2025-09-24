@@ -67,7 +67,7 @@ class ExpenseController extends Controller implements HasMiddleware
         ]);
         return response()->json([
             'status' => true,
-            'message' => 'Expense created successfully',
+            'message' => 'Expense saved successfully',
         ]);
     }
 

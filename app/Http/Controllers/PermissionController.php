@@ -41,7 +41,7 @@ class PermissionController extends Controller implements HasMiddleware
         ]);
         if ($validator->passes()) {
             Permission::create(['name' => $request->name]);
-            return redirect()->route('permissions.index')->with('success', 'Permission created successfully');
+            return redirect()->route('permissions.index')->with('success', 'Permission saved successfully');
         } else {
             return redirect()->route('permissions.create')->withErrors($validator)->withInput();
         }
