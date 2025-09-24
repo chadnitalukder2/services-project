@@ -1,299 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
-    <link rel="icon" sizes="32x32" href="{{ asset('storage/' . $settings->logo) }}">
-
     <style>
         @page {
             size: A4;
-            margin: 20mm;
+            margin: 50mm;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            color: #000;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #333;
+            background: #fff;
+            padding: 50px;
         }
 
-        .invoice {
+        .container {
             width: 100%;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 0px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
+        /* Header */
         .header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header-content {
+            display: table;
             width: 100%;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
         }
 
-        .header-table {
-            width: 100%;
+        .header-left {
+            display: table-cell;
+            vertical-align: top;
+            width: 60%;
         }
 
-        .header-table td {
-            vertical-align: middle;
-        }
-
-        .header-title {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .logo {
+        .header-right {
+            display: table-cell;
+            vertical-align: top;
+            width: 40%;
             text-align: right;
+        }
+
+        .invoice-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .company-logo {
+            max-width: 80px;
+            max-height: 80px;
+        }
+
+        .company-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Invoice Details */
+        .invoice-info {
+            display: table;
+            width: 100%;
+            margin-bottom: 25px;
         }
 
         .invoice-details {
-            margin-bottom: 20px;
-        }
-
-        .details-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .details-table td {
-            padding: 5px 0;
-        }
-
-        .invoice-info {
-            width: 100%;
-            margin-bottom: 10px;
-            border-top: 1px solid #ddd;
-            padding: 10px 0;
-        }
-
-        .info-table {
-            width: 100%;
-        }
-
-        .info-table td {
+            display: table-cell;
             width: 50%;
             vertical-align: top;
-            padding: 5px 0px;
         }
 
-        .info-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .items {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .info-content {
-            margin: 0;
-            padding-bottom: 7px;
-        }
-
-        .items th,
-        .items td {
-            padding: 12px;
-            font-size: 12px;
-        }
-
-        .items th {
-            background: #f2f2f2;
-        }
-
-        .items td {
-            border-bottom: 1px solid #ddd;
-        }
-
-        .right {
+        .invoice-status {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
             text-align: right;
         }
 
-        .center {
+        .detail-row {
+            margin-bottom: 6px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            display: inline-block;
+            width: 100px;
+        }
+
+        .status-badge {
+            background: #f0f0f0;
+            border: 1px solid #333;
+            padding: 5px 15px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .status-paid {
+            background: #333;
+            color: #fff;
+        }
+
+        /* Billing Section */
+        .billing-section {
+            display: table;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .billing-from, .billing-to {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+            padding-right: 20px;
+        }
+
+        .billing-to {
+            padding-right: 0;
+            padding-left: 20px;
+        }
+
+        .billing-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        .billing-content p {
+            margin-bottom: 3px;
+        }
+
+        .company-name-billing {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* Items Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items-table th {
+            background: #333;
+            color: #fff;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .items-table th:last-child {
+            text-align: right;
+        }
+
+        .items-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        .items-table td:last-child {
+            text-align: right;
+        }
+
+        .items-table tbody tr:last-child td {
+            border-bottom: 1px solid #333;
+        }
+
+        .service-name {
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .service-description {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .text-center {
             text-align: center;
         }
 
-        .summary {
-            width: 250px;
-            margin-left: auto;
+        .text-right {
+            text-align: right;
+        }
+
+        /* Summary */
+        .summary-section {
+            float: right;
+            width: 300px;
+            margin-top: 10px;
+        }
+
+        .summary-table {
+            width: 100%;
             border-collapse: collapse;
         }
 
-        .summary td {
-            padding: 12px 0px;
-            border-bottom: 1px solid #ddd;
+        .summary-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
         }
 
-        .summary tr:last-child td {
+        .summary-table td:first-child {
             font-weight: bold;
-            border-bottom: none;
         }
 
+        .summary-table td:last-child {
+            text-align: right;
+        }
+
+        .total-row td {
+            background: #f9f9f9;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 12px;
+        }
+
+        .due-row td {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .discount-row td {
+            color: #272827;
+        }
+
+        /* Footer */
         .footer {
+            clear: both;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
             text-align: center;
-            font-size: 11px;
+        }
+
+        .footer-message {
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .footer-note {
+            font-size: 10px;
             color: #666;
-            margin-top: 40px;
+        }
+
+        /* Responsive adjustments for DomPDF */
+        @media print {
+            .container {
+                width: 100%;
+            }
         }
     </style>
 </head>
-
 <body>
-    <div class="invoice">
-
+    <div class="container">
+        
         <!-- Header -->
         <div class="header">
-            <table class="header-table">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="invoice-title">INVOICE</div>
+                </div>
+                <div class="header-right">
+                    @if(isset($settings) && $settings->logo)
+                        <img src="{{ public_path('storage/' . $settings->logo) }}" alt="Logo" class="company-logo">
+                    @else
+                        <div class="company-name">{{ $settings->title ?? 'Company Name' }}</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Information -->
+        <div class="invoice-info">
+            <div class="invoice-details">
+                <div class="detail-row">
+                    <span class="detail-label">Invoice #:</span>
+                    {{ str_pad($invoice->id ?? '001', 4, '0', STR_PAD_LEFT) }}
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date:</span>
+                    {{ \Carbon\Carbon::parse($todayDate ?? now())->format('d M, Y') }}
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Expiry Date:</span>
+                    {{ \Carbon\Carbon::parse($invoice->expiry_date ?? now()->addDays(30))->format('d M, Y') }}
+                </div>
+            </div>
+            <div class="invoice-status">
+                <div class="status-badge {{ ($invoice->status ?? 'due') === 'paid' ? 'status-paid' : '' }}">
+                    {{ ucfirst($invoice->status ?? 'Due') }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing Information -->
+        <div class="billing-section">
+            <div class="billing-from">
+                <div class="billing-title">From</div>
+                <div class="billing-content">
+                    <p class="company-name-billing">{{ $settings->title ?? 'Company Name' }}</p>
+                    <p>{{ $settings->address ?? 'Company Address' }}</p>
+                    <p>{{ $settings->phone ?? '+1 234 567 890' }}</p>
+                    <p>{{ $settings->email ?? 'info@company.com' }}</p>
+                </div>
+            </div>
+            <div class="billing-to">
+                <div class="billing-title">Bill To</div>
+                <div class="billing-content">
+                    <p class="company-name-billing">{{ $customer->name ?? 'Customer Name' }}</p>
+                    <p>{{ $customer->address ?? 'Customer Address' }}</p>
+                    <p>{{ $customer->phone ?? 'Customer Phone' }}</p>
+                    <p>{{ $customer->email ?? 'Customer Email' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <table class="items-table">
+            <thead>
                 <tr>
-                    <td class="header-title">Invoice</td>
-                    <td class="logo">
-                        @if (isset($settings) && $settings->logo == null)
-                            <h2>{{ $settings->title }}</h2>
-                        @elseif (isset($settings) && $settings->logo != null)
-                            <img src="{{ public_path('storage/' . $settings->logo) }}" alt="Logo"
-                                style="height:60px; width:60px;">
+                    <th style="width: 50%;">Services</th>
+                    <th style="width: 15%; text-align:center" >Qty</th>
+                    <th style="width: 17.5%; text-align:center">Unit Price</th>
+                    <th style="width: 17.5%;" class="text-right">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($orderItems ?? [] as $item)
+                <tr>
+                    <td>
+                        <div class="service-name">{{ $item->service->name ?? 'Service Name' }}</div>
+                      
+                    </td>
+                    <td class="text-center">{{ $item->quantity ?? 1 }}</td>
+                    <td  style="text-align:center">
+                        @if($settings && $settings->currency_position == 'left')
+                            {{ $settings->currency ?? 'Tk' }} {{ number_format($item->service->unit_price ?? 0, 2) }}
+                        @else
+                            {{ number_format($item->service->unit_price ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                        @endif
+                    </td>
+                    <td class="text-right">
+                        @if($settings && $settings->currency_position == 'left')
+                            {{ $settings->currency ?? 'Tk' }} {{ number_format($item->subtotal ?? 0, 2) }}
+                        @else
+                            {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
                         @endif
                     </td>
                 </tr>
-            </table>
-        </div>
-
-        <!-- Invoice details -->
-        <div class="invoice-details">
-            <table class="details-table">
-                <tr>
-                    <td><span style="font-weight: bold;">Invoice :</span></td>
-                    <td> # {{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</td>
-                </tr>
-                <tr>
-                    <td><span style="font-weight: bold;">Invoice Date:</span></td>
-                    <td>{{ \Carbon\Carbon::parse($todayDate)->format('M d, Y') }}</td>
-                </tr>
-                <tr>
-                    <td><span style="font-weight: bold;">Expiry Date:</span></td>
-                    <td>{{ \Carbon\Carbon::parse($invoice->expiry_date)->format('M d, Y') }}</td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- Info -->
-        <div class="invoice-info">
-            <table class="info-table">
-                <tr>
-                    <td>
-                        <div class="info-title">{{ $settings->title ?? 'Company Name' }}</div>
-                        <p class="info-content">{{ $settings->address ?? 'Address' }}</p>
-                        <p class="info-content">{{ $settings->phone ?? '017*******' }}</p>
-                        <p class="info-content">{{ $settings->email ?? 'example@gmail.com' }}</p>
-                    </td>
-                    <td>
-                        <div class="info-title">Bill To</div>
-                        <p class="info-content">{{ $customer->name ?? 'Client Name' }}</p>
-                        <p class="info-content">{{ $customer->address ?? 'Client Address' }}</p>
-                        <p class="info-content">{{ $customer->phone ?? 'Client Phone' }}</p>
-                        <p class="info-content">{{ $customer->email ?? 'Client Email' }}</p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- Items -->
-        <table class="items">
-            <tr>
-                <th style="width: 50%; text-align: left;">Service</th>
-                <th style="width: 10%" class="center">Qty</th>
-                <th style="width: 20%" class="right">Unit Price</th>
-                <th style="width: 20%" class="right">Amount</th>
-            </tr>
-            @foreach ($orderItems as $item)
-                <tr>
-                    <td>{{ $item->service->name ?? 'N/A' }}</td>
-                    <td class="center">{{ $item->quantity }}</td>
-                    @if ($settings && $settings->currency_position == 'left')
-                        <td class="right">{{ $settings->currency ?? 'Tk' }}
-                            {{ number_format($item->service->unit_price, 2) }}
-                        </td>
-                    @else
-                        <td class="right"> {{ number_format($item->service->unit_price, 2) }}
-                            {{ $settings->currency ?? 'Tk' }}
-                        </td>
-                    @endif
-
-                    @if ($settings && $settings->currency_position == 'left')
-                        <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($item->subtotal, 2) }}
-                        </td>
-                    @else
-                        <td class="right"> {{ number_format($item->subtotal, 2) }} {{ $settings->currency ?? 'Tk' }}
-                        </td>
-                    @endif
-                </tr>
-            @endforeach
-
+                @endforeach
+            </tbody>
         </table>
 
         <!-- Summary -->
-        <table class="summary">
-            <tr>
-                <td>Subtotal</td>
-                @if ($settings && $settings->currency_position == 'left')
-                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($order->subtotal, 2) }}
+        <div class="summary-section">
+            <table class="summary-table">
+                <tr>
+                    <td>Subtotal</td>
+                    <td>
+                        @if($settings && $settings->currency_position == 'left')
+                            {{ $settings->currency ?? 'Tk' }} {{ number_format($order->subtotal ?? 0, 2) }}
+                        @else
+                            {{ number_format($order->subtotal ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                        @endif
                     </td>
-                @else
-                    <td class="right"> {{ number_format($order->subtotal, 2) }} {{ $settings->currency ?? 'Tk' }}
+                </tr>
+                @if(($order->discount_amount ?? 0) > 0)
+                <tr class="discount-row">
+                    <td>Discount</td>
+                    <td>
+                        @if($settings && $settings->currency_position == 'left')
+                            -{{ $settings->currency ?? 'Tk' }} {{ number_format($order->discount_amount ?? 0, 2) }}
+                        @else
+                            -{{ number_format($order->discount_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                        @endif
                     </td>
+                </tr>
                 @endif
-            </tr>
-            <tr>
-                <td>Discount</td>
-                @if ($settings && $settings->currency_position == 'left')
-                    <td class="right">{{ $settings->currency ?? 'Tk' }}
-                        {{ number_format($order->discount_amount, 2) }}</td>
-                @else
-                    <td class="right"> {{ number_format($order->discount_amount, 2) }}
-                        {{ $settings->currency ?? 'Tk' }}</td>
-                @endif
-            </tr>
-            <tr>
-                <td>Total</td>
-                @if ($settings && $settings->currency_position == 'left')
-                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->amount, 2) }}</td>
-                @else
-                    <td class="right"> {{ number_format($invoice->amount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                <tr class="total-row">
+                    <td>Total Amount</td>
+                    <td>
+                        @if($settings && $settings->currency_position == 'left')
+                            {{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->amount ?? 0, 2) }}
+                        @else
+                            {{ number_format($invoice->amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                        @endif
                     </td>
-                @endif
-            </tr>
-            <tr>
-                <td>Paid Amount</td>
-                @if ($settings && $settings->currency_position == 'left')
-                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->paid_amount, 2) }}
+                </tr>
+                <tr>
+                    <td>Paid Amount</td>
+                    <td>
+                        @if($settings && $settings->currency_position == 'left')
+                            {{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->paid_amount ?? 0, 2) }}
+                        @else
+                            {{ number_format($invoice->paid_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                        @endif
                     </td>
-                @else
-                    <td class="right"> {{ number_format($invoice->paid_amount, 2) }}
-                        {{ $settings->currency ?? 'Tk' }}</td>
-                @endif
-            </tr>
-            <tr>
-                <td>Due Amount</td>
-                @if ($settings && $settings->currency_position == 'left')
-                    <td class="right">{{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->due_amount, 2) }}
+                </tr>
+                @if(($invoice->due_amount ?? 0) > 0)
+                <tr >
+                    <td>Amount Due</td>
+                    <td style="font-weight: bold">
+                        @if($settings && $settings->currency_position == 'left')
+                            {{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->due_amount ?? 0, 2) }}
+                        @else
+                            {{ number_format($invoice->due_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                        @endif
                     </td>
-                @else
-                    <td class="right"> {{ number_format($invoice->due_amount, 2) }} {{ $settings->currency ?? 'Tk' }}
-                    </td>
+                </tr>
                 @endif
-            </tr>
-        </table>
+            </table>
+        </div>
 
         <!-- Footer -->
-        <div class="footer text-left">
-           {{ $settings->message ?? 'Thank you for your business!' }}
-            
+        <div class="footer">
+            <div class="footer-message">
+                {{ $settings->message ?? 'Thank you for your business!' }}
+            </div>
+            <div class="footer-note">
+                Generated on {{ \Carbon\Carbon::now()->format('d M, Y') }} | 
+                Questions? Contact: {{ $settings->email ?? 'info@company.com' }}
+            </div>
         </div>
+
     </div>
 </body>
-
 </html>
