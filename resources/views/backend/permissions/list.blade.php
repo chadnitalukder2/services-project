@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="py-12">
+    <div class="lg:py-12 py-8 ">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
 
@@ -62,7 +62,7 @@
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex justify-between items-center">
+                    <div class="flex flex-wrap gap-4 justify-center sm:justify-between lg:justify-between items-center">
                         <div class="text-sm text-gray-700">
                             Showing <span class="font-medium">{{ $permissions->firstItem() }}</span>
                             to <span class="font-medium">{{ $permissions->lastItem() }}</span>
@@ -70,7 +70,7 @@
                         </div>
 
                         <!-- Pagination buttons -->
-                        <div class="flex space-x-2">
+                        <div class="flex flex-wrap gap-1 space-x-2">
                             <!-- Previous -->
                             @if ($permissions->onFirstPage())
                                 <button

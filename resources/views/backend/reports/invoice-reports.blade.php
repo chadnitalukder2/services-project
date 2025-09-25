@@ -3,7 +3,7 @@
 
         <!-- Page Title & Filters -->
         <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Invoice Reports & Analytics</h2>
+            <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Invoice Reports & Analytics</h2>
 
             <!-- Invoice Report -->
             <div class="bg-white rounded-lg shadow-sm border mb-8">

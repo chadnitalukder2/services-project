@@ -3,9 +3,9 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Services Management</h2>
+    <div class="lg:py-12 py-8 ">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
+            <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Services Management</h2>
 
             <!-- Search and Filter Form -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
@@ -69,14 +69,13 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="gap-2" style="display: block; margin:0 auto; margin-top: 24px;">
+                    <div class="flex gap-2 justify-center mt-6">
                         <button type="submit"
-                            class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-4 py-2 rounded-md">
+                            class="bg-gray-800 basis-1/2 text-sm hover:bg-gray-700 text-white px-4 py-2 rounded-md">
                             Search
                         </button>
                         <a href="{{ route('services.index') }}"
-                            class="bg-gray-500 text-sm text-white px-4 py-2 rounded-md hover:bg-gray-600"
-                            style="padding: 10px 18px;">
+                            class="bg-gray-500 basis-1/2 text-center text-sm text-white px-4 py-2 rounded-md hover:bg-gray-600">
                             Clear
                         </a>
                     </div>
@@ -223,7 +222,8 @@
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex justify-between items-center">
+                    <div
+                        class="flex flex-wrap gap-4 justify-center sm:justify-between lg:justify-between items-center">
                         <div class="text-sm text-gray-700">
                             Showing <span class="font-medium">{{ $services->firstItem() }}</span>
                             to <span class="font-medium">{{ $services->lastItem() }}</span>
@@ -231,7 +231,7 @@
                         </div>
 
                         <!-- Pagination buttons -->
-                        <div class="flex space-x-2">
+                        <div class="flex flex-wrap gap-1 space-x-2">
                             <!-- Previous -->
                             @if ($services->onFirstPage())
                                 <button
@@ -350,7 +350,7 @@
                                 Cancel
                             </button>
                             <button type="submit" id="save-service-btn"
-                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md">
+                                class="px-4 py-6 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md">
                                 <span id="save-service-text">Save service</span>
                                 <span id="save-service-loading" class="hidden">Saving...</span>
                             </button>
@@ -363,7 +363,7 @@
 
             <!-- Edit Service Modal -->
             <x-modal name="edit-service" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit Service</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"

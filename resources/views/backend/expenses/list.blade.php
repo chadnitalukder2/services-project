@@ -1,10 +1,10 @@
 <x-app-layout>
 
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="lg:py-12 py-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
             <x-message />
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Expenses Management</h2>
+            <h2 class=" lg:text-2xl text-xl  font-bold text-gray-900 mb-6">Expenses Management</h2>
 
             <!-- Filter Form -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
@@ -52,13 +52,13 @@
 
 
                     <!-- Filter Buttons -->
-                    <div class="flex items-end space-x-2">
+                    <div class="flex gap-2 justify-center mt-6">
                         <button type="submit"
-                            class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
+                            class="bg-gray-800 basis-1/2 text-sm hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
                             Filter
                         </button>
                         <a href="{{ route('expenses.index') }}"
-                            class="bg-gray-500 text-white text-sm px-12 py-2 rounded-md hover:bg-gray-600">
+                            class="bg-gray-500 basis-1/2 text-center text-white text-sm px-12 py-2 rounded-md hover:bg-gray-600">
                             Clear
                         </a>
                     </div>
@@ -194,7 +194,7 @@
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex justify-between items-center">
+                    <div class="flex flex-wrap gap-4 justify-center sm:justify-between lg:justify-between items-center">
                         <div class="text-sm text-gray-700">
                             Showing <span class="font-medium">{{ $expenses->firstItem() }}</span>
                             to <span class="font-medium">{{ $expenses->lastItem() }}</span>
@@ -202,7 +202,7 @@
                         </div>
 
                         <!-- Pagination buttons -->
-                        <div class="flex space-x-2">
+                        <div class="flex flex-wrap gap-1 space-x-2">
                             <!-- Previous -->
                             @if ($expenses->onFirstPage())
                                 <button
@@ -250,7 +250,7 @@
 
             <!-- Create Expense Modal -->
             <x-modal name="create-expense" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Expense</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -328,7 +328,7 @@
             </x-modal>
 
             <x-modal name="edit-expense" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit Expense</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"

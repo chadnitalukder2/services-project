@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="py-12">
+    <div class="lg:py-12 py-8 ">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message />
 
@@ -103,7 +103,7 @@
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex justify-between items-center">
+                    <div class="flex flex-wrap gap-4 justify-center sm:justify-between lg:justify-between items-center">
                         <div class="text-sm text-gray-700">
                             Showing <span class="font-medium">{{ $roles->firstItem() }}</span>
                             to <span class="font-medium">{{ $roles->lastItem() }}</span>
@@ -111,7 +111,7 @@
                         </div>
 
                         <!-- Pagination buttons -->
-                        <div class="flex space-x-2">
+                        <div class="flex flex-wrap gap-1 space-x-2">
                             <!-- Previous -->
                             @if ($roles->onFirstPage())
                                 <button
@@ -160,7 +160,7 @@
 
             <!-- Create Role Modal -->
             <x-modal name="create-role" class="sm:max-w-md mt-20" maxWidth="5xl">
-                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -225,7 +225,7 @@
 
             <!-- Edit Role Modal -->
             <x-modal name="edit-role" class="sm:max-w-md mt-20" maxWidth="5xl">
-                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"

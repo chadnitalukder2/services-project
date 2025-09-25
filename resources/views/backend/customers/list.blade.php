@@ -1,8 +1,8 @@
 <x-app-layout>
 
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lg:py-12 py-8 ">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
             <x-message />
             <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Customers Management</h2>
 
@@ -29,13 +29,13 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                    <div class="flex  sm:flex-row gap-2 w-full sm:w-auto">
                         <button type="submit"
-                            class="w-full sm:w-auto bg-gray-800 text-sm hover:bg-gray-700 text-white px-4 py-2 rounded-md">
+                            class="w-full basis-1/2 sm:w-auto bg-gray-800 text-sm hover:bg-gray-700 text-white px-4 py-2 rounded-md">
                             Search
                         </button>
                         <a href="{{ route('customers.index') }}"
-                            class="w-full sm:w-auto bg-gray-500 text-sm text-white px-4 py-2 rounded-md hover:bg-gray-600 text-center">
+                            class="w-full basis-1/2 sm:w-auto bg-gray-500 text-sm text-white px-4 py-2 rounded-md hover:bg-gray-600 text-center">
                             Clear
                         </a>
                     </div>
@@ -141,7 +141,7 @@
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                    <div class="flex flex-wrap gap-4 justify-center sm:justify-between lg:justify-between ">
                         <div class="text-sm text-gray-700">
                             Showing <span class="font-medium">{{ $customers->firstItem() }}</span>
                             to <span class="font-medium">{{ $customers->lastItem() }}</span>

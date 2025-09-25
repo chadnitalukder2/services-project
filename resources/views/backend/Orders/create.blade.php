@@ -1,8 +1,8 @@
 <x-app-layout>
 
-    <div class="py-12">
+    <div class="lg:py-12 py-8 ">
 
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
@@ -23,28 +23,30 @@
                     </div>
                 </div>
 
-                <div class="px-[4rem] py-[3.5rem] text-gray-900">
+                <div class="px-4 py-6 lg:px-[4rem] lg:py-[3.5rem] text-gray-900">
                     <form id="order-form" method="POST" action="{{ route('orders.store') }}">
                         @csrf
                         <!-- Customer -->
                         <div class="mb-6">
                             <label for="customer_id" class="text-base font-medium">Customer <span
                                     class="text-red-500">*</span></label>
-                            <div class="my-3 flex gap-3 items-start">
-                                <div class="flex-1">
+                            <div class="my-3 flex flex-wrap gap-3 items-start">
+                                <!-- Select -->
+                                <div class="flex-1 min-w-[200px]">
                                     <select id="customer_id" name="customer_id"
-                                        class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                        class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <option value="" class="bg-gray-100">Select a customer</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                         @endforeach
                                     </select>
-                                    <p id="customer_id" class="text-red-500 text-xs  mt-1 "></p>
+                                    <p id="customer_id" class="text-red-500 text-xs mt-1"></p>
                                 </div>
 
+                                <!-- Add Customer Button -->
                                 <button type="button" x-data=""
                                     x-on:click.prevent="$dispatch('open-modal', 'create-customer')"
-                                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-4 py-2.5 text-white whitespace-nowrap flex items-center gap-1">
+                                    class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-4 py-2.5 text-white whitespace-nowrap flex items-center gap-1 flex-shrink-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -55,9 +57,9 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 lg:gap-6">
                             <!-- Status -->
-                            <div class="mb-6">
+                            <div class="mb-3">
                                 <label for="status" class="text-base font-medium">Status <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
@@ -73,7 +75,7 @@
                             </div>
 
                             <!-- Order Date -->
-                            <div class="mb-6">
+                            <div class="mb-3">
                                 <label for="order_date" class="text-base font-medium">Order Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
@@ -83,7 +85,7 @@
                             </div>
 
                             <!-- Delivery Date -->
-                            <div class="mb-6">
+                            <div class="mb-3">
                                 <label for="delivery_date" class="text-base font-medium">Delivery Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
@@ -93,7 +95,7 @@
                             </div>
 
                             <!-- Expiry Date -->
-                            <div class="mb-6">
+                            <div class="mb-3">
                                 <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
                                 <div class="my-3">
                                     <input type="date" id="expiry_date" name="expiry_date"
@@ -103,6 +105,7 @@
                             </div>
                         </div>
 
+                        {{-- Event details --}}
                         <div class="mb-6">
                             <h3 class="text-base font-medium mb-4">Event Details</h3>
 
@@ -120,10 +123,11 @@
                         <div class="mb-6">
                             <label for="service_select" class="text-base font-medium">Add Services <span
                                     class="text-red-500">*</span></label>
-                            <div class="my-3 flex gap-3">
-                                <div class="flex-1">
+                            <div class="my-3 flex flex-wrap gap-3">
+                                <!-- Select -->
+                                <div class="flex-1 min-w-[200px]">
                                     <select id="service_select"
-                                        class="block p-2.5 w-full text-sm border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
+                                        class="block p-2.5 w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <option value="">Select a service to add</option>
                                         @foreach ($services as $service)
                                             <option value="{{ $service->id }}" data-name="{{ $service->name }}"
@@ -132,22 +136,24 @@
                                             </option>
                                         @endforeach
                                     </select>
-
                                 </div>
 
+                                <!-- Select Service Button -->
                                 <button type="button" id="add_service"
-                                    class="bg-gray-500 hover:bg-gray-600 text-sm rounded-md px-4 py-2 text-white">
+                                    class="bg-gray-500 hover:bg-gray-600 text-sm rounded-md px-4 py-2 text-white flex-shrink-0">
                                     Select Service
                                 </button>
+
+                                <!-- Add Service Button -->
                                 @can('create services')
                                     <button onclick="openCreateServiceModal()"
-                                        class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1">
+                                        class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1 flex-shrink-0">
                                         <i class="fa-solid fa-plus"></i>
-                                        Add Service</button>
+                                        Add Service
+                                    </button>
                                 @endcan
-
                             </div>
-                            <p id="service-error" class="text-red-500 font-medium text-sm "></p>
+                            <p id="service-error" class="text-red-500 font-medium text-sm mt-1"></p>
                         </div>
 
                         <!-- Selected Services Table -->
@@ -191,10 +197,10 @@
                         </div>
 
                         <!-- Discount Section -->
-                        <div class="mb-6  pt-6">
+                        <div class="mb-3  pt-6">
                             {{-- <h3 class="text-lg font-medium mb-4">Discount & Total Calculation</h3> --}}
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-3 lg:gap-6">
                                 <div></div>
                                 <div class="grid grid-cols-2 gap-6">
                                     <!-- Discount Type -->
@@ -225,9 +231,9 @@
 
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                                 <div></div>
-                                <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                                <div class="lg:mt-6 bg-gray-50 p-4 rounded-lg">
                                     <div class="grid grid-cols-2 gap-4">
                                         <div class="text-right">
                                             <div class="py-1">Subtotal:</div>
@@ -249,11 +255,11 @@
 
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div></div>
                             <!-- Payment Information Section -->
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 ">
                                 <!-- Paid Amount -->
                                 <div>
                                     <label for="paid_amount" class="text-base font-medium">Paid Amount</label>
@@ -293,13 +299,13 @@
 
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div></div>
                             <div class="">
 
 
                                 <!-- Payment Method -->
-                                <div class="mb-6">
+                                <div class="md:mb-4 md:mt-3">
                                     <label for="payment_method" class="text-base font-medium">Payment Method <span
                                             class="text-red-500">*</span></label>
                                     <div class="my-3">
@@ -320,7 +326,7 @@
                         </div>
 
                         <!-- Notes -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div></div>
                             <div class="mb-6">
                                 <label for="notes" class="text-base font-medium">Notes</label>
@@ -343,7 +349,7 @@
                         <div id="hidden_services"></div>
                         <input type="hidden" id="hidden_due_amount" name="due_amount" value="0">
 
-                        <div class="text-right pt-[23px]" style="text-align: -webkit-right;">
+                        <div class="text-right md:pt-[23px]" style="text-align: -webkit-right;">
                             <button type="submit" id="submit-order-btn"
                                 class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white flex items-center justify-center gap-2">
                                 <span id="submit-order-text">Submit Order</span>
@@ -954,7 +960,7 @@
             const wrapper = document.getElementById('custom_fields_wrapper');
 
             const fieldHtml = `
-                    <div class="flex flex-wrap gap-3 py-3 px-0 rounded-md  relative" id="custom_field_${customFieldCounter}">
+                    <div class="flex flex-wrap gap-3 py-1 px-0 rounded-md  relative" id="custom_field_${customFieldCounter}">
                         <div class="w-full md:flex-1">
                             <label class="block text-sm font-medium text-gray-700">Event Name</label>
                             <input type="text" name="custom_fields[${customFieldCounter}][event_name]" 
