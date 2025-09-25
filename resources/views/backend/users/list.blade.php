@@ -160,7 +160,7 @@
 
             <!-- Create User Modal -->
             <x-modal name="create-user" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New User</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -243,7 +243,7 @@
 
             <!-- Edit User Modal -->
             <x-modal name="edit-user" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit User</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -257,14 +257,16 @@
                         <input type="hidden" id="edit_id" name="id">
 
                         <div class="mb-6 mt-6">
-                            <label class="block text-base font-medium mb-2">Name <span class="text-red-500">*</span></label>
+                            <label class="block text-base font-medium mb-2">Name <span
+                                    class="text-red-500">*</span></label>
                             <input id="edit_name" type="text" name="name"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md">
                             <p id="editNameError" class="text-red-500 text-sm mt-1 hidden"></p>
                         </div>
 
                         <div class="mb-6">
-                            <label class="block text-base font-medium mb-2">Email <span class="text-red-500">*</span></label>
+                            <label class="block text-base font-medium mb-2">Email <span
+                                    class="text-red-500">*</span></label>
                             <input id="edit_email" type="email" name="email"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md">
                             <p id="editEmailError" class="text-red-500 text-sm mt-1 hidden"></p>
@@ -292,7 +294,8 @@
                         </div>
 
                         <div class="flex justify-end gap-3">
-                            <button type="button" class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                            <button type="button"
+                                class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                                 x-on:click="$dispatch('close-modal', 'edit-user')">Cancel</button>
 
                             <button type="submit" id="editUserBtn"

@@ -160,7 +160,7 @@
 
             <!-- Create Role Modal -->
             <x-modal name="create-role" class="sm:max-w-md mt-20" maxWidth="5xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -225,7 +225,7 @@
 
             <!-- Edit Role Modal -->
             <x-modal name="edit-role" class="sm:max-w-md mt-20" maxWidth="5xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Role</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"

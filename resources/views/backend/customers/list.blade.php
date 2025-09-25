@@ -2,16 +2,16 @@
 
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <x-message />
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Customers Management</h2>
+            <h2 class="text-xl lg:text-2xl  font-bold text-gray-900 mb-6">Customers Management</h2>
 
             <!-- Search and Filter Form -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('customers.index') }}" class="flex flex-wrap items-center gap-4">
 
                     <!-- Search Input -->
-                    <div class="flex-1 min-w-64">
+                    <div class=" w-full sm:flex-1 min-w-64">
                         <input type="text" name="search" placeholder="Search by name, email, phone, or address..."
                             value="{{ request('search') }}"
                             class="w-full text-sm border-gray-300 rounded-md shadow-sm  focus:ring-1 focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
@@ -30,7 +30,8 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-2">
-                        <button type="submit" class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-4 py-2 rounded-md ">
+                        <button type="submit"
+                            class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-4 py-2 rounded-md ">
                             Search
                         </button>
                         <a href="{{ route('customers.index') }}"
@@ -206,7 +207,7 @@
 
             <!-- Create customer Modal -->
             <x-modal name="create-customer" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Customer</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -236,8 +237,7 @@
 
                             <!-- Email -->
                             <div class="mt-2">
-                                <label for="customer_email"
-                                    class="block text-base font-medium">Email</label>
+                                <label for="customer_email" class="block text-base font-medium">Email</label>
                                 <input type="email" id="customer_email" name="email"
                                     class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -245,8 +245,7 @@
 
                             <!-- Address -->
                             <div class="mt-2">
-                                <label for="customer_address"
-                                    class="block text-base font-medium">Address</label>
+                                <label for="customer_address" class="block text-base font-medium">Address</label>
                                 <textarea id="customer_address" name="address" rows="3"
                                     class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                                 <div id="address-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -254,8 +253,7 @@
 
                             <!-- Company (Optional) -->
                             <div class="mt-2">
-                                <label for="customer_company"
-                                    class="block text-base font-medium">Company</label>
+                                <label for="customer_company" class="block text-base font-medium">Company</label>
                                 <input type="text" id="customer_company" name="company"
                                     class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="company-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -280,7 +278,7 @@
 
             <!-- Edit Customer Modal -->
             <x-modal name="edit-customer" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Customer</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -313,8 +311,7 @@
 
                             <!-- Email -->
                             <div class="mt-2">
-                                <label for="edit_customer_email"
-                                    class="block text-base font-medium">Email</label>
+                                <label for="edit_customer_email" class="block text-base font-medium">Email</label>
                                 <input type="email" id="edit_customer_email" name="email"
                                     class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="edit-email-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -322,8 +319,7 @@
 
                             <!-- Address -->
                             <div class="mt-2">
-                                <label for="edit_customer_address"
-                                    class="block text-base font-medium">Address</label>
+                                <label for="edit_customer_address" class="block text-base font-medium">Address</label>
                                 <textarea id="edit_customer_address" name="address" rows="3"
                                     class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                                 <div id="edit-address-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -331,8 +327,7 @@
 
                             <!-- Company -->
                             <div class="mt-2">
-                                <label for="edit_customer_company"
-                                    class="block text-base font-medium">Company</label>
+                                <label for="edit_customer_company" class="block text-base font-medium">Company</label>
                                 <input type="text" id="edit_customer_company" name="company"
                                     class="mt-2 text-sm  block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="edit-company-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -651,7 +646,6 @@
                     });
                 });
             });
-
         </script>
     </x-slot>
 </x-app-layout>

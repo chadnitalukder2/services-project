@@ -53,7 +53,8 @@
 
                     <!-- Filter Buttons -->
                     <div class="flex items-end space-x-2">
-                        <button type="submit" class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
+                        <button type="submit"
+                            class="bg-gray-800 text-sm hover:bg-gray-700 text-white px-12 py-2 rounded-md ">
                             Filter
                         </button>
                         <a href="{{ route('expenses.index') }}"
@@ -129,13 +130,15 @@
                                             {{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $expense->category->name  ?? '---'}}
+                                            {{ $expense->category->name ?? '---' }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                             @if ($settings->currency_position == 'left')
-                                              {{ $settings->currency ?? 'Tk' }}  {{ number_format($expense->amount, 2) }}
+                                            @if ($settings->currency_position == 'left')
+                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($expense->amount, 2) }}
                                             @else
-                                               {{ number_format($expense->amount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                                {{ number_format($expense->amount, 2) }}
+                                                {{ $settings->currency ?? 'Tk' }}
                                             @endif
                                         </td>
 
@@ -174,7 +177,8 @@
                         </tbody>
                         <tfoot class="bg-gray-100">
                             <tr>
-                                <td colspan="4" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total Expense:</td>
+                                <td colspan="4" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total
+                                    Expense:</td>
                                 <td class="px-6 text-sm py-3 text-left font-bold text-gray-900">
                                     @if ($settings->currency_position == 'left')
                                         {{ $settings->currency ?? 'Tk' }} {{ number_format($totalExpense, 2) }}
@@ -246,7 +250,7 @@
 
             <!-- Create Expense Modal -->
             <x-modal name="create-expense" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Expense</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -258,7 +262,7 @@
                     <form id="createExpenseForm" class="space-y-4">
 
                         <!-- Title -->
-                        <div class="mt-6"> 
+                        <div class="mt-6">
                             <label for="modal_title" class="block text-base font-medium mt-6">Title
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="modal_title" name="title"
@@ -267,8 +271,7 @@
                         </div>
 
                         <div>
-                            <label for="modal_category_id"
-                                class="block text-base font-medium mt-6">Category</label>
+                            <label for="modal_category_id" class="block text-base font-medium mt-6">Category</label>
                             <select id="modal_category_id" name="category_id"
                                 class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Category</option>
@@ -325,7 +328,7 @@
             </x-modal>
 
             <x-modal name="edit-expense" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit Expense</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -347,8 +350,7 @@
                         </div>
 
                         <div>
-                            <label for="edit_category_id"
-                                class="block text-base font-medium">Category </label>
+                            <label for="edit_category_id" class="block text-base font-medium">Category </label>
                             <select id="edit_category_id" name="category_id"
                                 class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <option value="">Select Category</option>
@@ -376,8 +378,7 @@
                         </div>
 
                         <div>
-                            <label for="edit_description"
-                                class="block text-base font-medium mt-6">Description</label>
+                            <label for="edit_description" class="block text-base font-medium mt-6">Description</label>
                             <textarea id="edit_description" name="description" rows="3"
                                 class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"></textarea>
                             <div id="edit_description-error" class="text-red-500 text-sm mt-1 hidden"></div>

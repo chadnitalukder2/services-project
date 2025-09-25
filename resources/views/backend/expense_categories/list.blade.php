@@ -34,11 +34,11 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
                                 @canany(['edit expense categories', 'delete expense categories'])
-                                       <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
                                 @endcanany
-                                 
+
                             </tr>
                         </thead>
                         <tbody id="expenseCategoriesTableBody" class="bg-white divide-y divide-gray-200">
@@ -145,7 +145,7 @@
 
             <!-- Create customer Modal -->
             <x-modal name="create-expense-category" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Expense Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -156,7 +156,7 @@
 
                     <form id="createExpenseCategoryForm" class="space-y-4">
                         <!-- Name -->
-                        <div class="mt-6"> 
+                        <div class="mt-6">
                             <label for="category_name" class="block text-base font-medium">Category Name
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="category_name" name="name"
@@ -181,7 +181,7 @@
 
             <!-- Update customer Modal -->
             <x-modal name="edit-expense-category" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
-                <div class="px-14 py-8">
+                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit Expense Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -192,7 +192,7 @@
 
                     <form id="editExpenseCategoryForm" class="space-y-4">
                         <input type="hidden" id="edit_category_id">
-                        <div class="mt-6"> 
+                        <div class="mt-6">
                             <label for="edit_category_name" class="block text-base font-medium">
                                 Category Name <span class="text-red-500">*</span>
                             </label>

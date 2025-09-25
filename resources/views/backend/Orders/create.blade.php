@@ -354,7 +354,7 @@
                     </form>
                     <!-- Customer Creation Modal -->
                     <x-modal name="create-customer" :show="false" maxWidth="2xl" focusable>
-                        <div class="px-14 py-8">
+                        <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-lg font-medium text-gray-900">
                                     Add New Customer
@@ -431,7 +431,7 @@
 
                     <!-- Create Service Modal -->
                     <x-modal name="create-service" class="sm:max-w-md mt-20" maxWidth="2xl">
-                        <div class="px-14 py-8">
+                        <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-lg font-semibold text-gray-900">Add New Service</h2>
                                 <button type="button" class="text-gray-400 hover:text-gray-600"
