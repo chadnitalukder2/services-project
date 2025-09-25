@@ -160,7 +160,7 @@
 
             <!-- Create User Modal -->
             <x-modal name="create-user" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="p-6 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Create New User</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -243,7 +243,7 @@
 
             <!-- Edit User Modal -->
             <x-modal name="edit-user" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="p-6 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit User</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"

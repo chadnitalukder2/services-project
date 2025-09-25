@@ -279,7 +279,7 @@
 
             <!-- Create Service Modal -->
             <x-modal name="create-service" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="p-6 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Service</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -363,7 +363,7 @@
 
             <!-- Edit Service Modal -->
             <x-modal name="edit-service" class="sm:max-w-md mt-20" maxWidth="2xl">
-                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="p-6 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit Service</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"

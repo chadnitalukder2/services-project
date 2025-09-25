@@ -145,7 +145,7 @@
 
             <!-- Create customer Modal -->
             <x-modal name="create-expense-category" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
-                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="p-6  md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Add New Expense Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"
@@ -181,7 +181,7 @@
 
             <!-- Update customer Modal -->
             <x-modal name="edit-expense-category" class="sm:max-w-md mt-20" maxWidth="2xl" marginTop="20">
-                <div class="px-4 py-6 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                <div class="p-6 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Edit Expense Category</h2>
                         <button type="button" class="text-gray-400 hover:text-gray-600"

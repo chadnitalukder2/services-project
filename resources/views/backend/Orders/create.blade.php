@@ -57,9 +57,9 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-1 md:gap-3 lg:gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 sm:gap-3 lg:gap-6">
                             <!-- Status -->
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="status" class="text-base font-medium">Status <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
@@ -75,7 +75,7 @@
                             </div>
 
                             <!-- Order Date -->
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="order_date" class="text-base font-medium">Order Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
@@ -85,7 +85,7 @@
                             </div>
 
                             <!-- Delivery Date -->
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="delivery_date" class="text-base font-medium">Delivery Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
@@ -138,20 +138,23 @@
                                     </select>
                                 </div>
 
-                                <!-- Select Service Button -->
-                                <button type="button" id="add_service"
-                                    class="bg-gray-500 hover:bg-gray-600 text-sm rounded-md px-4 py-2 text-white flex-shrink-0">
-                                    Select Service
-                                </button>
-
-                                <!-- Add Service Button -->
-                                @can('create services')
-                                    <button onclick="openCreateServiceModal()"
-                                        class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1 flex-shrink-0">
-                                        <i class="fa-solid fa-plus"></i>
-                                        Add Service
+                                <div class="flex gap-3">
+                                    <button type="button" id="add_service"
+                                        class="bg-gray-500 hover:bg-gray-600 text-sm rounded-md px-4 py-2 text-white flex-shrink-0">
+                                        Select Service
                                     </button>
-                                @endcan
+
+                                    <!-- Add Service Button -->
+                                    @can('create services')
+                                        <button onclick="openCreateServiceModal()"
+                                            class="bg-gray-800 hover:bg-gray-700 text-sm rounded-md px-3 py-2 text-white flex justify-center items-center gap-1 flex-shrink-0">
+                                            <i class="fa-solid fa-plus"></i>
+                                            Add Service
+                                        </button>
+                                    @endcan
+                                </div>
+                                <!-- Select Service Button -->
+
                             </div>
                             <p id="service-error" class="text-red-500 font-medium text-sm mt-1"></p>
                         </div>
@@ -198,8 +201,6 @@
 
                         <!-- Discount Section -->
                         <div class="mb-3  pt-6">
-                            {{-- <h3 class="text-lg font-medium mb-4">Discount & Total Calculation</h3> --}}
-
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-3 lg:gap-6">
                                 <div></div>
                                 <div class="grid grid-cols-2 gap-6">
@@ -349,7 +350,7 @@
                         <div id="hidden_services"></div>
                         <input type="hidden" id="hidden_due_amount" name="due_amount" value="0">
 
-                        <div class="text-right md:pt-[23px]" style="text-align: -webkit-right;">
+                        <div class="text-right md:pt-[18px]" style="text-align: -webkit-right;">
                             <button type="submit" id="submit-order-btn"
                                 class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white flex items-center justify-center gap-2">
                                 <span id="submit-order-text">Submit Order</span>
@@ -360,7 +361,7 @@
                     </form>
                     <!-- Customer Creation Modal -->
                     <x-modal name="create-customer" :show="false" maxWidth="2xl" focusable>
-                        <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                        <div class="p-6 md:px-14 md:py-8">
                             <div class="flex justify-between items-center mb-6">
                                 <h2 class="text-lg font-medium text-gray-900">
                                     Add New Customer
@@ -437,7 +438,7 @@
 
                     <!-- Create Service Modal -->
                     <x-modal name="create-service" class="sm:max-w-md mt-20" maxWidth="2xl">
-                        <div class="px-4 py-2 sm:px-8 sm:py-4 md:px-14 md:py-8">
+                        <div class="p-6  md:px-14 md:py-8">
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-lg font-semibold text-gray-900">Add New Service</h2>
                                 <button type="button" class="text-gray-400 hover:text-gray-600"
