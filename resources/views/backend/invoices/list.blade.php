@@ -1,8 +1,8 @@
 <x-app-layout>
-
+    <x-message />
     <div class="py-8 lg:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 px-4 lg:px-8">
-            <x-message />
+
             <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Invoices Management</h2>
 
             <!-- Filter Form -->
@@ -188,7 +188,7 @@
                                         <td
                                             class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5 items-center">
                                             <a href="{{ route('invoices.generate', $invoice->id) }}" target="_blank"
-                                                class="text-yellow-500 hover:text-yellow-600" title="Download">
+                                                class="hover:text-yellow-600" style="color:#FF8800;" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             @can('payment invoices')

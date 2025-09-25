@@ -1,5 +1,6 @@
 <div id="paymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
     style="display: none;">
+    <x-message />
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
             <div class="flex items-center justify-between mb-4">
@@ -321,12 +322,11 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    console.log("Server response:", response);
+                    showNotification(response.message || 'Payment updated successfully!', 'success');
                     location.reload();
                 },
                 error: function(xhr, status, error) {
-                    console.error("AJAX error:", status, error);
-                    console.error("Response:", xhr.responseText);
+                    showNotification(response.message || 'Order not found!', 'error');
                     submitBtn.disabled = false;
                     submitBtn.textContent = originalText;
                 }

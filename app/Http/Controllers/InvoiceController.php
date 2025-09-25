@@ -95,8 +95,10 @@ class InvoiceController extends Controller implements HasMiddleware
             $invoice->payment_method = $request->payment_method;
             $invoice->save();
 
-
-            return redirect()->route('invoices.index')->with('success', 'Invoice updated successfully');
+            return response()->json([
+                'status' => true,
+                'message' => 'Payment updated successfully',
+            ]);
         } else {
             //return redirect()->route('invoices.edit', $invoice->id)->withErrors($validator)->withInput();
         }
