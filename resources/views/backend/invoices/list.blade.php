@@ -1,13 +1,14 @@
 <x-app-layout>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-8 lg:py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 px-4 lg:px-8">
             <x-message />
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Invoices Management</h2>
+            <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Invoices Management</h2>
 
+            <!-- Filter Form -->
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('invoices.index') }}"
-                    class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 items-end">
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 items-end">
 
                     <!-- Date From -->
                     <div>
@@ -52,11 +53,15 @@
                     </div>
 
                     <!-- Filter Buttons -->
-                    <div class="flex space-x-2">
+                    <div class="flex flex-col sm:flex-row gap-2 w-full">
                         <button type="submit"
-                            class="px-4 py-2 flex-1 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700">Filter</button>
+                            class="px-4 py-2 flex-1 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700">
+                            Filter
+                        </button>
                         <a href="{{ route('invoices.index') }}"
-                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-400">Clear</a>
+                            class="px-4 py-2 flex-1 bg-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-400 text-center">
+                            Clear
+                        </a>
                     </div>
                 </form>
             </div>
@@ -66,14 +71,13 @@
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-semibold text-gray-900">Invoice List</h3>
-                        <div class="flex space-x-2">
-
-                        </div>
+                        <div class="flex space-x-2"></div>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                <!-- Responsive Table -->
+                <div class="overflow-x-auto custom-scrollbar rounded-lg shadow-sm border scroll-smooth">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th
@@ -106,12 +110,9 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
-
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Actions</th>
-
-
                             </tr>
                         </thead>
                         <tbody id="invoiceTableBody" class="bg-white divide-y divide-gray-200">
@@ -151,7 +152,6 @@
                                                     class="{{ $invoice->due_amount > 0 ? 'text-red-600 font-medium' : 'text-green-600' }}">
                                                     {{ $settings->currency ?? 'Tk' }}
                                                     {{ number_format($invoice->due_amount, 2) }}
-
                                                 </span>
                                             @else
                                                 <span
@@ -160,7 +160,6 @@
                                                     {{ $settings->currency ?? 'Tk' }}
                                                 </span>
                                             @endif
-
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900 capitalize">
                                             {{ $invoice->payment_method ?? '---' }}
@@ -168,15 +167,14 @@
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             <span
                                                 class="px-2 py-1 text-xs rounded-full
-                                        {{ $invoice->status == 'paid'
-                                            ? 'bg-green-100 text-green-800'
-                                            : ($invoice->status == 'partial'
-                                                ? 'bg-yellow-100 text-yellow-800'
-                                                : 'bg-red-100 text-red-800') }}">
+                                            {{ $invoice->status == 'paid'
+                                                ? 'bg-green-100 text-green-800'
+                                                : ($invoice->status == 'partial'
+                                                    ? 'bg-yellow-100 text-yellow-800'
+                                                    : 'bg-red-100 text-red-800') }}">
                                                 {{ ucfirst($invoice->status) }}
                                             </span>
                                         </td>
-
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                             @if ($invoice->expiry_date)
                                                 {{ \Carbon\Carbon::parse($invoice->expiry_date)->format('d M, Y') }}
@@ -184,14 +182,11 @@
                                                 ---
                                             @endif
                                         </td>
-
                                         <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
-                                            {{ \Carbon\Carbon::parse($invoice->created_at)->format('d M, Y') }}</td>
-
-
-                                        <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5 "
-                                            style="align-items: center">
-
+                                            {{ \Carbon\Carbon::parse($invoice->created_at)->format('d M, Y') }}
+                                        </td>
+                                        <td
+                                            class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5 items-center">
                                             <a href="{{ route('invoices.generate', $invoice->id) }}" target="_blank"
                                                 class="text-yellow-500 hover:text-yellow-600" title="Download">
                                                 <i class="fas fa-download"></i>
@@ -200,19 +195,18 @@
                                                 @if ($invoice->status !== 'paid' && (floatval($invoice->due_amount) > 0 || $invoice->status === 'due'))
                                                     <button
                                                         onclick="openPaymentModal({
-                                                                id: {{ $invoice->id }},
-                                                                order_id: '{{ $invoice->order_id }}',
-                                                                expiry_date: '{{ $invoice->expiry_date ?? '' }}',
-                                                                customer_name: '{{ addslashes($invoice->customer->name ?? 'Unknown') }}',
-                                                                customer_id: {{ $invoice->customer->id ?? 0 }},
-                                                                amount: {{ floatval($invoice->amount) }},
-                                                                paid_amount: {{ floatval($invoice->paid_amount) }},
-                                                                due_amount: {{ floatval($invoice->due_amount) }},
-                                                                payment_method: '{{ addslashes($invoice->payment_method ?? '') }}',
-                                                                status: '{{ $invoice->status }}'
-                                                            })"
-                                                        class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white"
-                                                        onclick="console.log('Pay button clicked for invoice {{ $invoice->id }}')">
+                                                        id: {{ $invoice->id }},
+                                                        order_id: '{{ $invoice->order_id }}',
+                                                        expiry_date: '{{ $invoice->expiry_date ?? '' }}',
+                                                        customer_name: '{{ addslashes($invoice->customer->name ?? 'Unknown') }}',
+                                                        customer_id: {{ $invoice->customer->id ?? 0 }},
+                                                        amount: {{ floatval($invoice->amount) }},
+                                                        paid_amount: {{ floatval($invoice->paid_amount) }},
+                                                        due_amount: {{ floatval($invoice->due_amount) }},
+                                                        payment_method: '{{ addslashes($invoice->payment_method ?? '') }}',
+                                                        status: '{{ $invoice->status }}'
+                                                    })"
+                                                        class="bg-gray-800 hover:bg-gray-700 py-1.5 px-2.5 text-sm rounded-md text-white">
                                                         Pay
                                                     </button>
                                                 @else
@@ -225,25 +219,20 @@
                                             @else
                                                 <span class="text-xs text-gray-500">No permission</span>
                                             @endcan
-
-
-
                                         </td>
-
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="9" class="px-6 py-4 text-center text-gray-500">No invoices found
+                                    <td colspan="11" class="px-6 py-4 text-center text-gray-500">No invoices found
                                     </td>
                                 </tr>
                             @endif
                         </tbody>
                         <tfoot class="bg-gray-100">
                             <tr>
-                                <td colspan="3" class="px-6 py-3 text-base  text-right font-bold text-gray-900">
+                                <td colspan="3" class="px-6 py-3 text-base text-right font-bold text-gray-900">
                                     Totals:</td>
-
                                 <!-- Total Amount -->
                                 <td class="px-6 text-sm py-3 text-left font-bold text-gray-900">
                                     @if ($settings->currency_position == 'left')
@@ -252,7 +241,6 @@
                                         {{ number_format($totalAmount, 2) }} {{ $settings->currency ?? 'Tk' }}
                                     @endif
                                 </td>
-
                                 <!-- Total Paid -->
                                 <td class="px-6 py-3 text-sm text-left font-bold text-green-700">
                                     @if ($settings->currency_position == 'left')
@@ -261,7 +249,6 @@
                                         {{ number_format($totalPaid, 2) }} {{ $settings->currency ?? 'Tk' }}
                                     @endif
                                 </td>
-
                                 <!-- Total Due -->
                                 <td
                                     class="px-6 py-3 text-sm text-left font-bold {{ $totalDue > 0 ? 'text-red-600' : 'text-green-600' }}">
@@ -271,7 +258,6 @@
                                         {{ number_format($totalDue, 2) }} {{ $settings->currency ?? 'Tk' }}
                                     @endif
                                 </td>
-
                                 <td colspan="5"></td>
                             </tr>
                         </tfoot>
@@ -280,7 +266,7 @@
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex justify-between items-center">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
                         <div class="text-sm text-gray-700">
                             Showing <span class="font-medium">{{ $invoices->firstItem() }}</span>
                             to <span class="font-medium">{{ $invoices->lastItem() }}</span>
@@ -288,7 +274,7 @@
                         </div>
 
                         <!-- Pagination buttons -->
-                        <div class="flex space-x-2">
+                        <div class="flex flex-wrap gap-2">
                             <!-- Previous -->
                             @if ($invoices->onFirstPage())
                                 <button
@@ -334,21 +320,18 @@
                 </div>
             </div>
 
-            <!-- Confirm Delete Modal ------------------------>
+            <!-- Confirm Delete Modal -->
             <x-modal name="confirm-delete" class="sm:max-w-sm mt-20" maxWidth="sm" marginTop="20">
                 <div class="p-6">
                     <h2 class="text-lg font-medium text-gray-900">Confirm Delete</h2>
                     <p class="mt-2 text-sm text-gray-600">
-                        Are you sure you want to delete this invoice?
-                        This action cannot be undone.
+                        Are you sure you want to delete this invoice? This action cannot be undone.
                     </p>
-
                     <div class="mt-4 flex justify-end gap-3">
                         <button type="button" class="px-4 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
                             x-on:click="$dispatch('close-modal', 'confirm-delete')">
                             Cancel
                         </button>
-
                         <button type="button" id="confirmDeleteBtn"
                             class="px-4 py-1 text-sm bg-red-700 text-white rounded hover:bg-red-600">
                             Yes, Delete
@@ -356,13 +339,32 @@
                     </div>
                 </div>
             </x-modal>
-
         </div>
     </div>
+
 
     <!-- Include Payment Modal Component -->
     <x-payment-modal />
 
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #fff;
+            border-radius: 9999px;
+            border: 2px solid #f0f0f0;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #fff;
+        }
+    </style>
     <x-slot name="script">
         <script type="text/javascript">
             //delete Role=========================
