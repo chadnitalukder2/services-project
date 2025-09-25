@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Page Title & Filters -->
         <div class="mb-8">
@@ -12,10 +11,14 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Total Revenue</p>
-                        <p class="text-2xl font-bold text-green-600"><i class="fa-solid fa-bangladeshi-taka-sign"></i>
-                            {{ number_format($totalRevenue, 2) }}</p>
-                        <p class="text-sm text-green-500 mt-1"> {{ $revenueGrowth >= 0 ? '↗' : '↘' }}
-                            {{ number_format($revenueGrowth, 1) }}% from last month</p>
+                        <p class="text-2xl font-bold text-green-600">
+                            <i class="fa-solid fa-bangladeshi-taka-sign"></i>
+                            {{ number_format($totalRevenue, 2) }}
+                        </p>
+                        <p class="text-sm text-green-500 mt-1">
+                            {{ $revenueGrowth >= 0 ? '↗' : '↘' }}
+                            {{ number_format($revenueGrowth, 1) }}% from last month
+                        </p>
                     </div>
                     <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                         <i class="fa-solid fa-bangladeshi-taka-sign text-green-600 text-xl"></i>
@@ -27,10 +30,14 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-600">Total Expenses</p>
-                        <p class="text-2xl font-bold text-red-600"> <i class="fa-solid fa-bangladeshi-taka-sign"></i>
-                            {{ number_format($totalExpenses, 2) }}</p>
-                        <p class="text-sm text-red-500 mt-1"> {{ $expenseGrowth >= 0 ? '↗' : '↘' }}
-                            {{ number_format($expenseGrowth, 1) }}% from last month</p>
+                        <p class="text-2xl font-bold text-red-600">
+                            <i class="fa-solid fa-bangladeshi-taka-sign"></i>
+                            {{ number_format($totalExpenses, 2) }}
+                        </p>
+                        <p class="text-sm text-red-500 mt-1">
+                            {{ $expenseGrowth >= 0 ? '↗' : '↘' }}
+                            {{ number_format($expenseGrowth, 1) }}% from last month
+                        </p>
                     </div>
                     <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-credit-card text-red-600 text-xl"></i>
@@ -43,8 +50,10 @@
                     <div>
                         <p class="text-sm font-medium text-gray-600">Pending Orders</p>
                         <p class="text-2xl font-bold text-orange-600"> {{ $pendingOrder }}</p>
-                        <p class="text-sm text-orange-500 mt-1"> <i class="fa-solid fa-bangladeshi-taka-sign"></i>
-                            {{ number_format($outstanding, 2) }} outstanding</p>
+                        <p class="text-sm text-orange-500 mt-1">
+                            <i class="fa-solid fa-bangladeshi-taka-sign"></i>
+                            {{ number_format($outstanding, 2) }} outstanding
+                        </p>
                     </div>
                     <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-file-invoice text-orange-600 text-xl"></i>
@@ -59,25 +68,24 @@
             <div class="bg-white p-6 lg:col-span-2 rounded-lg shadow-sm border">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-900">Revenue vs Expenses</h3>
-                    <button class="text-gray-400 hover:text-gray-600">
-                        {{-- <i class="fas fa-download"></i> --}}
-                    </button>
+                    <button class="text-gray-400 hover:text-gray-600"></button>
                 </div>
-                <canvas style="height: 400px; width: 100%;" id="revenueChart"></canvas>
+                <div class="h-80"> <!-- Fixed height, responsive width -->
+                    <canvas id="revenueChart"></canvas>
+                </div>
             </div>
 
             <!-- Order Status Distribution -->
             <div class="bg-white p-6 rounded-lg shadow-sm border">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-900">Order Status Distribution</h3>
-                    <button class="text-gray-400 hover:text-gray-600">
-                        {{-- <i class="fas fa-download"></i> --}}
-                    </button>
+                    <button class="text-gray-400 hover:text-gray-600"></button>
                 </div>
-                <canvas id="orderChart" style="height: 400px; width: 100%;"></canvas>
+                <div class="h-80">
+                    <canvas id="orderChart"></canvas>
+                </div>
             </div>
         </div>
-
     </div>
 
     <x-slot name="script">
@@ -93,7 +101,8 @@
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
+                    datasets: [
+                        {
                             label: 'Revenue',
                             data: revenueData,
                             borderColor: 'rgb(59, 130, 246)',
@@ -108,13 +117,9 @@
                     ]
                 },
                 options: {
-                    responsive: false,
-                    maintainAspectRatio: false, // respect canvas size
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
                 }
             });
 
@@ -126,18 +131,15 @@
                     labels: orderLabels,
                     datasets: [{
                         data: orderData,
-                        backgroundColor: ['#fbbf24', '#3b82f6', '#22c55e',
-                            '#ef4444'
-                        ] // pending, approved, done, cancel
+                        backgroundColor: ['#fbbf24', '#3b82f6', '#22c55e', '#ef4444']
                     }]
                 },
                 options: {
-                    responsive: false,
+                    responsive: true,
                     maintainAspectRatio: false,
                     cutout: "70%",
                 }
             });
         </script>
-
     </x-slot>
 </x-app-layout>
