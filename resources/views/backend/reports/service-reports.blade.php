@@ -3,6 +3,55 @@
         <!-- Page Title & Filters -->
         <div class="mb-8">
             <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Service Reports & Analytics</h2>
+            <!-- Services Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+                <!-- Total Services -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Service</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $summary['total_service'] }}</p>
+                            {{-- <p class="text-sm text-yellow-600 mt-1">Amount:
+                                {{ number_format($summary['total_amount'], 2) }}</p> --}}
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shopping-cart text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Services -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Active Service</p>
+                            <p class="text-2xl font-bold text-green-600">{{ $summary['active_service'] }}</p>
+                            {{-- <p class="text-sm text-green-600 mt-1">Total:
+                                {{ number_format($summary['active_amount'], 2) }}</p> --}}
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inactive Services -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Inactive Service</p>
+                            <p class="text-2xl font-bold text-red-600">{{ $summary['inactive_service'] }}</p>
+                            {{-- <p class="text-sm text-red-600 mt-1">Amount:
+                                {{ number_format($summary['inactive_amount'], 2) }}</p> --}}
+                        </div>
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <form method="GET" action="{{ route('reports.service') }}"

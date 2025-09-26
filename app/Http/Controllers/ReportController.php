@@ -121,7 +121,34 @@ class ReportController extends Controller implements HasMiddleware
 
         $totalPrice = $query->sum('unit_price');
 
-        return view('backend.reports.service-reports', compact('services', 'categories', 'totalPrice'));
+        // Total orders
+        $totalServices = Services::count();
+        $totalAmount = Services::sum('unit_price');
+
+        // Completed orders
+        $activeServices = Services::where('status', 'active')->count();
+        $activeAmount = Services::where('status', 'inactive')->sum('unit_price');
+
+        // Cancelled orders
+        $inactiveServices = Services::where('status', 'cancelled')->count();
+        $inactiveAmount = Services::where('status', 'cancelled')->sum('unit_price');
+
+        // Pass summary data to frontend
+        $summary = [
+            'total_service'      => $totalServices,
+            'total_amount'      => $totalAmount,
+            'active_service'   => $activeServices,
+            'active_amount'  => $activeAmount,
+            'inactive_service'  => $inactiveServices,
+            'inactive_amount'  => $inactiveAmount,
+        ];
+
+        return view('backend.reports.service-reports', compact(
+            'services',
+            'categories',
+            'totalPrice',
+            'summary'
+        ));
     }
 
 
