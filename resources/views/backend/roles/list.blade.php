@@ -186,23 +186,33 @@
                                 $modules = $permissions->pluck('module')->unique();
                             @endphp
 
-                            @foreach ($modules as $module)
-                                <div class="mb-4">
-                                    <label class="block text-base font-medium mb-2 capitalize">{{ $module }}
-                                        Permissions</label>
-                                    <div
-                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50">
-                                        @foreach ($permissions->where('module', $module) as $permission)
-                                            <label class="flex items-center">
-                                                <input type="checkbox" name="permissions[]"
-                                                    value="{{ $permission->name }}"
-                                                    class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
-                                                <span class="text-sm text-gray-700">{{ $permission->name }}</span>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endforeach
+                            <div
+                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50 capitalize">
+                                @foreach ($permissions as $permission)
+                                    @php
+                                        $colorClass = 'text-gray-700 bg-gray-100';
+
+                                        if (Str::contains($permission->name, 'delete')) {
+                                            $colorClass = 'text-red-700 bg-red-100 border border-red-300';
+                                        } elseif (
+                                            Str::contains($permission->name, 'edit') ||
+                                            Str::contains($permission->name, 'update')
+                                        ) {
+                                            $colorClass = 'text-blue-700 bg-blue-100 border border-blue-300';
+                                        } elseif (Str::contains($permission->name, 'view')) {
+                                            $colorClass = 'text-green-700 bg-green-100 border border-green-300';
+                                        } elseif (Str::contains($permission->name, 'create')) {
+                                            $colorClass = 'text-purple-700 bg-purple-100 border border-purple-300';
+                                        }
+                                    @endphp
+
+                                    <label class="flex items-center px-2 py-1 rounded {{ $colorClass }}">
+                                        <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                            class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
+                                        <span class="text-sm font-medium">{{ $permission->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
 
                         <div class="flex justify-end gap-3">
@@ -257,14 +267,36 @@
                                 <div class="mb-4">
                                     <label class="block text-base font-medium mb-2 capitalize">{{ $module }}
                                         Permissions</label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50"
-                                        id="editRolePermissions-{{ $module }}">
+
+                                    <div
+                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50 capitalize">
                                         @foreach ($permissions->where('module', $module) as $permission)
-                                            <label class="flex items-center">
+                                            @php
+                                                // Assign color classes based on permission type
+                                                $colorClass = 'text-gray-700 bg-gray-100 border';
+                                                if (Str::contains($permission->name, 'delete')) {
+                                                    $colorClass = 'text-red-700 bg-red-100 border-red-300';
+                                                } elseif (
+                                                    Str::contains($permission->name, 'edit') ||
+                                                    Str::contains($permission->name, 'update')
+                                                ) {
+                                                    $colorClass = 'text-blue-700 bg-blue-100 border-blue-300';
+                                                } elseif (Str::contains($permission->name, 'view')) {
+                                                    $colorClass = 'text-green-700 bg-green-100 border-green-300';
+                                                } elseif (Str::contains($permission->name, 'create')) {
+                                                    $colorClass = 'text-purple-700 bg-purple-100 border-purple-300';
+                                                }
+
+                                                // Check if this permission is already assigned to the role
+                                                $isChecked = in_array($permission->name, $rolePermissions ?? []);
+                                            @endphp
+
+                                            <label class="flex items-center px-2 py-1 rounded {{ $colorClass }}">
                                                 <input type="checkbox" name="permissions[]"
                                                     value="{{ $permission->name }}"
-                                                    class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0">
-                                                <span class="text-sm text-gray-700">{{ $permission->name }}</span>
+                                                    class="mr-2 h-4 w-4 text-gray-600 border-gray-300 rounded focus:outline-none focus:ring-0"
+                                                    @if ($isChecked) checked @endif>
+                                                <span class="text-sm font-medium">{{ $permission->name }}</span>
                                             </label>
                                         @endforeach
                                     </div>

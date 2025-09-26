@@ -11,6 +11,7 @@ class PermissionSeeder extends Seeder
     {
         $permissions = [
             'view dashboard',
+            'view settings',
             //reports
             'view customer report',
             'view service report',
@@ -18,41 +19,37 @@ class PermissionSeeder extends Seeder
             'view expense report',
             'view invoice report',
             'view profit loss report',
+            
 
             //roles
-            'create roles',
             'view roles',
+            'create roles',
             'edit roles',
             'delete roles',
 
             //users
-            'create users',
             'view users',
+            'create users',
             'edit users',
             'delete users',
 
-            //Permissions
-            'view permissions',
-
             //Customers
+            'view customers',
             'create customers',
             'edit customers',
-            'view customers',
             'delete customers',
 
             //service category
+            'view service category',
             'create service category',
             'edit service category',
-            'view service category',
             'delete service category',
 
             //Services
+            'view services',
             'create services',
             'edit services',
-            'view services',
             'delete services',
-
-
 
             //Expense Categories
             'view expense categories',
@@ -75,6 +72,7 @@ class PermissionSeeder extends Seeder
             //Invoices
             'view invoices',
             'payment invoices',
+            'view permissions',
 
         ];
 
