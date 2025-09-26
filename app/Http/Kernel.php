@@ -23,7 +23,6 @@ class Kernel extends HttpKernel
 
     // Route middleware (applied individually)
     protected $routeMiddleware = [
-        'check.dashboard' => \App\Http\Middleware\CheckDashboardPermission::class,
       
     ];
 }

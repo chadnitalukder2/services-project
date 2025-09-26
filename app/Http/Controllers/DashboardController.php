@@ -10,9 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+
 class DashboardController extends Controller implements HasMiddleware
 {
-  public static function middleware(): array
+    public static function middleware(): array
     {
         return [
             new Middleware('permission:view dashboard', only: ['index']),
@@ -114,5 +115,9 @@ class DashboardController extends Controller implements HasMiddleware
             'expenseGrowth',
             'profitGrowth'
         ));
+    }
+
+    public function welcomePage(){
+        return view('welcome');
     }
 }

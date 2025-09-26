@@ -4,7 +4,7 @@
         <div class="flex justify-between h-16">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="#">
+                <a href="{{ route('welcomePage') }}">
                     @if (isset($settings->logo) && $settings->logo != '')
                         <img src="{{ asset('storage/' . $settings->logo) }}" alt="Site Logo"
                             class="h-11 w-auto object-contain" />

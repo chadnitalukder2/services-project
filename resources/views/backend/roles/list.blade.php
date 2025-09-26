@@ -187,7 +187,7 @@
                             @endphp
 
                             <div
-                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50 capitalize">
+                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded capitalize">
                                 @foreach ($permissions as $permission)
                                     @php
                                         $colorClass = 'text-gray-700 bg-gray-100';
@@ -269,7 +269,7 @@
                                         Permissions</label>
 
                                     <div
-                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded bg-gray-50 capitalize">
+                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 border rounded capitalize">
                                         @foreach ($permissions->where('module', $module) as $permission)
                                             @php
                                                 // Assign color classes based on permission type

@@ -25,7 +25,11 @@ use Illuminate\Support\Facades\Route;
 //     // return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/', [DashboardController::class, 'index'])
+Route::get('/', [DashboardController::class, 'welcomePage'])
+  ->middleware(['auth', 'verified'])
+  ->name('welcomePage');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
   ->middleware(['auth', 'verified'])
   ->name('dashboard');
 
