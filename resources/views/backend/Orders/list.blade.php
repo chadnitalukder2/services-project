@@ -9,7 +9,7 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Orders Management</h2>
                 <form id="filterForm" method="GET" action="{{ route('orders.index') }}">
                     <!-- Order Statistics -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    {{-- <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                         <div class="bg-white p-6 rounded-lg shadow-sm border">
                             <div class="flex items-center justify-between">
                                 <div>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Filters & Search -->
                     <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
