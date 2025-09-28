@@ -35,8 +35,8 @@ class UserController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:3',
-            'email' => 'required|email|unique:users,email',
+            'name' => ['required', 'string', 'max:255', 'unique:users,name'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => 'required|min:6|same:confirm_password',
             'confirm_password' => 'required',
         ]);
@@ -63,8 +63,8 @@ class UserController extends Controller implements HasMiddleware
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:3',
-            'email' => 'required|email|unique:users,email,' . $id . ',id',
+            'name' => ['required', 'string', 'max:255', 'unique:users,name'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
         ]);
         if ($validator->fails()) {
             return response()->json([

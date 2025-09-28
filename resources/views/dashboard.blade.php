@@ -1,12 +1,40 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Page Title & Filters -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
+        <div class="md:mb-8 mb-4">
+            <h2 class="text-2xl font-bold text-gray-900 mb-0 md:mb-6">Dashboard</h2>
         </div>
 
+        <!-- Quick Action Buttons -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-0 md:mb-6">
+
+            <div class="grid grid-cols-3 md:grid-cols-3 gap-2">
+                <!-- Add Expense -->
+                <a href="{{ route('expenses.index') }}"
+                    class="block bg-gray-800 hover:bg-gray-700 px-2 md:px-4 py-2 rounded-lg shadow-sm border text-center">
+                    <span class="text-sm   font-semibold text-white">All Expense</span>
+                </a>
+
+                <!-- Add Service -->
+                <a href="{{ route('services.index') }}"
+                    class="block bg-gray-800 hover:bg-gray-700 px-2 md:px-4 py-2 rounded-lg shadow-sm border text-center">
+                    <span class="text-sm  font-semibold text-white">All Service</span>
+                </a>
+
+                <!-- Add Order -->
+                <a href="{{ route('orders.create') }}"
+                    class="block bg-gray-800 hover:bg-gray-700 px-2 md:px-4 py-2 rounded-lg shadow-sm border text-center">
+                    <span class="text-sm -semibold text-white">Add Order</span>
+                </a>
+            </div>
+            <div></div>
+            <div></div>
+
+        </div>
+
+
         <!-- Quick Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-4 md:mb-8">
             <div class="bg-white p-6 rounded-lg shadow-sm border">
                 <div class="flex items-center justify-between">
                     <div>
@@ -63,7 +91,7 @@
         </div>
 
         <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
             <!-- Revenue vs Expenses Chart -->
             <div class="bg-white p-6 lg:col-span-2 rounded-lg shadow-sm border">
                 <div class="flex justify-between items-center mb-4">
@@ -101,8 +129,7 @@
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [
-                        {
+                    datasets: [{
                             label: 'Revenue',
                             data: revenueData,
                             borderColor: 'rgb(59, 130, 246)',
@@ -119,7 +146,11 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true } }
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
             });
 

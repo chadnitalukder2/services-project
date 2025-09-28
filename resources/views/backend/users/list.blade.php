@@ -30,7 +30,7 @@
                                     User ID</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name</th>
+                                    Username</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Email</th>
@@ -172,7 +172,7 @@
                     <form id="createUserForm">
                         @csrf
                         <div class="mb-4 mt-6">
-                            <label for="name" class="block text-base font-medium mb-2">Name <span
+                            <label for="name" class="block text-base font-medium mb-2">Username <span
                                     class="text-red-500">*</span></label>
                             <input id="name" type="text" name="name"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
@@ -257,7 +257,7 @@
                         <input type="hidden" id="edit_id" name="id">
 
                         <div class="mb-6 mt-6">
-                            <label class="block text-base font-medium mb-2">Name <span
+                            <label class="block text-base font-medium mb-2">Username <span
                                     class="text-red-500">*</span></label>
                             <input id="edit_name" type="text" name="name"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md">

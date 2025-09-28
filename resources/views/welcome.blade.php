@@ -5,37 +5,36 @@
     @php
         $hour = now('Asia/Dhaka')->format('H');
 
-        // Determine greeting and styling based on time
         if ($hour >= 5 && $hour < 12) {
             $greeting = 'Good Morning';
             $borderColor = 'border-green-500';
             $bgColor = 'bg-green-50';
             $textColor = 'text-green-700';
-            $icon = '🌅';
+            $icon = '<i class="fa-solid fa-sun text-green-500"></i>'; // morning sun
         } elseif ($hour >= 12 && $hour < 13) {
             $greeting = 'Good Noon';
             $borderColor = 'border-amber-500';
             $bgColor = 'bg-amber-50';
             $textColor = 'text-amber-700';
-            $icon = '🌞';
+            $icon = '<i class="fa-solid fa-sun text-amber-500"></i>'; // noon sun
         } elseif ($hour >= 13 && $hour < 17) {
             $greeting = 'Good Afternoon';
             $borderColor = 'border-yellow-500';
             $bgColor = 'bg-yellow-50';
             $textColor = 'text-yellow-700';
-            $icon = '☀️';
+            $icon = '<i class="fa-solid fa-sun text-yellow-500"></i>'; // afternoon sun
         } elseif ($hour >= 17 && $hour < 21) {
             $greeting = 'Good Evening';
             $borderColor = 'border-orange-500';
             $bgColor = 'bg-orange-50';
             $textColor = 'text-orange-700';
-            $icon = '🌆';
+            $icon = '<i class="fa-solid fa-city text-orange-500"></i>'; // evening city
         } else {
             $greeting = 'Good Night';
             $borderColor = 'border-indigo-500';
             $bgColor = 'bg-indigo-50';
             $textColor = 'text-indigo-700';
-            $icon = '🌙';
+            $icon = '<i class="fa-solid fa-moon text-indigo-500"></i>'; // night moon
         }
 
         $username = ucwords(strtolower(Auth::user()->name));
@@ -46,14 +45,15 @@
 
     <div class="bg-white rounded-xl px-5 py-3 border-l-4 {{ $borderColor }}">
         <h1 class="text-sm font-medium {{ $textColor }} mb-1">
-            {{ $fullMessage }}
+            {!! $fullMessage !!} {{-- Use {!! !!} to render HTML icons --}}
         </h1>
         <p class="text-gray-600 text-xs">
-            Welcome back! Let’s make today productive and successful.  
+            Welcome back! Let’s make today productive and successful.
             <span class="ml-2 text-gray-500">({{ $currentTime }} • {{ $currentDate }})</span>
         </p>
     </div>
 </div>
+
 
 
         <!-- Company Info & Recent Activity -->
