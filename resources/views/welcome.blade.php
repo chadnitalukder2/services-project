@@ -1,34 +1,60 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Page Title & Filters -->
-        <div class="mb-8">
-            @php
-                $hour = now('Asia/Dhaka')->format('H');
+       <div class="mb-8">
+    @php
+        $hour = now('Asia/Dhaka')->format('H');
 
-                if ($hour < 12) {
-                    $greeting = 'Good Morning';
-                    $borderColor = 'border-green-500'; // Morning
-                } elseif ($hour < 18) {
-                    $greeting = 'Good Afternoon';
-                    $borderColor = 'border-yellow-500'; // Afternoon
-                } else {
-                    $greeting = 'Good Evening';
-                    $borderColor = 'border-indigo-500'; // Evening
-                }
+        // Determine greeting and styling based on time
+        if ($hour >= 5 && $hour < 12) {
+            $greeting = 'Good Morning';
+            $borderColor = 'border-green-500';
+            $bgColor = 'bg-green-50';
+            $textColor = 'text-green-700';
+            $icon = '🌅';
+        } elseif ($hour >= 12 && $hour < 13) {
+            $greeting = 'Good Noon';
+            $borderColor = 'border-amber-500';
+            $bgColor = 'bg-amber-50';
+            $textColor = 'text-amber-700';
+            $icon = '🌞';
+        } elseif ($hour >= 13 && $hour < 17) {
+            $greeting = 'Good Afternoon';
+            $borderColor = 'border-yellow-500';
+            $bgColor = 'bg-yellow-50';
+            $textColor = 'text-yellow-700';
+            $icon = '☀️';
+        } elseif ($hour >= 17 && $hour < 21) {
+            $greeting = 'Good Evening';
+            $borderColor = 'border-orange-500';
+            $bgColor = 'bg-orange-50';
+            $textColor = 'text-orange-700';
+            $icon = '🌆';
+        } else {
+            $greeting = 'Good Night';
+            $borderColor = 'border-indigo-500';
+            $bgColor = 'bg-indigo-50';
+            $textColor = 'text-indigo-700';
+            $icon = '🌙';
+        }
 
-                $username = ucwords(strtolower(Auth::user()->name));
-                $fullMessage = "$greeting, $username!";
-            @endphp
+        $username = ucwords(strtolower(Auth::user()->name));
+        $fullMessage = "$icon $greeting, $username!";
+        $currentTime = now('Asia/Dhaka')->format('g:i A');
+        $currentDate = now('Asia/Dhaka')->format('F j, Y');
+    @endphp
 
-            <div class="bg-white rounded-xl px-5 py-3 border-l-4 {{ $borderColor }}">
-                <h1 id="welcomeMessage" class="text-sm font-medium text-gray-900 mb-1">
+    <div class="bg-white rounded-xl px-5 py-3 border-l-4 {{ $borderColor }}">
+        <h1 class="text-sm font-medium {{ $textColor }} mb-1">
+            {{ $fullMessage }}
+        </h1>
+        <p class="text-gray-600 text-xs">
+            Welcome back! Let’s make today productive and successful.  
+            <span class="ml-2 text-gray-500">({{ $currentTime }} • {{ $currentDate }})</span>
+        </p>
+    </div>
+</div>
 
-                </h1>
-                <p class="text-gray-600 text-xs">
-                    Welcome back! Let’s make today productive and successful.
-                </p>
-            </div>
-        </div>
 
         <!-- Company Info & Recent Activity -->
         <div class="bg-white rounded-xl shadow-sm border p-6  mx-auto">
@@ -89,8 +115,8 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="font-medium text-gray-900">{{$settings->email ?? 'contact@techsolutions.com' }}</p>
-                        <p class="text-xs text-gray-500">Business Email</p>
+                        <p class="font-medium text-gray-900">{{ $settings->email ?? 'contact@techsolutions.com' }}</p>
+                        <p class="text-xs text-gray-500">Company Email</p>
                     </div>
                 </div>
             </div>

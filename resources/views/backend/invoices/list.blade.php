@@ -216,8 +216,7 @@
                                                         Pay
                                                     </button>
                                                 @endif
-                                            @else
-                                                <span class="text-xs text-gray-500">No permission</span>
+                                          
                                             @endcan
                                         </td>
                                     </tr>

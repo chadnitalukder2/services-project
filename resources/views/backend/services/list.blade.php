@@ -350,7 +350,7 @@
                                 Cancel
                             </button>
                             <button type="submit" id="save-service-btn"
-                                class="px-4 py-6 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md">
+                                class="px-4 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-white rounded-md">
                                 <span id="save-service-text">Save service</span>
                                 <span id="save-service-loading" class="hidden">Saving...</span>
                             </button>
