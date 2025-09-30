@@ -252,7 +252,7 @@
                                                 {{ number_format($order->discount_amount ?? 0, 2) }}</div>
                                             <div class="py-1 ml-2.5 text-base font-bold border-t border-gray-300"
                                                 id="display_total"> {{ number_format($order->total_amount ?? 0, 2) }}
-                                                {{ $settings->currency ?? 'Tk' }}</div>
+                                                {{ $settings->currency ?? '৳' }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -734,11 +734,11 @@
 
                 // Update displays
                 document.getElementById('subtotal').textContent =
-                    ` ${subtotal.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
+                    ` ${subtotal.toFixed(2)} {{ $settings->currency ?? '৳' }}`;
                 document.getElementById('display_subtotal').textContent = ` ${subtotal.toFixed(2)}`;
                 document.getElementById('display_discount').textContent = `- ${discountAmount.toFixed(2)}`;
                 document.getElementById('display_total').textContent =
-                    ` ${totalAmount.toFixed(2)} {{ $settings->currency ?? 'Tk' }}`;
+                    ` ${totalAmount.toFixed(2)} {{ $settings->currency ?? '৳' }}`;
 
                 calculatePaymentStatus();
                 updateHiddenInputs();

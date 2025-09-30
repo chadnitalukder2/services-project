@@ -368,16 +368,16 @@
                     <td class="text-center">{{ $item->quantity ?? 1 }}</td>
                     <td  style="text-align:center">
                         @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? 'Tk' }} {{ number_format($item->service->unit_price ?? 0, 2) }}
+                            {{ $settings->currency ?? '৳' }} {{ number_format($item->service->unit_price ?? 0, 2) }}
                         @else
-                            {{ number_format($item->service->unit_price ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                            {{ number_format($item->service->unit_price ?? 0, 2) }} {{ $settings->currency ?? '' }}
                         @endif
                     </td>
                     <td class="text-right">
                         @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? 'Tk' }} {{ number_format($item->subtotal ?? 0, 2) }}
+                            {{ $settings->currency ?? '৳' }} {{ number_format($item->subtotal ?? 0, 2) }}
                         @else
-                            {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                            {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>
@@ -392,9 +392,9 @@
                     <td>Subtotal</td>
                     <td>
                         @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? 'Tk' }} {{ number_format($order->subtotal ?? 0, 2) }}
+                            {{ $settings->currency ?? '৳' }} {{ number_format($order->subtotal ?? 0, 2) }}
                         @else
-                            {{ number_format($order->subtotal ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                            {{ number_format($order->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>
@@ -403,9 +403,9 @@
                     <td>Discount</td>
                     <td>
                         @if($settings && $settings->currency_position == 'left')
-                            -{{ $settings->currency ?? 'Tk' }} {{ number_format($order->discount_amount ?? 0, 2) }}
+                            -{{ $settings->currency ?? '৳' }} {{ number_format($order->discount_amount ?? 0, 2) }}
                         @else
-                            -{{ number_format($order->discount_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                            -{{ number_format($order->discount_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>
@@ -414,9 +414,9 @@
                     <td>Total Amount</td>
                     <td>
                         @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->amount ?? 0, 2) }}
+                            {{ $settings->currency ?? '৳' }} {{ number_format($invoice->amount ?? 0, 2) }}
                         @else
-                            {{ number_format($invoice->amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                            {{ number_format($invoice->amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>
@@ -424,9 +424,9 @@
                     <td>Paid Amount</td>
                     <td>
                         @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->paid_amount ?? 0, 2) }}
+                            {{ $settings->currency ?? '৳' }} {{ number_format($invoice->paid_amount ?? 0, 2) }}
                         @else
-                            {{ number_format($invoice->paid_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                            {{ number_format($invoice->paid_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>
@@ -435,9 +435,9 @@
                     <td>Amount Due</td>
                     <td style="font-weight: bold">
                         @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? 'Tk' }} {{ number_format($invoice->due_amount ?? 0, 2) }}
+                            {{ $settings->currency ?? '৳' }} {{ number_format($invoice->due_amount ?? 0, 2) }}
                         @else
-                            {{ number_format($invoice->due_amount ?? 0, 2) }} {{ $settings->currency ?? 'Tk' }}
+                            {{ number_format($invoice->due_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>

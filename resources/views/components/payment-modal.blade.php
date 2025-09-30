@@ -169,9 +169,9 @@
         document.getElementById('invoiceId').value = invoice.id;
         document.getElementById('modalOrderId').textContent = '#' + padOrderId(invoice.order_id);
         document.getElementById('modalCustomerName').textContent = invoice.customer_name;
-        document.getElementById('modalTotalAmount').textContent = parseFloat(invoice.amount).toFixed(2) + ' tk';
-        document.getElementById('modalPaidAmount').textContent = parseFloat(invoice.paid_amount).toFixed(2) + ' tk';
-        document.getElementById('modalDueAmount').textContent = parseFloat(invoice.due_amount).toFixed(2) + ' tk';
+        document.getElementById('modalTotalAmount').textContent = parseFloat(invoice.amount).toFixed(2) + '৳';
+        document.getElementById('modalPaidAmount').textContent = parseFloat(invoice.paid_amount).toFixed(2) + '৳';
+        document.getElementById('modalDueAmount').textContent = parseFloat(invoice.due_amount).toFixed(2) + '৳';
 
         document.getElementById('modalCurrentStatus').textContent = invoice.status || 'due';
         document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';

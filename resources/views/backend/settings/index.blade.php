@@ -44,7 +44,7 @@
                         <div class="mb-4 w-full md:w-1/2">
                             <label class="block text-base font-medium mb-2">Currency</label>
                             <input type="text" name="currency"
-                                value="{{ old('currency', $setting->currency ?? '') }}" placeholder="e.g., USD, BDT"
+                                value="{{ old('currency', $setting->currency ?? '৳') }}" placeholder="e.g., USD, BDT"
                                 class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                         </div>
 

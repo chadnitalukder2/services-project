@@ -203,11 +203,11 @@
                                         <td
                                             class="px-6 py-4 text-left whitespace-nowrap text-sm font-medium {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
                                             @if ($settings->currency_position == 'left')
-                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ $settings->currency ?? '৳' }}
                                                 {{ number_format($order->total_amount, 2) }}
                                             @else
                                                 {{ number_format($order->total_amount, 2) }}
-                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ $settings->currency ?? '৳' }}
                                             @endif
                                         </td>
                                         <td
@@ -426,7 +426,7 @@
                                     <td colspan="3" class="px-4 text-sm text-right font-semibold"
                                         style="padding-top:5px; padding-bottom: 15px">Total Amount:</td>
                                     <td class="px-4  text-right  font-bold text-sm" id="modalTotalAmount">0.00
-                                        {{ $settings->currency ?? 'Tk' }}</td>
+                                        {{ $settings->currency ?? '৳' }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -562,7 +562,7 @@
                 document.getElementById('modalStatus').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(
                     1);
                 //currency
-                const currency = "{{ $settings->currency ?? 'Tk' }}";
+                const currency = "{{ $settings->currency ?? '৳' }}";
                 const currencyPosition = "{{ $settings->currency_position ?? 'right' }}"; // left or right
                 const totalAmount = parseFloat(order.total_amount).toFixed(2);
 
@@ -571,7 +571,7 @@
                     `${currency} ${totalAmount}` :
                     `${totalAmount} ${currency}`;
 
-                //document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} tk`;
+                //document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} ৳`;
 
                 document.getElementById('modalSubtotal').textContent = `${parseFloat(order.subtotal).toFixed(2)}`;
                 document.getElementById('modalDiscount').textContent = `- ${parseFloat(order.discount_amount).toFixed(2)}`;

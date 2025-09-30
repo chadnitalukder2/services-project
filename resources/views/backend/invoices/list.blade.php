@@ -130,34 +130,34 @@
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             @if ($settings->currency_position == 'left')
-                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ $settings->currency ?? '৳' }}
                                                 {{ number_format($invoice->amount, 2) }}
                                             @else
                                                 {{ number_format($invoice->amount, 2) }}
-                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ $settings->currency ?? '৳' }}
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-green-700">
                                             @if ($settings->currency_position == 'left')
-                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ $settings->currency ?? '৳' }}
                                                 {{ number_format($invoice->paid_amount, 2) }}
                                             @else
                                                 {{ number_format($invoice->paid_amount, 2) }}
-                                                {{ $settings->currency ?? 'Tk' }}
+                                                {{ $settings->currency ?? '৳' }}
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             @if ($settings->currency_position == 'left')
                                                 <span
                                                     class="{{ $invoice->due_amount > 0 ? 'text-red-600 font-medium' : 'text-green-600' }}">
-                                                    {{ $settings->currency ?? 'Tk' }}
+                                                    {{ $settings->currency ?? '৳' }}
                                                     {{ number_format($invoice->due_amount, 2) }}
                                                 </span>
                                             @else
                                                 <span
                                                     class="{{ $invoice->due_amount > 0 ? 'text-red-600 font-medium' : 'text-green-600' }}">
                                                     {{ number_format($invoice->due_amount, 2) }}
-                                                    {{ $settings->currency ?? 'Tk' }}
+                                                    {{ $settings->currency ?? '৳' }}
                                                 </span>
                                             @endif
                                         </td>
@@ -235,26 +235,26 @@
                                 <!-- Total Amount -->
                                 <td class="px-6 text-sm py-3 text-left font-bold text-gray-900">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? 'Tk' }} {{ number_format($totalAmount, 2) }}
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalAmount, 2) }}
                                     @else
-                                        {{ number_format($totalAmount, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                        {{ number_format($totalAmount, 2) }} {{ $settings->currency ?? '৳' }}
                                     @endif
                                 </td>
                                 <!-- Total Paid -->
                                 <td class="px-6 py-3 text-sm text-left font-bold text-green-700">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? 'Tk' }} {{ number_format($totalPaid, 2) }}
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalPaid, 2) }}
                                     @else
-                                        {{ number_format($totalPaid, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                        {{ number_format($totalPaid, 2) }} {{ $settings->currency ?? '৳' }}
                                     @endif
                                 </td>
                                 <!-- Total Due -->
                                 <td
                                     class="px-6 py-3 text-sm text-left font-bold {{ $totalDue > 0 ? 'text-red-600' : 'text-green-600' }}">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? 'Tk' }} {{ number_format($totalDue, 2) }}
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalDue, 2) }}
                                     @else
-                                        {{ number_format($totalDue, 2) }} {{ $settings->currency ?? 'Tk' }}
+                                        {{ number_format($totalDue, 2) }} {{ $settings->currency ?? '৳' }}
                                     @endif
                                 </td>
                                 <td colspan="5"></td>
