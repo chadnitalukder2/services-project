@@ -222,7 +222,7 @@
                         </tbody>
                         <tfoot class="bg-gray-100">
                             <tr>
-                                <td colspan="3" class="px-6 py-3 text-base text-right font-bold text-gray-900">
+                                <td colspan="2" class="px-6 py-3 text-base text-right font-bold text-gray-900">
                                     Totals:</td>
                                 <!-- Total Amount -->
                                 <td class="px-6 text-sm py-3 text-left font-bold text-gray-900">
@@ -249,7 +249,7 @@
                                         {{ number_format($totalDue, 2) }} {{ $settings->currency ?? '৳' }}
                                     @endif
                                 </td>
-                                <td colspan="5"></td>
+                                <td colspan="4"></td>
                             </tr>
                         </tfoot>
                     </table>

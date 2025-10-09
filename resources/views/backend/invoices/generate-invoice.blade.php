@@ -379,7 +379,7 @@
                             @endif
                         </td>
                         <td class="text-right">
-                            @if ($settings && $settings->currency_position == 'left')
+                            @if ($settings?->currency_position == 'left')
                                 {{ $settings->currency ?? '৳' }} {{ number_format($item->subtotal ?? 0, 2) }}
                             @else
                                 {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
