@@ -498,33 +498,33 @@
         <script type="application/json" id="order-data-{{ $order->id }}">
         {
             "id": {{ $order->id }},
-         "customer": {
-                "name": "{{ $order->customer->name }}",
-                "phone": "{{ $order->customer->phone }}",
-                "address": "{{ $order->customer->address }}"
+            "customer": {
+                "name": {!! json_encode($order->customer->name) !!},
+                "phone": {!! json_encode($order->customer->phone) !!},
+                "address": {!! json_encode($order->customer->address) !!}
             },
-            "order_date": "{{ $order->order_date }}",
-            "delivery_date": "{{ $order->delivery_date }}",
-            "status": "{{ $order->status }}",
-            "total_amount": "{{ $order->total_amount }}",
-            "subtotal" : "{{ $order->subtotal }}",
-            "discount_amount": "{{ $order->discount_amount }}",
-            "notes": "{{ $order->notes ?? '' }}",
+            "order_date": {!! json_encode($order->order_date) !!},
+            "delivery_date": {!! json_encode($order->delivery_date) !!},
+            "status": {!! json_encode($order->status) !!},
+            "total_amount": {!! json_encode($order->total_amount) !!},
+            "subtotal": {!! json_encode($order->subtotal) !!},
+            "discount_amount": {!! json_encode($order->discount_amount) !!},
+            "notes": {!! json_encode($order->notes ?? '') !!},
             "order_items": [
                 @foreach ($order->orderItems as $item)
                 {
                     "service": {
-                        "name": "{{ $item->service->name }}"
+                        "name": {!! json_encode($item->service->name) !!}
                     },
-                    "unit_price": "{{ $item->unit_price }}",
+                    "unit_price": {!! json_encode($item->unit_price) !!},
                     "quantity": {{ $item->quantity }},
-                    "subtotal": "{{ $item->subtotal }}"
+                    "subtotal": {!! json_encode($item->subtotal) !!}
                 }@if (!$loop->last),@endif
                 @endforeach
             ],
             "custom_fields": {!! json_encode($order->custom_fields) !!}
         }
-    </script>
+        </script>
     @endforeach
 
     <x-slot name="script">
