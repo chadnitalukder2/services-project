@@ -71,7 +71,7 @@
 
                                         @canany(['edit roles', 'delete roles'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
+                                                class="px-6  py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
                                                 {{--  --}}
 
                                                 @can('edit roles')
@@ -238,7 +238,7 @@
                 <div class="p-6 md:px-14 md:py-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Update Role</h2>
-                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                        <button type="button" class="text-gray-400 hover:text-gray-600 "
                             x-on:click="$dispatch('close-modal', 'edit-role')">
                             <i class="fas fa-times"></i>
                         </button>
