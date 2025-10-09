@@ -74,6 +74,7 @@
 
         .company-name {
             font-size: 16px;
+            padding-top: 12px;
             font-weight: bold;
             color: #333;
         }
@@ -307,26 +308,35 @@
         </div>
 
         <!-- Invoice Information -->
-        <div class="invoice-info">
-            <div class="invoice-details">
-                <div class="detail-row">
-                    <span class="detail-label">Invoice #:</span>
-                    {{ str_pad($invoice->id ?? '001', 4, '0', STR_PAD_LEFT) }}
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Date:</span>
-                    {{ \Carbon\Carbon::parse($todayDate ?? now())->format('d M, Y') }}
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Expiry Date:</span>
-                    {{ \Carbon\Carbon::parse($invoice->expiry_date ?? now()->addDays(30))->format('d M, Y') }}
-                </div>
-            </div>
-            <div class="invoice-status">
-                <div class="status-badge {{ ($invoice->status ?? 'due') === 'paid' ? 'status-paid' : '' }}">
-                    {{ ucfirst($invoice->status ?? 'Due') }}
-                </div>
-            </div>
+        <div class="invoice-info" style="margin-bottom: 25px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 33%; font-weight: bold;">Invoice #:</td>
+                    <td style="width: 67%;">
+                        {{ str_pad($invoice->id ?? '001', 4, '0', STR_PAD_LEFT) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 4px 0;">Date:</td>
+                    <td>
+                        {{ \Carbon\Carbon::parse($todayDate ?? now())->format('d M, Y') }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Expiry Date:</td>
+                    <td>
+                        {{ \Carbon\Carbon::parse($invoice->expiry_date ?? now()->addDays(30))->format('d M, Y') }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Status:</td>
+                    <td style="padding: 4px 0; text-transform: capitalize;">
+                        {{ $invoice->status ?? 'Pending' }}
+                    </td>
+                </tr>
+            </table>
+
+
         </div>
 
         <!-- Billing Information -->
@@ -355,6 +365,7 @@
         <table class="items-table">
             <thead>
                 <tr>
+                    <th style="width: 2%;">SI</th>
                     <th style="width: 50%;">Services</th>
                     <th style="width: 15%; text-align:center">Qty</th>
                     <th style="width: 17.5%; text-align:center">Unit Price</th>
@@ -364,6 +375,7 @@
             <tbody>
                 @foreach ($orderItems ?? [] as $item)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                         <td>
                             <div class="service-name">{{ $item->service->name ?? 'Service Name' }}</div>
 

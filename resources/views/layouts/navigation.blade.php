@@ -62,34 +62,6 @@
                     </x-dropdown>
                 @endcanany
 
-                <!-- Users -->
-                @canany(['view permissions', 'view roles', 'view users'])
-                    <x-dropdown align="left" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
-                                {{ __('Users') }}
-                                <svg class="ms-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 20 20" stroke="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            @can('view users')
-                                <x-dropdown-link :href="route('users.index')">{{ __('Users') }}</x-dropdown-link>
-                            @endcan
-                            @can('view roles')
-                                <x-dropdown-link :href="route('roles.index')">{{ __('Roles') }}</x-dropdown-link>
-                            @endcan
-                            @can('view permissions')
-                                <x-dropdown-link :href="route('permissions.index')">{{ __('Permissions') }}</x-dropdown-link>
-                            @endcan
-                        </x-slot>
-                    </x-dropdown>
-                @endcanany
-
                 <!-- Customers -->
                 @can('view customers')
                     <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
@@ -148,29 +120,21 @@
                 @endcanany
 
                 <!-- Orders & Invoices -->
-                @canany(['view orders', 'view invoices'])
-                    <x-dropdown align="left" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
-                                {{ __('Orders & Invoices') }}
-                                <svg class="ms-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 20 20" stroke="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            @can('view orders')
-                                <x-dropdown-link :href="route('orders.index')">{{ __('Orders') }}</x-dropdown-link>
-                            @endcan
-                            @can('view invoices')
-                                <x-dropdown-link :href="route('invoices.index')">{{ __('Invoices') }}</x-dropdown-link>
-                            @endcan
-                        </x-slot>
-                    </x-dropdown>
-                @endcanany
+
+                <!-- Orders -->
+                @can('view orders')
+                    <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                        {{ __('Orders') }}
+                    </x-nav-link>
+                @endcan
+
+                <!-- Invoices -->
+                @can('view invoices')
+                    <x-nav-link :href="route('invoices.index')" :active="request()->routeIs('invoices.*')">
+                        {{ __('Invoices') }}
+                    </x-nav-link>
+                @endcan
+
             </div>
 
             <!-- User Dropdown -->
@@ -189,6 +153,14 @@
                     </x-slot>
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
+                        @can('view users')
+                            <x-dropdown-link :href="route('users.index')">{{ __('Users') }}</x-dropdown-link>
+                        @endcan
+
+                        @can('view roles')
+                            <x-dropdown-link :href="route('roles.index')">{{ __('Roles') }}</x-dropdown-link>
+                        @endcan
+
                         @can('view settings')
                             <x-dropdown-link :href="route('settings.index')">{{ __('Settings') }}</x-dropdown-link>
                         @endcan
@@ -256,9 +228,6 @@
             @endcan
             @can('view roles')
                 <x-responsive-nav-link :href="route('roles.index')">{{ __('Roles') }}</x-responsive-nav-link>
-            @endcan
-            @can('view permissions')
-                <x-responsive-nav-link :href="route('permissions.index')">{{ __('Permissions') }}</x-responsive-nav-link>
             @endcan
 
             <!-- Customers -->
