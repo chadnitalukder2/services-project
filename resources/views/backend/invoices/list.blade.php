@@ -82,7 +82,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    # ID</th>
+                                    ID</th>
                                 
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -180,7 +180,7 @@
                                         <td
                                             class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5 items-center">
                                             <a href="{{ route('invoices.generate', $invoice->id) }}" target="_blank"
-                                                class="hover:text-yellow-600" style="color:#FF8800;" title="Download">
+                                                class="hover:text-yellow-600" style="color:#FF8800; font-size: 20px" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             @can('payment invoices')

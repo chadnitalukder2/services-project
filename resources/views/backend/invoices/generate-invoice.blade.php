@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +32,7 @@
             margin: 0 auto;
             padding: 0px;
             background: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         /* Header */
@@ -129,7 +130,8 @@
             margin-bottom: 25px;
         }
 
-        .billing-from, .billing-to {
+        .billing-from,
+        .billing-to {
             display: table-cell;
             width: 50%;
             vertical-align: top;
@@ -261,7 +263,7 @@
             clear: both;
             margin-top: 30px;
             padding-top: 15px;
-            border-top: 1px solid #eee;
+            /* border-top: 1px solid #eee; */
             text-align: center;
         }
 
@@ -284,9 +286,10 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        
+
         <!-- Header -->
         <div class="header">
             <div class="header-content">
@@ -294,7 +297,7 @@
                     <div class="invoice-title">INVOICE</div>
                 </div>
                 <div class="header-right">
-                    @if(isset($settings) && $settings->logo)
+                    @if (isset($settings) && $settings->logo)
                         <img src="{{ public_path('storage/' . $settings->logo) }}" alt="Logo" class="company-logo">
                     @else
                         <div class="company-name">{{ $settings->title ?? 'Company Name' }}</div>
@@ -353,34 +356,36 @@
             <thead>
                 <tr>
                     <th style="width: 50%;">Services</th>
-                    <th style="width: 15%; text-align:center" >Qty</th>
+                    <th style="width: 15%; text-align:center">Qty</th>
                     <th style="width: 17.5%; text-align:center">Unit Price</th>
                     <th style="width: 17.5%;" class="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($orderItems ?? [] as $item)
-                <tr>
-                    <td>
-                        <div class="service-name">{{ $item->service->name ?? 'Service Name' }}</div>
-                      
-                    </td>
-                    <td class="text-center">{{ $item->quantity ?? 1 }}</td>
-                    <td  style="text-align:center">
-                        @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? '৳' }} {{ number_format($item->service->unit_price ?? 0, 2) }}
-                        @else
-                            {{ number_format($item->service->unit_price ?? 0, 2) }} {{ $settings->currency ?? '' }}
-                        @endif
-                    </td>
-                    <td class="text-right">
-                        @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? '৳' }} {{ number_format($item->subtotal ?? 0, 2) }}
-                        @else
-                            {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                        @endif
-                    </td>
-                </tr>
+                @foreach ($orderItems ?? [] as $item)
+                    <tr>
+                        <td>
+                            <div class="service-name">{{ $item->service->name ?? 'Service Name' }}</div>
+
+                        </td>
+                        <td class="text-center">{{ $item->quantity ?? 1 }}</td>
+                        <td style="text-align:center">
+                            @if ($settings && $settings->currency_position == 'left')
+                                {{ $settings->currency ?? '৳' }}
+                                {{ number_format($item->service->unit_price ?? 0, 2) }}
+                            @else
+                                {{ number_format($item->service->unit_price ?? 0, 2) }}
+                                {{ $settings->currency ?? '' }}
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($settings && $settings->currency_position == 'left')
+                                {{ $settings->currency ?? '৳' }} {{ number_format($item->subtotal ?? 0, 2) }}
+                            @else
+                                {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
@@ -391,29 +396,29 @@
                 <tr>
                     <td>Subtotal</td>
                     <td>
-                        @if($settings && $settings->currency_position == 'left')
+                        @if ($settings && $settings->currency_position == 'left')
                             {{ $settings->currency ?? '৳' }} {{ number_format($order->subtotal ?? 0, 2) }}
                         @else
                             {{ number_format($order->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>
-                @if(($order->discount_amount ?? 0) > 0)
-                <tr class="discount-row">
-                    <td>Discount</td>
-                    <td>
-                        @if($settings && $settings->currency_position == 'left')
-                            -{{ $settings->currency ?? '৳' }} {{ number_format($order->discount_amount ?? 0, 2) }}
-                        @else
-                            -{{ number_format($order->discount_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                        @endif
-                    </td>
-                </tr>
+                @if (($order->discount_amount ?? 0) > 0)
+                    <tr class="discount-row">
+                        <td>Discount</td>
+                        <td>
+                            @if ($settings && $settings->currency_position == 'left')
+                                -{{ $settings->currency ?? '৳' }} {{ number_format($order->discount_amount ?? 0, 2) }}
+                            @else
+                                -{{ number_format($order->discount_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
+                            @endif
+                        </td>
+                    </tr>
                 @endif
                 <tr class="total-row">
                     <td>Total Amount</td>
                     <td>
-                        @if($settings && $settings->currency_position == 'left')
+                        @if ($settings && $settings->currency_position == 'left')
                             {{ $settings->currency ?? '৳' }} {{ number_format($invoice->amount ?? 0, 2) }}
                         @else
                             {{ number_format($invoice->amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
@@ -423,39 +428,59 @@
                 <tr>
                     <td>Paid Amount</td>
                     <td>
-                        @if($settings && $settings->currency_position == 'left')
+                        @if ($settings && $settings->currency_position == 'left')
                             {{ $settings->currency ?? '৳' }} {{ number_format($invoice->paid_amount ?? 0, 2) }}
                         @else
                             {{ number_format($invoice->paid_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </td>
                 </tr>
-                @if(($invoice->due_amount ?? 0) > 0)
-                <tr >
-                    <td>Amount Due</td>
-                    <td style="font-weight: bold">
-                        @if($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? '৳' }} {{ number_format($invoice->due_amount ?? 0, 2) }}
-                        @else
-                            {{ number_format($invoice->due_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                        @endif
-                    </td>
-                </tr>
+                @if (($invoice->due_amount ?? 0) > 0)
+                    <tr>
+                        <td>Amount Due</td>
+                        <td style="font-weight: bold">
+                            @if ($settings && $settings->currency_position == 'left')
+                                {{ $settings->currency ?? '৳' }} {{ number_format($invoice->due_amount ?? 0, 2) }}
+                            @else
+                                {{ number_format($invoice->due_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
+                            @endif
+                        </td>
+                    </tr>
                 @endif
             </table>
         </div>
 
+
+
+
         <!-- Footer -->
         <div class="footer">
-            <div class="footer-message">
-                {{ $settings->message ?? 'Thank you for your business!' }}
+            {{-- <div class="footer-message">
+                Thank you for your business!
             </div>
             <div class="footer-note">
-                Generated on {{ \Carbon\Carbon::now()->format('d M, Y') }} | 
-                Questions? Contact: {{ $settings->email ?? 'info@company.com' }}
-            </div>
+                {{ $settings->message ?? '' }}
+            </div> --}}
         </div>
+
+        <table style="width:100%; margin-top:50px; page-break-inside:avoid;">
+            <tr>
+                <td style="text-align:left; width:50%;" class="footer-message">
+                    Thank you for your business!
+                    <div class="footer-note">
+                        {{ $settings->message ?? '' }}
+                    </div>
+                </td>
+                <td style="text-align:right; width:50%;">
+                    <div style="border-top:1px solid #000; width:200px; margin:0 0px 5px 150px;"></div>
+                    <p style="margin:0; margin-right:25px; font-weight:bold;">Authorized Signature</p>
+                </td>
+            </tr>
+        </table>
+
+
 
     </div>
 </body>
+
 </html>
