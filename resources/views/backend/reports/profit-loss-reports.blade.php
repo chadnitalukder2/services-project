@@ -70,8 +70,8 @@
                     </div>
                     <div class="flex items-end space-x-2">
                         <button type="submit"
-                            class="flex-1 text-sm bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition-colors">
-                            Filter
+                            class="flex-1 text-sm bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-md transition-colors">
+                            Search
                         </button>
                         <a href="{{ route('reports.profit-loss') }}"
                             class="px-4 py-2 text-sm bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
@@ -121,14 +121,34 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
                             <td class="px-6 py-4 text-sm text-gray-900">
-                                {{ number_format($orders, 2) }}
+                                @if ($settings->currency_position == 'left')
+                                    {{ $settings->currency ?? '৳' }}
+                                    {{ number_format($orders, 2) }}
+                                @else
+                                     {{ number_format($orders, 2) }}
+                                    {{ $settings->currency ?? '৳' }}
+                                @endif
+                               
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-900">
-                                {{ number_format($expenses, 2) }}
+                                @if ($settings->currency_position == 'left')
+                                    {{ $settings->currency ?? '৳' }}
+                                     {{ number_format($expenses, 2) }}
+                                @else
+                                     {{ number_format($expenses, 2) }}
+                                    {{ $settings->currency ?? '৳' }}
+                                @endif
+                               
                             </td>
                             <td
                                 class="px-6 py-4 font-bold text-sm {{ $profitLoss >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                                {{ number_format($profitLoss, 2) }}
+                                @if ($settings->currency_position == 'left')
+                                    {{ $settings->currency ?? '৳' }}
+                                    {{ number_format($profitLoss, 2) }}
+                                @else
+                                    {{ number_format($profitLoss, 2) }}
+                                    {{ $settings->currency ?? '৳' }}
+                                @endif
                             </td>
                         </tr>
                     </tbody>

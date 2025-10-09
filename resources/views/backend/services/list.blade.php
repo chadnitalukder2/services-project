@@ -18,14 +18,14 @@
                             Service</label>
                         <input type="text" name="search" id="search" placeholder="Search by name..."
                             value="{{ request('search') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <!-- CategorySearch -->
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select name="category_id" id="category_id"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                             <option value="">All Categories</option>
                             @foreach ($serviceCategories as $category)
                                 <option value="{{ $category->id }}"
@@ -41,7 +41,7 @@
                         <label for="price_min" class="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
                         <input type="number" name="price_min" id="price_min" placeholder="0.00" step="0.01"
                             min="0" value="{{ request('price_min') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <!-- Price Range - Max -->
@@ -49,14 +49,14 @@
                         <label for="price_max" class="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
                         <input type="number" name="price_max" id="price_max" placeholder="1000.00" step="0.01"
                             min="0" value="{{ request('price_max') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <!-- Sort Dropdown -->
                     <div>
                         <label for="sort" class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
                         <select name="sort" id="sort"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                             <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First
                             </option>
                             <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First

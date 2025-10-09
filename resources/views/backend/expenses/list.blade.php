@@ -15,7 +15,7 @@
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                         <select name="category_id" id="category_id"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                             <option value="">All Categories</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}"
@@ -39,14 +39,14 @@
                     <div>
                         <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">Created From</label>
                         <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <!-- Created At Date To -->
                     <div>
                         <label for="date_to" class="block text-sm font-medium text-gray-700 mb-1">Created To</label>
                         <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
-                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:ring focus:border-gray-900 focus:ring-gray-900 focus:ring-opacity-50">
+                            class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
 
