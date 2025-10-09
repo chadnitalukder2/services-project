@@ -55,8 +55,8 @@
                     <!-- Filter Buttons -->
                     <div class="flex flex-col sm:flex-row gap-2 w-full">
                         <button type="submit"
-                            class="px-4 py-2 flex-1 bg-gray-800 text-white rounded-md text-sm hover:bg-gray-700">
-                            Filter
+                            class="px-4 py-2 flex-1 bg-sky-600 text-white rounded-md text-sm hover:bg-sky-500">
+                            Search
                         </button>
                         <a href="{{ route('invoices.index') }}"
                             class="px-4 py-2 flex-1 bg-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-400 text-center">
