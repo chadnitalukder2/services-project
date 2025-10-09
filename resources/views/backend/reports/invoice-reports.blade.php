@@ -37,8 +37,8 @@
                             <p class="text-2xl font-bold text-red-600">{{ $summary['due_count'] }}</< /p>
                             <p class="text-sm text-red-600 mt-1"> Outstanding:
                                 @if ($settings->currency_position == 'left')
+                                    {{ $settings->currency ?? '৳' }}
                                     {{ number_format($summary['due_amount'], 2) }}
-                                    {{ number_format($totalAmount, 2) }}
                                 @else
                                     {{ number_format($summary['due_amount'], 2) }}
                                     {{ $settings->currency ?? '৳' }}
