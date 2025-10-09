@@ -83,9 +83,7 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     # ID</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Order Id</th>
+                                
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Customer</th>
@@ -98,9 +96,7 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Due</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Method</th>
+
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status</th>
@@ -122,9 +118,7 @@
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             #{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}
                                         </td>
-                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($invoice->order_id, 4, '0', STR_PAD_LEFT) }}
-                                        </td>
+                                       
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $invoice->customer->name ?? '---' }}
                                         </td>
@@ -161,9 +155,7 @@
                                                 </span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 text-left text-sm font-medium text-gray-900 capitalize">
-                                            {{ $invoice->payment_method ?? '---' }}
-                                        </td>
+                                        
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             <span
                                                 class="px-2 py-1 text-xs rounded-full

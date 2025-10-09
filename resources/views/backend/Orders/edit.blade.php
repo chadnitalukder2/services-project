@@ -146,7 +146,7 @@
                                 </div>
                                 <div class="flex gap-3">
                                     <button type="button" id="add_service"
-                                        class="bg-gray-500 hover:bg-gray-600 text-sm rounded-md px-4 py-2 text-white">
+                                        class="bg-green-700 hover:bg-green-600 text-sm rounded-md px-4 py-2 text-white">
                                         Select Service
                                     </button>
                                     @can('create services')
