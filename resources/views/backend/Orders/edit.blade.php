@@ -1259,5 +1259,28 @@
                 });
             });
         });
+        //select service button color==============================
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceSelect = document.getElementById('service_select');
+            const addServiceBtn = document.getElementById('add_service');
+
+            function updateButtonColor() {
+                if (serviceSelect.value === '') {
+                    addServiceBtn.classList.remove('bg-green-700', 'hover:bg-green-600');
+                    addServiceBtn.classList.add('bg-gray-500', 'hover:bg-gray-600', 'cursor-not-allowed');
+                } else {
+                    addServiceBtn.classList.remove('bg-gray-500', 'hover:bg-gray-600', 'cursor-not-allowed');
+                    addServiceBtn.classList.add('bg-green-700', 'hover:bg-green-600');
+                }
+            }
+
+            updateButtonColor();
+            serviceSelect.addEventListener('change', updateButtonColor);
+
+            const originalAddServiceClick = addServiceBtn.onclick;
+            addServiceBtn.addEventListener('click', function() {
+                setTimeout(updateButtonColor, 50);
+            });
+        });
     </script>
 </x-app-layout>
