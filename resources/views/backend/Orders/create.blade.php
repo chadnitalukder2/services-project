@@ -80,7 +80,7 @@
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="text" id="order_date" placeholder="dd-mm-yyyy" name="order_date"
-                                        value="{{ date('Y-m-d') }}"
+                                        value="{{ date('Y-m-d') }}" autocomplete="off"
                                         class="block text-sm  p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="text" id="delivery_date" name="delivery_date"
-                                        placeholder="dd-mm-yyyy"
+                                        placeholder="dd-mm-yyyy" autocomplete="off"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                 <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
                                 <div class="my-3">
                                     <input type="text" id="expiry_date" name="expiry_date" placeholder="dd-mm-yyyy"
-                                        value=""
+                                        value="" autocomplete="off"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>

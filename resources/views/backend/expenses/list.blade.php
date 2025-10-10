@@ -38,7 +38,7 @@
                     <!-- Created At Date From -->
                     <div>
                         <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">Created From</label>
-                        <input type="text" name="date_from" id="date_from" value="{{ request('date_from') }}"
+                        <input type="text" name="date_from" id="date_from" value="{{ request('date_from') }}" autocomplete="off"
                             placeholder="dd-mm-yyyy"
                             class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
@@ -46,7 +46,7 @@
                     <!-- Created At Date To -->
                     <div>
                         <label for="date_to" class="block text-sm font-medium text-gray-700 mb-1">Created To</label>
-                        <input type="text" name="date_to" id="date_to" value="{{ request('date_to') }}"
+                        <input type="text" name="date_to" id="date_to" value="{{ request('date_to') }}" autocomplete="off"
                             placeholder="dd-mm-yyyy"
                             class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
@@ -297,7 +297,7 @@
                         <div>
                             <label for="modal_date" class="block text-base font-medium mt-6">Date <span
                                     class="text-red-500">*</span></label>
-                            <input type="text" id="modal_date" name="date" placeholder="dd-mm-yyyy"
+                            <input type="text" id="modal_date" name="date" placeholder="dd-mm-yyyy" autocomplete="off"
                                 class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
                                 value="{{ old('date', date('d-m-Y')) }}">
                             <div id="modal_date-error" class="text-red-500 text-sm mt-1 hidden"></div>
@@ -374,7 +374,7 @@
                         <div>
                             <label for="edit_date" class="block text-base font-medium mt-6">Date <span
                                     class="text-red-500">*</span></label>
-                            <input type="text" id="edit_date" name="date" placeholder="dd-mm-yyyy"
+                            <input type="text" id="edit_date" name="date" placeholder="dd-mm-yyyy" autocomplete="off"
                                 class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                             <div id="edit_date-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
