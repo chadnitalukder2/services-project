@@ -98,10 +98,8 @@ class DashboardController extends Controller implements HasMiddleware
             ->groupBy('status')
             ->pluck('total', 'status');
 
-        // Fill missing statuses with 0
         $orderStatus = collect($statuses)->mapWithKeys(fn($s) => [$s => $orderStatusRaw[$s] ?? 0]);
 
-        // Send all data to dashboard view
         return view('dashboard', compact(
             'totalRevenue',
             'totalExpenses',

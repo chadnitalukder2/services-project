@@ -146,7 +146,6 @@ class InvoiceController extends Controller implements HasMiddleware
             return $pdf->download('invoice-' . $invoice->id . '-' . $todayDate . '.pdf');
         }
 
-        // Default: open in browser (printable)
         return $pdf->stream('invoice-' . $invoice->id . '-' . $todayDate . '.pdf');
     }
 }

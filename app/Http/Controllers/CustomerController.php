@@ -107,7 +107,6 @@ class CustomerController extends Controller implements HasMiddleware
             'company' => $request->company,
         ]);
 
-        // Return the newly created customer so you can update the select in frontend
         return response()->json([
             'status' => true,
             'customer' => $customer,
