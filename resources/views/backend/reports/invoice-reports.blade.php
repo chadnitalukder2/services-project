@@ -86,12 +86,14 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="date" name="from_date" value="{{ request('from_date') }}"
+                        <input type="text" id="from_date" name="from_date" value="{{ request('from_date') }}"
+                            autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                        <input type="date" name="to_date" value="{{ request('to_date') }}"
+                        <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}"
+                            autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none text-sm focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
@@ -432,5 +434,19 @@
             window.print();
             setTimeout(() => document.body.removeChild(printContent), 1000);
         }
+
+        //date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInputFrom = document.getElementById('from_date');
+            const dateInputTo = document.getElementById('to_date');
+            flatpickr(dateInputFrom, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputTo, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+        });
     </script>
 </x-app-layout>

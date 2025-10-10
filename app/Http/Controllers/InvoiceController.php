@@ -33,10 +33,12 @@ class InvoiceController extends Controller implements HasMiddleware
 
         // Filter by date range
         if ($request->filled('from_date')) {
-            $query->whereDate('created_at', '>=', $request->from_date);
+            $formattedFrom = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
+            $query->whereDate('created_at', '>=', $formattedFrom);
         }
         if ($request->filled('to_date')) {
-            $query->whereDate('created_at', '<=', $request->to_date);
+            $formattedTo = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+            $query->whereDate('created_at', '<=', $formattedTo);
         }
 
         // Filter by customer

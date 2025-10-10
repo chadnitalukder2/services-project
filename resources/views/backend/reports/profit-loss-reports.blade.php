@@ -60,12 +60,12 @@
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="date" name="start_date" value="{{ request('start_date') }}"
+                        <input type="text" id="start_date" name="start_date" value="{{ request('start_date') }}" autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                        <input type="date" name="end_date" value="{{ request('end_date') }}"
+                        <input type="text" id="end_date" name="end_date" value="{{ request('end_date') }}" autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
@@ -269,5 +269,19 @@
             window.print();
             setTimeout(() => document.body.removeChild(printContent), 1000);
         }
+
+                //date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInputFrom = document.getElementById('start_date');
+            const dateInputTo = document.getElementById('end_date');
+            flatpickr(dateInputFrom, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputTo, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+        });
     </script>
 </x-app-layout>

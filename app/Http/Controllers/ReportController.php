@@ -59,11 +59,13 @@ class ReportController extends Controller implements HasMiddleware
 
 
         if ($from_date) {
-            $customers->whereDate('created_at', '>=', $from_date);
+            $formattedFrom = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
+            $customers->whereDate('created_at', '>=', $formattedFrom);
         }
 
         if ($to_date) {
-            $customers->whereDate('created_at', '<=', $to_date);
+            $formattedTo = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+            $customers->whereDate('created_at', '<=', $formattedTo);
         }
 
         $customers = $customers->orderBy($sort, $order)
@@ -103,15 +105,18 @@ class ReportController extends Controller implements HasMiddleware
 
         // Date range filter
         if ($request->filled('from_date') && $request->filled('to_date')) {
-            $query->whereBetween('created_at', [
-                $request->from_date . " 00:00:00",
-                $request->to_date . " 23:59:59"
-            ]);
+            $from = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->startOfDay();
+            $to = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->endOfDay();
+
+            $query->whereBetween('created_at', [$from, $to]);
         } elseif ($request->filled('from_date')) {
-            $query->whereDate('created_at', '>=', $request->from_date);
+            $from = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->startOfDay();
+            $query->whereDate('created_at', '>=', $from);
         } elseif ($request->filled('to_date')) {
-            $query->whereDate('created_at', '<=', $request->to_date);
+            $to = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->endOfDay();
+            $query->whereDate('created_at', '<=', $to);
         }
+
         $sort = $request->get('sort', 'id');
         $order = $request->get('order', 'desc');
 
@@ -172,11 +177,13 @@ class ReportController extends Controller implements HasMiddleware
 
         // Date filter
         if ($request->filled('from_date')) {
-            $query->whereDate('order_date', '>=', $request->from_date);
+            $from = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->startOfDay();
+            $query->whereDate('created_at', '>=', $from);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('order_date', '<=', $request->to_date);
+            $to = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->endOfDay();
+            $query->whereDate('created_at', '<=', $to);
         }
 
         // Sorting
@@ -218,11 +225,13 @@ class ReportController extends Controller implements HasMiddleware
         }
 
         if ($request->filled('from_date')) {
-            $query->where('date', '>=', $request->from_date);
+            $from = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
+            $query->whereDate('created_at', '>=', $from);
         }
 
         if ($request->filled('to_date')) {
-            $query->where('date', '<=', $request->to_date);
+            $to = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+            $query->whereDate('created_at', '<=', $to);
         }
 
         $sort = $request->sort ?? 'date';
@@ -251,9 +260,11 @@ class ReportController extends Controller implements HasMiddleware
 
         // Filter by date
         if ($from = $request->from_date) {
+            $from = \Carbon\Carbon::createFromFormat('d-m-Y', $from)->startOfDay();
             $query->whereDate('created_at', '>=', $from);
         }
         if ($to = $request->to_date) {
+            $to = \Carbon\Carbon::createFromFormat('d-m-Y', $to)->endOfDay();
             $query->whereDate('created_at', '<=', $to);
         }
 
@@ -299,6 +310,8 @@ class ReportController extends Controller implements HasMiddleware
 
         // Expenses
         $expenses = Expense::when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+            $startDate = \Carbon\Carbon::createFromFormat('d-m-Y', $startDate)->startOfDay();
+            $endDate = \Carbon\Carbon::createFromFormat('d-m-Y', $endDate)->endOfDay();
             $query->whereBetween('date', [$startDate, $endDate]);
         })
             ->sum('amount');

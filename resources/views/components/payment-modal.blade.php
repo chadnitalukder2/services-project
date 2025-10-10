@@ -73,7 +73,7 @@
                 <div class="mb-4">
                     <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-2">Invoice Expiry
                         Date</label>
-                    <input type="date" name="expiry_date" id="ExpiryDate"
+                    <input type="text" name="expiry_date" id="ExpiryDate" placeholder="dd-mm-yyyy" autocomplete="off"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-gray-900 focus:ring-gray-900 focus:border-transparent">
 
                 </div>
@@ -177,9 +177,15 @@
         document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';
 
         document.getElementById('ExpiryDate').value = invoice.expiry_date || '';
+
         if (invoice.expiry_date) {
             const date = new Date(invoice.expiry_date);
-            const formattedDate = date.toISOString().split('T')[0]; // YYYY-MM-DD
+
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0')
+            const year = date.getFullYear();
+
+            const formattedDate = `${day}-${month}-${year}`; // dd-mm-yyyy
             document.getElementById('ExpiryDate').value = formattedDate;
         } else {
             document.getElementById('ExpiryDate').value = '';
@@ -322,7 +328,8 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    showNotification(response.message || 'Payment updated successfully!', 'success');
+                    showNotification(response.message || 'Payment updated successfully!',
+                        'success');
                     location.reload();
                 },
                 error: function(xhr, status, error) {
@@ -346,5 +353,12 @@
         if (e.key === 'Escape' && document.getElementById('paymentModal').style.display === 'block') {
             closePaymentModal();
         }
+    });
+
+    //date picker
+    flatpickr("#ExpiryDate", {
+        dateFormat: "d-m-Y",
+        minDate: "today",
+        allowInput: true,
     });
 </script>

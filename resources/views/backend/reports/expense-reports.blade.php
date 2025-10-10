@@ -31,13 +31,15 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="date" name="from_date" value="{{ request('from_date') }}"
+                        <input type="text" id="from_date" name="from_date" value="{{ request('from_date') }}"
+                            autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                        <input type="date" name="to_date" value="{{ request('to_date') }}"
+                        <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}"
+                            autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
@@ -81,40 +83,34 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50 text-xs ">
                             <tr>
-                                <th
-                                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
                                         ID
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-                                <th
-                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
-                                    
-                                      <a href="{{ request()->fullUrlWithQuery(['sort' => 'title', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                <th class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
+
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'title', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
                                         Title
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-                                <th
-                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
                                     Category</th>
-                                <th
-                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
                                     Date</th>
-                                <th
-                                    class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
-                                    
-                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
+                                <th class="px-6 py-3 text-left  font-medium text-gray-500 uppercase tracking-wider">
+
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'amount', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
                                         Amount
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-                                <th
-                                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                                     Created</th>
                             </tr>
                         </thead>
@@ -123,7 +119,8 @@
                                 <tr class="hover:bg-gray-50 ">
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $expense->id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $expense->title }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->category->name ?? '---' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $expense->category->name ?? '---' }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($expense->date)->format('d-m-Y') }}
                                     </td>
@@ -137,7 +134,7 @@
                                         @endif
 
                                     </td>
-                                     <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
+                                    <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                         {{ \Carbon\Carbon::parse($expense->created_at)->format('d M, Y') }}</td>
                                 </tr>
                             @endforeach
@@ -351,5 +348,19 @@
                 document.body.removeChild(printContent);
             }, 1000);
         }
+
+        //date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInputFrom = document.getElementById('from_date');
+            const dateInputTo = document.getElementById('to_date');
+            flatpickr(dateInputFrom, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputTo, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+        });
     </script>
 </x-app-layout>
