@@ -57,7 +57,7 @@
 
                                         @canany(['edit service category', 'delete service category'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-base font-medium flex gap-6">
 
                                                 @can('edit service category')
                                                     <a href="javascript:void(0)"

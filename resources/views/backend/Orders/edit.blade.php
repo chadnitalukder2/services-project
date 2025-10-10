@@ -5,7 +5,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="px-4 md:px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-900">Orders / Edit</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            Orders / Edit (#{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }})
+                        </h3>
                         <div class="flex space-x-2">
                             @can('create orders')
                                 <a href="{{ route('orders.index') }}"
@@ -86,7 +88,8 @@
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="text" id="order_date" name="order_date" autocomplete="off"
-                                        placeholder="dd-mm-yyy" value="{{  \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}"
+                                        placeholder="dd-mm-yyy"
+                                        value="{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -97,7 +100,8 @@
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
                                     <input type="text" id="delivery_date" name="delivery_date" autocomplete="off"
-                                        placeholder="dd-mm-yyy" value="{{  \Carbon\Carbon::parse($order->delivery_date)->format('d-m-Y') }}"
+                                        placeholder="dd-mm-yyy"
+                                        value="{{ \Carbon\Carbon::parse($order->delivery_date)->format('d-m-Y') }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -107,7 +111,8 @@
                                 <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
                                 <div class="my-3">
                                     <input type="text" id="expiry_date" name="expiry_date" autocomplete="off"
-                                        placeholder="dd-mm-yyy"  value="{{\Carbon\Carbon::parse($order->invoice->expiry_date)->format('d-m-Y') }}"
+                                        placeholder="dd-mm-yyy"
+                                        value="{{ \Carbon\Carbon::parse($order->invoice->expiry_date)->format('d-m-Y') }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -1002,13 +1007,29 @@
             if (existingCustomFields && Object.keys(existingCustomFields).length > 0) {
                 Object.keys(existingCustomFields).forEach(key => {
                     const field = existingCustomFields[key];
-                    addCustomField(field.event_name || '', field.event_date || '', field.event_time || '');
+                    addCustomField(
+                        field.event_name || '',
+                        field.event_date || '',
+                        field.event_time || ''
+                    );
                 });
             }
         }
 
         function addCustomField(eventName = '', eventDate = '', eventTime = '') {
             const wrapper = document.getElementById('custom_fields_wrapper');
+
+            let formattedDate = '';
+            if (eventDate) {
+                if (eventDate.includes('-')) {
+                    const parts = eventDate.split('-');
+                    if (parts[0].length === 4) {
+                        formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                    } else {
+                        formattedDate = eventDate;
+                    }
+                }
+            }
 
             const fieldHtml = `
                 <div class="flex flex-wrap gap-3 py-1 px-0 rounded-md relative" id="custom_field_${customFieldCounter}">
@@ -1020,14 +1041,22 @@
                     </div>
                     <div class="w-full md:flex-1">
                         <label class="block text-sm font-medium text-gray-700">Event Date</label>
-                        <input type="date" name="custom_fields[${customFieldCounter}][event_date]" 
-                            value="${eventDate}"
-                            class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
+                        <input type="text" 
+                            id="event_date_${customFieldCounter}" 
+                            name="custom_fields[${customFieldCounter}][event_date]" 
+                            value="${formattedDate}"
+                            placeholder="dd-mm-yyyy"
+                            autocomplete="off"
+                            class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900 event-date-picker">
                     </div>
                     <div class="w-full md:flex-1">
                         <label class="block text-sm font-medium text-gray-700">Event Time</label>
-                        <input type="time" name="custom_fields[${customFieldCounter}][event_time]" 
+                        <input type="text" 
+                            id="event_time_${customFieldCounter}" 
+                            name="custom_fields[${customFieldCounter}][event_time]" 
                             value="${eventTime}"
+                            placeholder="HH:MM"
+                            autocomplete="off"
                             class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
                     </div>
                     <button type="button" onclick="removeCustomField(${customFieldCounter})"
@@ -1036,11 +1065,38 @@
             `;
 
             wrapper.insertAdjacentHTML('beforeend', fieldHtml);
+
+            flatpickr(`#event_date_${customFieldCounter}`, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+
+            flatpickr(`#event_time_${customFieldCounter}`, {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "h:i K",
+                time_24hr: false,
+                allowInput: true
+            });
+
             customFieldCounter++;
         }
 
         function removeCustomField(counter) {
-            document.getElementById(`custom_field_${counter}`).remove();
+            const field = document.getElementById(`custom_field_${counter}`);
+            if (field) {
+                const dateInput = field.querySelector(`#event_date_${counter}`);
+                const timeInput = field.querySelector(`#event_time_${counter}`);
+
+                if (dateInput && dateInput._flatpickr) {
+                    dateInput._flatpickr.destroy();
+                }
+                if (timeInput && timeInput._flatpickr) {
+                    timeInput._flatpickr.destroy();
+                }
+
+                field.remove();
+            }
         }
 
         // Form validation=======================================
@@ -1309,7 +1365,6 @@
             const dateInputOrder = document.getElementById('order_date');
             const dateInputDelivery = document.getElementById('delivery_date');
             const dateInputExpiry = document.getElementById('expiry_date');
-            const dateInputEvent = document.getElementById('event_date');
             let futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + 30);
 
@@ -1322,10 +1377,6 @@
                 allowInput: true
             });
             flatpickr(dateInputExpiry, {
-                dateFormat: "d-m-Y",
-                allowInput: true
-            });
-            flatpickr(dateInputEvent, {
                 dateFormat: "d-m-Y",
                 allowInput: true
             });

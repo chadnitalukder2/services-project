@@ -72,7 +72,6 @@ class PermissionSeeder extends Seeder
             //Invoices
             'view invoices',
             'payment invoices',
-            'view permissions',
 
         ];
 

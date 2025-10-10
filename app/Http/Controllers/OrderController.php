@@ -35,11 +35,13 @@ class OrderController extends Controller implements HasMiddleware
         }
 
         if ($request->filled('from_date')) {
-            $query->whereDate('created_at', '>=', $request->from_date);
+            $fromDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date);
+            $query->whereDate('created_at', '>=', $fromDate);
         }
 
         if ($request->filled('to_date')) {
-            $query->whereDate('created_at', '<=', $request->to_date);
+            $toDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date);
+            $query->whereDate('created_at', '<=', $toDate);
         }
 
         $orders = $query->orderBy('created_at', 'desc')->paginate(12);

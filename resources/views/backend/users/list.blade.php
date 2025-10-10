@@ -74,7 +74,7 @@
 
                                         @canany(['edit users', 'delete users'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-base font-medium flex gap-6">
                                                 @can('edit users')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditUserModal({{ $user->id }})"

@@ -111,7 +111,7 @@
                                         </td>
                                         @canany(['edit customers', 'delete customers'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-4">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-base font-medium flex gap-6">
                                                 @can('edit customers')
                                                     <a href="javascript:void(0)"
                                                         onclick="openEditCustomerModal({{ $customer->id }})"

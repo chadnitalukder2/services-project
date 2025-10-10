@@ -85,17 +85,17 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                                <input type="date" name="from_date" value="{{ request('from_date') }}"
+                                <input type="text" id="from_date" name="from_date" value="{{ request('from_date') }}" autocomplete="off" placeholder="dd-mm-yyyy"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                                <input type="date" name="to_date" value="{{ request('to_date') }}"
+                                <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}" autocomplete="off" placeholder="dd-mm-yyyy"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none text-sm focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                             </div>
                             <div class="flex items-end gap-4 text-center">
                                 <button type="submit"
-                                    class="w-full bg-orange-600 text-sm hover:bg-orange-500 text-white px-4 py-2 rounded-md  transition-colors">
+                                    class="w-full bg-orange-600 text-sm hover:bg-orange-500 text-white px-4 py-2 rounded-md  transition-colors" style="padding-top: 9px; padding-bottom: 9px;">
                                     Search
                                 </button>
                                 <a href="{{ route('orders.index') }}" style=" padding: 10px;"
@@ -215,7 +215,7 @@
                                             {{ \Carbon\Carbon::parse($order->created_at)->format('d M, Y') }}
                                         </td>
                                         <td
-                                            class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5">
+                                            class="px-6 py-4 text-center whitespace-nowrap text-base font-medium flex gap-5">
                                             <button onclick="showOrderItems({{ $order->id }})"
                                                 class="text-blue-600 hover:text-blue-900" title="View Details">
                                                 <i class="fas fa-eye"></i>
@@ -797,6 +797,20 @@
                         filterForm.submit();
                     });
                 }
+            });
+
+            //datepicker==============================================
+            document.addEventListener('DOMContentLoaded', function() {
+                const fromDateInput = document.getElementById('from_date');
+                const toDateInput = document.getElementById('to_date');
+                flatpickr(fromDateInput, {
+                    dateFormat: 'd-m-Y',
+                    allowInput: true,
+                });
+                flatpickr(toDateInput, {
+                    dateFormat: 'd-m-Y',
+                    allowInput: true,
+                });
             });
         </script>
     </x-slot>

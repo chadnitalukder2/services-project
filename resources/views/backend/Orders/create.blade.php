@@ -963,34 +963,62 @@
             const wrapper = document.getElementById('custom_fields_wrapper');
 
             const fieldHtml = `
-                    <div class="flex flex-wrap gap-3 py-1 px-0 rounded-md  relative" id="custom_field_${customFieldCounter}">
-                        <div class="w-full md:flex-1">
-                            <label class="block text-sm font-medium text-gray-700">Event Name</label>
-                            <input type="text" name="custom_fields[${customFieldCounter}][event_name]" 
-                                class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
-                        </div>
-                        <div class="w-full md:flex-1">
-                            <label class="block text-sm font-medium text-gray-700">Event Date</label>
-                            <input type="text" id="event_date" name="custom_fields[${customFieldCounter}][event_date]" placeholder="dd-mm-yyyy"
-                                class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
-                        </div>
-                        <div class="w-full md:flex-1">
-                            <label class="block text-sm font-medium text-gray-700">Event Time</label>
-                            <input type="time" name="custom_fields[${customFieldCounter}][event_time]" 
-                                class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900" >
-                        </div>
-                        <button type="button" onclick="removeCustomField(${customFieldCounter})"
-                            class="absolute top-2 right-2 text-red-500 hover:text-red-700">✕</button>
+                <div class="flex flex-wrap gap-3 py-1 px-0 rounded-md relative" id="custom_field_${customFieldCounter}">
+                    <div class="w-full md:flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Event Name</label>
+                        <input type="text" name="custom_fields[${customFieldCounter}][event_name]" 
+                            class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
                     </div>
-                `;
+                    <div class="w-full md:flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Event Date</label>
+                        <input type="text" 
+                            id="event_date_${customFieldCounter}" 
+                            name="custom_fields[${customFieldCounter}][event_date]" 
+                            placeholder="dd-mm-yyyy"
+                            autocomplete="off"
+                            class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
+                    </div>
+                    <div class="w-full md:flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Event Time</label>
+                        <input type="text" 
+                            id="event_time_${customFieldCounter}" 
+                            name="custom_fields[${customFieldCounter}][event_time]" 
+                            placeholder="HH:MM"
+                            autocomplete="off"
+                            class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
+                    </div>
+                    <button type="button" onclick="removeCustomField(${customFieldCounter})"
+                        class="absolute top-2 right-2 text-red-500 hover:text-red-700">✕</button>
+                </div>
+            `;
 
             wrapper.insertAdjacentHTML('beforeend', fieldHtml);
+
+            flatpickr(`#event_date_${customFieldCounter}`, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+
+            flatpickr(`#event_time_${customFieldCounter}`, {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "h:i K",
+                time_24hr: false,
+                allowInput: true
+            });
 
             customFieldCounter++;
         });
 
         function removeCustomField(counter) {
-            document.getElementById(`custom_field_${counter}`).remove();
+            const field = document.getElementById(`custom_field_${counter}`);
+            if (field) {
+                const dateInput = field.querySelector('.event-date-picker');
+                if (dateInput && dateInput._flatpickr) {
+                    dateInput._flatpickr.destroy();
+                }
+                field.remove();
+            }
         }
 
         //validation=============================
@@ -1263,7 +1291,6 @@
             const dateInputOrder = document.getElementById('order_date');
             const dateInputDelivery = document.getElementById('delivery_date');
             const dateInputExpiry = document.getElementById('expiry_date');
-            const dateInputEvent = document.getElementById('event_date');
             let futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + 30);
 
@@ -1279,10 +1306,6 @@
             flatpickr(dateInputExpiry, {
                 dateFormat: "d-m-Y",
                 defaultDate: futureDate,
-                allowInput: true
-            });
-            flatpickr(dateInputEvent, {
-                dateFormat: "d-m-Y",
                 allowInput: true
             });
         });

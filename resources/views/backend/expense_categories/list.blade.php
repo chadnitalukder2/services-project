@@ -57,7 +57,7 @@
 
                                         @canany(['edit expense categories', 'delete expense categories'])
                                             <td
-                                                class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-6">
+                                                class="px-6 py-4 text-center whitespace-nowrap text-base font-medium flex gap-6">
 
                                                 @can('edit expense categories')
                                                     <a href="javascript:void(0)"
