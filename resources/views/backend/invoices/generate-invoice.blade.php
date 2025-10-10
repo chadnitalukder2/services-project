@@ -306,9 +306,10 @@
         }
 
         .footer-message {
-            font-size: 14px;
+            font-size: 12px;
             margin-bottom: 8px;
             font-weight: bold;
+          font-style: italic;
         }
 
         .footer-note {
