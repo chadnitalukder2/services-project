@@ -38,7 +38,7 @@ class ExpenseController extends Controller implements HasMiddleware
         return view('backend.expenses.list', compact('expenses', 'categories', 'expenseCategories', 'totalExpense'));
     }
 
- 
+
 
     /**
      * Store a newly created resource in storage.
@@ -58,11 +58,12 @@ class ExpenseController extends Controller implements HasMiddleware
                 'errors' => $validator->errors(),
             ], 422);
         }
+        $expenseDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->date)->format('Y-m-d');
         $expense = Expense::create([
             'title' => $request->title,
             'category_id' => $request->category_id,
             'amount' => $request->amount,
-            'date' => $request->date,
+            'date' => $expenseDate,
             'description' => $request->description,
         ]);
         return response()->json([
@@ -79,8 +80,8 @@ class ExpenseController extends Controller implements HasMiddleware
         $category = Expense::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-           'title' => 'required',
-            'category_id' => 'required|exists:expense_categories,id',
+            'title' => 'required',
+            'category_id' => 'nullable|exists:expense_categories,id',
             'amount' => 'required|numeric|min:0',
             'date' => 'required|date',
             'description' => 'nullable|string|max:255',
@@ -92,15 +93,15 @@ class ExpenseController extends Controller implements HasMiddleware
                 'errors' => $validator->errors(),
             ], 422);
         }
+        $expenseDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->date)->format('Y-m-d');
+        $category->title = $request->title;
+        $category->category_id = $request->category_id;
+        $category->amount = $request->amount;
+        $category->date = $expenseDate;
+        $category->description = $request->description;
+        $category->save();
 
-             $category->title = $request->title;
-            $category->category_id = $request->category_id;
-            $category->amount = $request->amount;
-            $category->date = $request->date;
-            $category->description = $request->description;
-            $category->save();
-
-          return response()->json([
+        return response()->json([
             'status' => true,
             'message' => 'Expense  updated successfully',
         ]);

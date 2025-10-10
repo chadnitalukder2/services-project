@@ -82,8 +82,8 @@ class OrderController extends Controller implements HasMiddleware
 
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required|integer',
-            'order_date' => 'required|date',
-            'delivery_date' => 'required|date|after:order_date',
+            'order_date' => 'required',
+            'delivery_date' => 'required|after:order_date',
             'status' => 'nullable|string',
             'total_amount' => 'nullable|numeric|min:0',
             'subtotal' => 'nullable|numeric|min:0',
@@ -108,7 +108,7 @@ class OrderController extends Controller implements HasMiddleware
             'services.*.unit_price' => 'required|numeric|min:0',
             'services.*.subtotal' => 'required|numeric|min:0',
 
-            'expiry_date' => 'nullable|date|after:order_date',
+            'expiry_date' => 'nullable',
             'payment_method' => 'nullable|string',
             'payment_status' => 'nullable|string',
         ]);
@@ -119,10 +119,14 @@ class OrderController extends Controller implements HasMiddleware
         }
 
         if ($validator->passes()) {
+            $orderDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->order_date)->format('Y-m-d');
+            $deliveryDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->delivery_date)->format('Y-m-d');
+            $expiryDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->expiry_date)->format('Y-m-d');
+
             $order = Order::create([
                 'customer_id' => $request->customer_id,
-                'order_date' => $request->order_date,
-                'delivery_date' => $request->delivery_date,
+                'order_date' => $orderDate,
+                'delivery_date' => $deliveryDate,
                 'status' => $request->status,
                 'subtotal' => $request->subtotal,
                 'total_amount' => $request->total_amount,
@@ -147,7 +151,7 @@ class OrderController extends Controller implements HasMiddleware
             $invoice = Invoice::create([
                 
                 'order_id' => $order->id,
-                'expiry_date' => $request->expiry_date,
+                'expiry_date' => $expiryDate,
                 'customer_id' => $request->customer_id,
                 'amount' => $request->total_amount,
                 'paid_amount' => $request->paid_amount,

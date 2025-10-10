@@ -409,7 +409,7 @@
             <table class="items-table">
                 <thead>
                     <tr>
-                        <th style="width: 2%;">SI</th>
+                        <th style="width: 2%;">No</th>
                         <th style="width: 50%;">Services</th>
                         <th style="width: 15%; text-align:center">Qty</th>
                         <th style="width: 17.5%; text-align:center">Unit Price</th>

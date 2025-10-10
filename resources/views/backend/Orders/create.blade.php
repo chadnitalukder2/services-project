@@ -79,7 +79,8 @@
                                 <label for="order_date" class="text-base font-medium">Order Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
-                                    <input type="date" id="order_date" name="order_date" value="{{ date('Y-m-d') }}"
+                                    <input type="text" id="order_date" placeholder="dd-mm-yyyy" name="order_date"
+                                        value="{{ date('Y-m-d') }}"
                                         class="block text-sm  p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -89,7 +90,8 @@
                                 <label for="delivery_date" class="text-base font-medium">Delivery Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
-                                    <input type="date" id="delivery_date" name="delivery_date"
+                                    <input type="text" id="delivery_date" name="delivery_date"
+                                        placeholder="dd-mm-yyyy"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -98,8 +100,8 @@
                             <div class="mb-3">
                                 <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
                                 <div class="my-3">
-                                    <input type="date" id="expiry_date" name="expiry_date"
-                                        value="{{ \Carbon\Carbon::today()->addDays(30)->toDateString() }}"
+                                    <input type="text" id="expiry_date" name="expiry_date" placeholder="dd-mm-yyyy"
+                                        value=""
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -969,7 +971,7 @@
                         </div>
                         <div class="w-full md:flex-1">
                             <label class="block text-sm font-medium text-gray-700">Event Date</label>
-                            <input type="date" name="custom_fields[${customFieldCounter}][event_date]" 
+                            <input type="text" id="event_date" name="custom_fields[${customFieldCounter}][event_date]" placeholder="dd-mm-yyyy"
                                 class="mt-1 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-900 focus:border-gray-900">
                         </div>
                         <div class="w-full md:flex-1">
@@ -1044,8 +1046,9 @@
             }
             // Expiry Date
             const expiryDate = document.getElementById('expiry_date');
-            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(
+            if (expiryDate.value !== '' && orderDate.value !== ''  <= new Date(
                     orderDate.value)) {
+                        console.log('Expiry Date validation failed', expiryDate.value, orderDate.value);
                 const expiryDateError = document.createElement('p');
                 expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 expiryDateError.textContent = 'Expiry Date must be after Order Date';
@@ -1230,6 +1233,35 @@
             const originalAddServiceClick = addServiceBtn.onclick;
             addServiceBtn.addEventListener('click', function() {
                 setTimeout(updateButtonColor, 50);
+            });
+        });
+
+        //date formate==============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInputOrder = document.getElementById('order_date');
+            const dateInputDelivery = document.getElementById('delivery_date');
+            const dateInputExpiry = document.getElementById('expiry_date');
+            const dateInputEvent = document.getElementById('event_date');
+            let futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+
+            flatpickr(dateInputOrder, {
+                dateFormat: "d-m-Y",
+                defaultDate: new Date(),
+                allowInput: true
+            });
+            flatpickr(dateInputDelivery, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputExpiry, {
+                dateFormat: "d-m-Y",
+                defaultDate: futureDate,
+                allowInput: true
+            });
+            flatpickr(dateInputEvent, {
+                dateFormat: "d-m-Y",
+                allowInput: true
             });
         });
     </script>

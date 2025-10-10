@@ -295,9 +295,9 @@
                         <div>
                             <label for="modal_date" class="block text-base font-medium mt-6">Date <span
                                     class="text-red-500">*</span></label>
-                            <input type="date" id="modal_date" name="date"
+                            <input type="text" id="modal_date" name="date" placeholder="dd-mm-yyyy"
                                 class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
-                                value="{{ old('date', date('Y-m-d')) }}">
+                                value="{{ old('date', date('d-m-Y')) }}">
                             <div id="modal_date-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
 
@@ -372,7 +372,7 @@
                         <div>
                             <label for="edit_date" class="block text-base font-medium mt-6">Date <span
                                     class="text-red-500">*</span></label>
-                            <input type="date" id="edit_date" name="date"
+                            <input type="text" id="edit_date" name="date" placeholder="dd-mm-yyyy"
                                 class="mt-3 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                             <div id="edit_date-error" class="text-red-500 text-sm mt-1 hidden"></div>
                         </div>
@@ -489,7 +489,9 @@
                     Nov: '11',
                     Dec: '12'
                 };
-                return `${year}-${monthNames[monthStr]}-${day.padStart(2,'0')}`;
+
+                const month = monthNames[monthStr] || '01';
+                return `${day.padStart(2, '0')}-${month}-${year}`;
             }
 
             document.getElementById('editExpenseForm').addEventListener('submit', function(e) {
@@ -777,6 +779,24 @@
             document.getElementById('category_id').addEventListener('change', function() {
                 // Uncomment the line below if you want auto-submit on category change
                 // this.form.submit();
+            });
+
+            // Datepicker initialization
+            document.addEventListener('DOMContentLoaded', function() {
+                const dateInputModalDate = document.getElementById('modal_date');
+                const dateInputEditDate = document.getElementById('edit_date');
+
+                flatpickr(dateInputModalDate, {
+                    dateFormat: "d-m-Y",
+                    defaultDate: new Date(),
+                    allowInput: true
+                });
+                flatpickr(dateInputEditDate, {
+                    dateFormat: "d-m-Y",
+
+                    allowInput: true
+                });
+
             });
         </script>
     </x-slot>

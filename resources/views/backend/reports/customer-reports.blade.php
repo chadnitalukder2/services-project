@@ -14,14 +14,17 @@
                             placeholder=" Search by name address..."
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="date"  id="myDate" name="from_date" value="{{ request('from_date') }}"
+                        <input type="text" name="from_date" id="from_date" value="{{ request('from_date') }}"
+                            placeholder="dd-mm-yyyy"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                        <input type="date" name="to_date" value="{{ request('to_date') }}"
+                        <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}"   placeholder="dd-mm-yyyy"
                             class="w-full px-3 text-sm py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
@@ -71,7 +74,7 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center hover:text-gray-700">
-                                         ID <i class="fas fa-sort ml-1 text-xs"></i> 
+                                        ID <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
                                 <th
@@ -567,17 +570,19 @@
             window.print();
             setTimeout(() => document.body.removeChild(printContent), 1000);
         }
-        //change input date to today if empty
-        const input = document.getElementById('myDate');
 
-// Set date in yyyy-mm-dd format (the only accepted format)
-input.value = "2025-10-10";
-
-// Get the value and reformat it
-input.addEventListener('change', () => {
-//   const date = new Date(input.value);
-  const formatted = date.toLocaleDateString('en-GB'); // dd/mm/yyyy
-  console.log(formatted);
-});
+        //date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInputFrom = document.getElementById('from_date');
+            const dateInputTo = document.getElementById('to_date');
+            flatpickr(dateInputFrom, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputTo, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+        });
     </script>
 </x-app-layout>
