@@ -276,7 +276,7 @@
         /* Signature Section - Fixed position */
         .signature-section {
             position: absolute;
-            bottom: 180px;
+            bottom: 150px;
             right: 0px;
         }
 

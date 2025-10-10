@@ -31,7 +31,7 @@
                     <!-- Action Buttons -->
                     <div class="flex  sm:flex-row gap-2 w-full sm:w-auto">
                         <button type="submit"
-                            class="w-full basis-1/2 sm:w-auto bg-sky-600 text-sm hover:bg-sky-500 text-white px-4 py-2 rounded-md">
+                            class="w-full basis-1/2 sm:w-auto bg-orange-600 text-sm hover:bg-orange-500 text-white px-4 py-2 rounded-md">
                             Search
                         </button>
                         <a href="{{ route('customers.index') }}"

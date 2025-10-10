@@ -101,7 +101,7 @@
                     </div>
                     <div class="flex items-end space-x-2">
                         <button type="submit"
-                            class="flex-1 text-sm bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-md transition-colors">Search</button>
+                            class="flex-1 text-sm bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-md transition-colors">Search</button>
                         <a href="{{ route('reports.service') }}"
                             class="px-4 py-2 text-sm bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">Clear</a>
                     </div>

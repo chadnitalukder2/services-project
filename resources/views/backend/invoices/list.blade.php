@@ -55,7 +55,7 @@
                     <!-- Filter Buttons -->
                     <div class="flex flex-col sm:flex-row gap-2 w-full">
                         <button type="submit"
-                            class="px-4 py-2 flex-1 bg-sky-600 text-white rounded-md text-sm hover:bg-sky-500">
+                            class="px-4 py-2 flex-1 bg-orange-600 text-white rounded-md text-sm hover:bg-orange-500">
                             Search
                         </button>
                         <a href="{{ route('invoices.index') }}"
@@ -180,7 +180,7 @@
                                         <td
                                             class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5 items-center">
                                             <a href="{{ route('invoices.generate', $invoice->id) }}" target="_blank"
-                                                class="hover:text-yellow-600" style="color:#FF8800; font-size: 20px" title="Download">
+                                                class="hover:text-orange-500 text-orange-600" style="  font-size: 20px" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             @can('payment invoices')

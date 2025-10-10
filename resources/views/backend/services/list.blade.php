@@ -71,7 +71,7 @@
                     <!-- Action Buttons -->
                     <div class="flex gap-2 justify-center mt-6">
                         <button type="submit"
-                            class="bg-sky-600 hover:bg-sky-500 basis-1/2 text-sm  text-white px-4 py-2 rounded-md">
+                            class="bg-orange-600 hover:bg-orange-500 basis-1/2 text-sm  text-white px-4 py-2 rounded-md">
                             Search
                         </button>
                         <a href="{{ route('services.index') }}"

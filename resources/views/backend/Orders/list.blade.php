@@ -95,7 +95,7 @@
                             </div>
                             <div class="flex items-end gap-4 text-center">
                                 <button type="submit"
-                                    class="w-full bg-sky-600 text-sm hover:bg-sky-500 text-white px-4 py-2 rounded-md  transition-colors">
+                                    class="w-full bg-orange-600 text-sm hover:bg-orange-500 text-white px-4 py-2 rounded-md  transition-colors">
                                     Search
                                 </button>
                                 <a href="{{ route('orders.index') }}" style=" padding: 10px;"

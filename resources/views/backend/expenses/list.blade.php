@@ -54,7 +54,7 @@
                     <!-- Filter Buttons -->
                     <div class="flex gap-2 justify-center mt-6">
                         <button type="submit"
-                            class="-1/2 text-sm bg-sky-600  hover:bg-sky-500 text-white px-12 py-2 rounded-md ">
+                            class="-1/2 text-sm bg-orange-600  hover:bg-orange-500 text-white px-12 py-2 rounded-md ">
                             Search
                         </button>
                         <a href="{{ route('expenses.index') }}"

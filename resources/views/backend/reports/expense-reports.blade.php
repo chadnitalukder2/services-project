@@ -42,7 +42,7 @@
                     </div>
                     <div class="flex items-end space-x-2">
                         <button type="submit"
-                            class="flex-1 text-sm bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-md transition-colors">
+                            class="flex-1 text-sm bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-md transition-colors">
                             Search
                         </button>
                         <a href="{{ url('/expense/reports') }}"

@@ -16,7 +16,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="date" name="from_date" value="{{ request('from_date') }}"
+                        <input type="date"  id="myDate" name="from_date" value="{{ request('from_date') }}"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="flex items-end space-x-2">
                         <button type="submit"
-                            class="flex-1 text-sm bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-md transition-colors">
+                            class="flex-1 text-sm bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-md transition-colors">
                             Search
                         </button>
                         <a href="{{ url('/customer/reports') }}"
@@ -567,5 +567,17 @@
             window.print();
             setTimeout(() => document.body.removeChild(printContent), 1000);
         }
+        //change input date to today if empty
+        const input = document.getElementById('myDate');
+
+// Set date in yyyy-mm-dd format (the only accepted format)
+input.value = "2025-10-10";
+
+// Get the value and reformat it
+input.addEventListener('change', () => {
+//   const date = new Date(input.value);
+  const formatted = date.toLocaleDateString('en-GB'); // dd/mm/yyyy
+  console.log(formatted);
+});
     </script>
 </x-app-layout>
