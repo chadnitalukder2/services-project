@@ -38,14 +38,16 @@
                     <!-- Created At Date From -->
                     <div>
                         <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">Created From</label>
-                        <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
+                        <input type="text" name="date_from" id="date_from" value="{{ request('date_from') }}"
+                            placeholder="dd-mm-yyyy"
                             class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <!-- Created At Date To -->
                     <div>
                         <label for="date_to" class="block text-sm font-medium text-gray-700 mb-1">Created To</label>
-                        <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
+                        <input type="text" name="date_to" id="date_to" value="{{ request('date_to') }}"
+                            placeholder="dd-mm-yyyy"
                             class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
@@ -785,6 +787,8 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const dateInputModalDate = document.getElementById('modal_date');
                 const dateInputEditDate = document.getElementById('edit_date');
+                const dateInputFrom = document.getElementById('date_from');
+                const dateInputTo = document.getElementById('date_to');
 
                 flatpickr(dateInputModalDate, {
                     dateFormat: "d-m-Y",
@@ -793,8 +797,18 @@
                 });
                 flatpickr(dateInputEditDate, {
                     dateFormat: "d-m-Y",
-
                     allowInput: true
+                });
+
+                flatpickr(dateInputFrom, {
+                    dateFormat: "d-m-Y",
+                    allowInput: true,
+
+                });
+                flatpickr(dateInputTo, {
+                    dateFormat: "d-m-Y",
+                    allowInput: true,
+
                 });
 
             });

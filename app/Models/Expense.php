@@ -25,10 +25,18 @@ class Expense extends Model
             return $query->where('category_id', $categoryId);
         })
             ->when($filters['date_from'] ?? false, function ($query, $dateFrom) {
-                return $query->whereDate('created_at', '>=', $dateFrom);
+                try {
+                    $formattedFrom = \Carbon\Carbon::createFromFormat('d-m-Y', $dateFrom)->format('Y-m-d');
+                    return $query->whereDate('created_at', '>=', $formattedFrom);
+                } catch (\Exception $e) {
+                }
             })
             ->when($filters['date_to'] ?? false, function ($query, $dateTo) {
-                return $query->whereDate('created_at', '<=', $dateTo);
+                try {
+                    $formattedTo = \Carbon\Carbon::createFromFormat('d-m-Y', $dateTo)->format('Y-m-d');
+                    return $query->whereDate('created_at', '<=', $formattedTo);
+                } catch (\Exception $e) {
+                }
             })
             ->when($filters['expense_date_from'] ?? false, function ($query, $dateFrom) {
                 return $query->whereDate('date', '>=', $dateFrom);
