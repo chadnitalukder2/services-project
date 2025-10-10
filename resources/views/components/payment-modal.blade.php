@@ -158,67 +158,72 @@
 <script>
     let currentInvoice = null;
 
-    function openPaymentModal(invoice) {
-        currentInvoice = invoice;
+  function openPaymentModal(invoice) {
+    currentInvoice = invoice;
 
-        function padOrderId(id) {
-            return id.toString().padStart(5, '0');
-        }
-
-        // Populate modal fields
-        document.getElementById('invoiceId').value = invoice.id;
-        document.getElementById('modalOrderId').textContent = '#' + padOrderId(invoice.order_id);
-        document.getElementById('modalCustomerName').textContent = invoice.customer_name;
-        document.getElementById('modalTotalAmount').textContent = parseFloat(invoice.amount).toFixed(2) + '৳';
-        document.getElementById('modalPaidAmount').textContent = parseFloat(invoice.paid_amount).toFixed(2) + '৳';
-        document.getElementById('modalDueAmount').textContent = parseFloat(invoice.due_amount).toFixed(2) + '৳';
-
-        document.getElementById('modalCurrentStatus').textContent = invoice.status || 'due';
-        document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';
-
-        document.getElementById('ExpiryDate').value = invoice.expiry_date || '';
-
-        if (invoice.expiry_date) {
-            const date = new Date(invoice.expiry_date);
-
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0')
-            const year = date.getFullYear();
-
-            const formattedDate = `${day}-${month}-${year}`; // dd-mm-yyyy
-            document.getElementById('ExpiryDate').value = formattedDate;
-        } else {
-            document.getElementById('ExpiryDate').value = '';
-        }
-
-
-        if (invoice.payment_method) {
-            document.getElementById('paymentMethod').value = invoice.payment_method;
-        }
-        document.getElementById('paymentAmount').setAttribute('max', invoice.due_amount);
-
-        // Prevent layout shift - Calculate scrollbar width dynamically
-        const hasScrollbar = document.body.scrollHeight > window.innerHeight;
-        if (hasScrollbar) {
-            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-            document.body.style.paddingRight = scrollbarWidth + 'px';
-        }
-
-        // Add modal-open class to prevent scrolling
-        document.body.classList.add('modal-open');
-
-        // Show modal with smooth transition
-        const modal = document.getElementById('paymentModal');
-        modal.style.display = 'block';
-
-        // Trigger animation after a small delay
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
-
-        // Update status preview initially
-        updateStatusPreview();
+    function padOrderId(id) {
+        return id.toString().padStart(4, '0');
     }
+
+    // Populate modal fields
+    document.getElementById('invoiceId').value = invoice.id;
+    document.getElementById('modalOrderId').textContent = '#' + padOrderId(invoice.order_id);
+    document.getElementById('modalCustomerName').textContent = invoice.customer_name;
+    document.getElementById('modalTotalAmount').textContent = parseFloat(invoice.amount).toFixed(2) + '৳';
+    document.getElementById('modalPaidAmount').textContent = parseFloat(invoice.paid_amount).toFixed(2) + '৳';
+    document.getElementById('modalDueAmount').textContent = parseFloat(invoice.due_amount).toFixed(2) + '৳';
+
+    document.getElementById('modalCurrentStatus').textContent = invoice.status || 'due';
+    document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';
+
+    // Format and set expiry date
+    let formattedDate = '';
+    if (invoice.expiry_date) {
+        const date = new Date(invoice.expiry_date);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        formattedDate = `${day}-${month}-${year}`;
+    }
+
+    // Destroy existing Flatpickr instance
+    const expiryDateInput = document.getElementById('ExpiryDate');
+    if (expiryDateInput._flatpickr) {
+        expiryDateInput._flatpickr.destroy();
+    }
+
+    // Reinitialize Flatpickr with the date
+    flatpickr("#ExpiryDate", {
+        dateFormat: "d-m-Y",
+        minDate: "today",
+        allowInput: true,
+        defaultDate: formattedDate || null
+    });
+
+    if (invoice.payment_method) {
+        document.getElementById('paymentMethod').value = invoice.payment_method;
+    }
+    
+    document.getElementById('paymentAmount').setAttribute('max', invoice.due_amount);
+
+    // Rest of your modal opening code...
+    const hasScrollbar = document.body.scrollHeight > window.innerHeight;
+    if (hasScrollbar) {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.paddingRight = scrollbarWidth + 'px';
+    }
+
+    document.body.classList.add('modal-open');
+
+    const modal = document.getElementById('paymentModal');
+    modal.style.display = 'block';
+
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+
+    updateStatusPreview();
+}
 
     function closePaymentModal() {
         const modal = document.getElementById('paymentModal');

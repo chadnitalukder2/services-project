@@ -85,11 +85,12 @@ class InvoiceController extends Controller implements HasMiddleware
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        $expiryDate = $request->expiry_date ? Carbon::createFromFormat('d-m-Y', $request->expiry_date)->format('Y-m-d') : null;
 
         if ($validator->passes()) {
             $invoice->customer_id = $request->customer_id;
             $invoice->order_id = $request->order_id;
-            $invoice->expiry_date = $request->expiry_date;
+            $invoice->expiry_date = $expiryDate;
             $invoice->amount = $request->amount;
             $invoice->paid_amount = $request->paid_amount;
             $invoice->due_amount = $request->due_amount;
