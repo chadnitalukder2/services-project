@@ -85,8 +85,8 @@
                                 <label for="order_date" class="text-base font-medium">Order Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
-                                    <input type="date" id="order_date" name="order_date"
-                                        value="{{ $order->order_date }}"
+                                    <input type="text" id="order_date" name="order_date" autocomplete="off"
+                                        placeholder="dd-mm-yyy" value="{{  \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -96,8 +96,8 @@
                                 <label for="delivery_date" class="text-base font-medium">Delivery Date <span
                                         class="text-red-500">*</span></label>
                                 <div class="my-3">
-                                    <input type="date" id="delivery_date" name="delivery_date"
-                                        value="{{ $order->delivery_date }}"
+                                    <input type="text" id="delivery_date" name="delivery_date" autocomplete="off"
+                                        placeholder="dd-mm-yyy" value="{{  \Carbon\Carbon::parse($order->delivery_date)->format('d-m-Y') }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -106,8 +106,8 @@
                             <div class="mb-3">
                                 <label for="expiry_date" class="text-base font-medium">Invoice Expiry Date</label>
                                 <div class="my-3">
-                                    <input type="date" id="expiry_date" name="expiry_date"
-                                        value="{{ $order->invoice->expiry_date }}"
+                                    <input type="text" id="expiry_date" name="expiry_date" autocomplete="off"
+                                        placeholder="dd-mm-yyy"  value="{{\Carbon\Carbon::parse($order->invoice->expiry_date)->format('d-m-Y') }}"
                                         class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900" />
                                 </div>
                             </div>
@@ -1080,29 +1080,50 @@
 
             // Delivery Date
             const deliveryDate = document.getElementById('delivery_date');
+
+            function parseDateDMY(dateStr) {
+                const [day, month, year] = dateStr.split('-');
+                return new Date(`${year}-${month}-${day}`); // converts to valid format
+            }
+
             if (deliveryDate.value === '') {
                 const deliveryDateError = document.createElement('p');
                 deliveryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 deliveryDateError.textContent = 'Delivery Date is required';
                 deliveryDate.parentElement.appendChild(deliveryDateError);
                 valid = false;
-            } else if (orderDate.value !== '' && new Date(deliveryDate.value) <= new Date(orderDate.value)) {
-                const deliveryDateError = document.createElement('p');
-                deliveryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
-                deliveryDateError.textContent = 'Delivery Date must be after Order Date';
-                deliveryDate.parentElement.appendChild(deliveryDateError);
-                valid = false;
-            }
+            } else if (orderDate.value) {
+                const order = parseDateDMY(orderDate.value);
+                const delivery = parseDateDMY(deliveryDate.value);
 
+                if (delivery <= order) {
+                    const deliveryDateError = document.createElement('p');
+                    deliveryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
+                    deliveryDateError.textContent = 'Delivery Date must be after Order Date';
+                    deliveryDate.parentElement.appendChild(deliveryDateError);
+                    valid = false;
+                }
+            }
             // Expiry Date
             const expiryDate = document.getElementById('expiry_date');
-            if (expiryDate.value !== '' && orderDate.value !== '' && new Date(expiryDate.value) <= new Date(
-                    orderDate.value)) {
-                const expiryDateError = document.createElement('p');
-                expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
-                expiryDateError.textContent = 'Expiry Date must be after Order Date';
-                expiryDate.parentElement.appendChild(expiryDateError);
-                valid = false;
+
+            function parseDateDMY(dateStr) {
+                const [day, month, year] = dateStr.split('-');
+                return new Date(`${year}-${month}-${day}`);
+            }
+
+            if (expiryDate.value && orderDate.value) {
+                const expiry = parseDateDMY(expiryDate.value);
+                const order = parseDateDMY(orderDate.value);
+
+                if (expiry <= order) {
+                    console.log('Expiry Date validation failed', expiryDate.value, orderDate.value);
+                    const expiryDateError = document.createElement('p');
+                    expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
+                    expiryDateError.textContent = 'Expiry Date must be after Order Date';
+                    expiryDate.parentElement.appendChild(expiryDateError);
+                    valid = false;
+                }
             }
 
             const paymentMethod = document.getElementById('payment_method');
@@ -1280,6 +1301,33 @@
             const originalAddServiceClick = addServiceBtn.onclick;
             addServiceBtn.addEventListener('click', function() {
                 setTimeout(updateButtonColor, 50);
+            });
+        });
+
+        //date formate==============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInputOrder = document.getElementById('order_date');
+            const dateInputDelivery = document.getElementById('delivery_date');
+            const dateInputExpiry = document.getElementById('expiry_date');
+            const dateInputEvent = document.getElementById('event_date');
+            let futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+
+            flatpickr(dateInputOrder, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputDelivery, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputExpiry, {
+                dateFormat: "d-m-Y",
+                allowInput: true
+            });
+            flatpickr(dateInputEvent, {
+                dateFormat: "d-m-Y",
+                allowInput: true
             });
         });
     </script>

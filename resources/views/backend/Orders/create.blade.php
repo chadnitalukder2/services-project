@@ -1031,29 +1031,51 @@
 
             // Delivery Date
             const deliveryDate = document.getElementById('delivery_date');
+
+            function parseDateDMY(dateStr) {
+                const [day, month, year] = dateStr.split('-');
+                return new Date(`${year}-${month}-${day}`); // converts to valid format
+            }
+
             if (deliveryDate.value === '') {
                 const deliveryDateError = document.createElement('p');
                 deliveryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 deliveryDateError.textContent = 'Delivery Date is required';
                 deliveryDate.parentElement.appendChild(deliveryDateError);
                 valid = false;
-            } else if (orderDate.value !== '' && new Date(deliveryDate.value) <= new Date(orderDate.value)) {
-                const deliveryDateError = document.createElement('p');
-                deliveryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
-                deliveryDateError.textContent = 'Delivery Date must be after Order Date';
-                deliveryDate.parentElement.appendChild(deliveryDateError);
-                valid = false;
+            } else if (orderDate.value) {
+                const order = parseDateDMY(orderDate.value);
+                const delivery = parseDateDMY(deliveryDate.value);
+
+                if (delivery <= order) {
+                    const deliveryDateError = document.createElement('p');
+                    deliveryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
+                    deliveryDateError.textContent = 'Delivery Date must be after Order Date';
+                    deliveryDate.parentElement.appendChild(deliveryDateError);
+                    valid = false;
+                }
             }
+
             // Expiry Date
             const expiryDate = document.getElementById('expiry_date');
-            if (expiryDate.value !== '' && orderDate.value !== ''  <= new Date(
-                    orderDate.value)) {
-                        console.log('Expiry Date validation failed', expiryDate.value, orderDate.value);
-                const expiryDateError = document.createElement('p');
-                expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
-                expiryDateError.textContent = 'Expiry Date must be after Order Date';
-                expiryDate.parentElement.appendChild(expiryDateError);
-                valid = false;
+
+            function parseDateDMY(dateStr) {
+                const [day, month, year] = dateStr.split('-');
+                return new Date(`${year}-${month}-${day}`);
+            }
+
+            if (expiryDate.value && orderDate.value) {
+                const expiry = parseDateDMY(expiryDate.value);
+                const order = parseDateDMY(orderDate.value);
+
+                if (expiry <= order) {
+                    console.log('Expiry Date validation failed', expiryDate.value, orderDate.value);
+                    const expiryDateError = document.createElement('p');
+                    expiryDateError.classList.add('text-red-500', 'text-sm', 'mt-1');
+                    expiryDateError.textContent = 'Expiry Date must be after Order Date';
+                    expiryDate.parentElement.appendChild(expiryDateError);
+                    valid = false;
+                }
             }
 
             const paymentMethod = document.getElementById('payment_method');

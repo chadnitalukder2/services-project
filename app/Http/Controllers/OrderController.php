@@ -65,7 +65,7 @@ class OrderController extends Controller implements HasMiddleware
             'total_revenue' => number_format($totalRevenue, 2)
         ];
         $totalOrderAmount = Order::sum('total_amount');
-      
+
 
         return view('backend.orders.list', compact('orders', 'summary', 'totalOrderAmount'));
     }
@@ -112,6 +112,10 @@ class OrderController extends Controller implements HasMiddleware
             'payment_method' => 'nullable|string',
             'payment_status' => 'nullable|string',
         ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
 
         $customFieldsData = null;
         if ($request->custom_fields) {
@@ -149,7 +153,7 @@ class OrderController extends Controller implements HasMiddleware
             }
 
             $invoice = Invoice::create([
-                
+
                 'order_id' => $order->id,
                 'expiry_date' => $expiryDate,
                 'customer_id' => $request->customer_id,
@@ -187,13 +191,18 @@ class OrderController extends Controller implements HasMiddleware
 
         $validator = Validator::make($request->all(), [
             'customer_id' => 'required|integer',
-            'order_date' => 'required|date',
-            'delivery_date' => 'nullable|date|after:order_date',
+            'order_date' => 'required',
+            'delivery_date' => 'required|after:order_date',
             'status' => 'nullable|string',
             'total_amount' => 'nullable|numeric|min:0',
             'subtotal' => 'nullable|numeric|min:0',
-            'custom_fields' => 'nullable|array',
             'notes' => 'nullable|string',
+
+            // Custom fields validation
+            'custom_fields' => 'nullable|array',
+            'custom_fields.*.event_name' => 'nullable|string',
+            'custom_fields.*.event_date' => 'nullable|date',
+            'custom_fields.*.event_time' => 'nullable',
 
             'discount_type' => 'nullable|string',
             'discount_value' => 'nullable|numeric|min:0',
@@ -208,12 +217,13 @@ class OrderController extends Controller implements HasMiddleware
             'services.*.unit_price' => 'required|numeric|min:0',
             'services.*.subtotal' => 'required|numeric|min:0',
 
-            'expiry_date' => 'nullable|date|after:order_date',
+            'expiry_date' => 'nullable',
             'payment_method' => 'nullable|string',
             'payment_status' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
+            dd($request->all(), $validator->errors());
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $customFieldsData = null;
@@ -221,10 +231,14 @@ class OrderController extends Controller implements HasMiddleware
             $customFieldsData = json_encode($request->custom_fields);
         }
 
+        $orderDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->order_date)->format('Y-m-d');
+        $deliveryDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->delivery_date)->format('Y-m-d');
+        $expiryDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->expiry_date)->format('Y-m-d');
+
         $order->update([
             'customer_id' => $request->customer_id,
-            'order_date' => $request->order_date,
-            'delivery_date' => $request->delivery_date,
+            'order_date' => $orderDate,
+            'delivery_date' => $deliveryDate,
             'status' => $request->status,
             'subtotal' => $request->subtotal,
             'total_amount' => $request->total_amount,
@@ -271,7 +285,7 @@ class OrderController extends Controller implements HasMiddleware
         if ($invoice) {
             $invoice->update([
                 'order_id' => $order->id,
-                'expiry_date' => $request->expiry_date,
+                'expiry_date' => $expiryDate,
                 'customer_id' => $request->customer_id,
                 'paid_amount' => $request->paid_amount,
                 'due_amount' => $request->due_amount,
