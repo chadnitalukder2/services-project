@@ -237,17 +237,17 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                                 <div></div>
                                 <div class="lg:mt-6 bg-gray-50 p-4 rounded-lg">
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="text-right">
+                                    <div class="grid grid-cols-2 gap-3 ">
+                                        <div class="text-left">
                                             <div class="py-1">Subtotal:</div>
                                             <div class="py-1">Discount:</div>
                                             <div class="py-1 text-base border-t border-gray-300">Total
                                                 Amount:</div>
                                         </div>
                                         <div>
-                                            <div class="py-1 ml-2.5" id="display_subtotal"> 0.00</div>
-                                            <div class="py-1" id="display_discount">0.00 </div>
-                                            <div class="py-1 ml-2.5 text-base  font-bold border-t border-gray-300"
+                                            <div class="py-1 text-right" id="display_subtotal"> 0.00</div>
+                                            <div class="py-1 text-right" id="display_discount">0.00 </div>
+                                            <div class="py-1 text-right  text-base  font-bold border-t border-gray-300"
                                                 id="display_total"> 0.00 {{ $settings->currency ?? '৳' }}
                                             </div>
                                         </div>

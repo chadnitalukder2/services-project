@@ -1,7 +1,7 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pt-8 md:py-8">
         <!-- Page Title & Filters -->
-        <div class="md:mb-8 mb-4">
+        <div class="md:mb-8 mb-6">
             <h2 class="text-2xl font-bold text-gray-900 mb-0 md:mb-6">Dashboard</h2>
         </div>
 

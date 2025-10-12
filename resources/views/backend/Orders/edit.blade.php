@@ -245,17 +245,17 @@
                                 <!-- Total Calculation Display -->
                                 <div class="mt-3 lg:mt-6 bg-gray-50 p-4 rounded-lg">
                                     <div class="grid grid-cols-2 gap-4">
-                                        <div class="text-right">
+                                        <div class="text-left">
                                             <div class="py-1">Subtotal:</div>
                                             <div class="py-1">Discount:</div>
                                             <div class="py-1 text-base border-t border-gray-300">Total Amount:</div>
                                         </div>
                                         <div>
-                                            <div class="py-1 ml-2.5" id="display_subtotal">
+                                            <div class="py-1 text-right" id="display_subtotal">
                                                 {{ number_format($order->subtotal ?? 0, 2) }}</div>
-                                            <div class="py-1" id="display_discount">-
+                                            <div class="py-1 text-right" id="display_discount">-
                                                 {{ number_format($order->discount_amount ?? 0, 2) }}</div>
-                                            <div class="py-1 ml-2.5 text-base font-bold border-t border-gray-300"
+                                            <div class="py-1 text-right text-base font-bold border-t border-gray-300"
                                                 id="display_total"> {{ number_format($order->total_amount ?? 0, 2) }}
                                                 {{ $settings->currency ?? '৳' }}</div>
                                         </div>
