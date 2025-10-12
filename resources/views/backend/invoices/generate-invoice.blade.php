@@ -61,13 +61,13 @@
 
         .header-left {
             display: table-cell;
-            vertical-align: top;
+            vertical-align: bottom;
             width: 60%;
         }
 
         .header-right {
             display: table-cell;
-            vertical-align: top;
+            vertical-align: bottom;
             width: 40%;
             text-align: right;
         }
@@ -76,18 +76,18 @@
             font-size: 28px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 5px;
         }
 
         .company-logo {
-            max-width: 80px;
-            max-height: 80px;
+            max-width: 65px;
+            max-height: 65px;
         }
 
         .company-name {
-            font-size: 16px;
+            font-size: 24px;
             padding-top: 12px;
             font-weight: bold;
+            margin-bottom: 5px
             color: #333;
         }
 
