@@ -97,9 +97,7 @@
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Invoices</th>
+                                
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <!-- sort total amount from invoices -->
@@ -157,11 +155,7 @@
                                             {{ $customer->orders_count ?? 0 }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">
-                                            {{ $customer->invoices_count ?? 0 }}
-                                        </div>
-                                    </td>
+                               
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">
                                             @if ($settings->currency_position == 'left')
@@ -206,7 +200,6 @@
                                 <td></td>
                                 <td class="px-6 py-4 text-right">Totals:</td>
                                 <td class="px-6 py-4 text-left">{{ $totalOrders }}</td>
-                                <td class="px-6 py-4 text-left">{{ $totalInvoices }}</td>
                                 <td class="px-6 py-4">
                                     @if ($settings->currency_position == 'left')
                                         {{ $settings->currency ?? '৳' }}

@@ -1,6 +1,5 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Page Title & Filters -->
        <div class="mb-8">
     @php
         $hour = now('Asia/Dhaka')->format('H');
@@ -10,31 +9,31 @@
             $borderColor = 'border-green-500';
             $bgColor = 'bg-green-50';
             $textColor = 'text-green-700';
-            $icon = '<i class="fa-solid fa-sun text-green-500"></i>'; // morning sun
+            $icon = '<i class="fa-solid fa-sun text-green-500" style="padding-right: 5px;"></i>'; // morning sun
         } elseif ($hour >= 12 && $hour < 13) {
             $greeting = 'Good Noon';
             $borderColor = 'border-amber-500';
             $bgColor = 'bg-amber-50';
             $textColor = 'text-amber-700';
-            $icon = '<i class="fa-solid fa-sun text-amber-500"></i>'; // noon sun
+            $icon = '<i class="fa-solid fa-sun text-amber-500 " style="padding-right: 5px;"></i>'; // noon sun
         } elseif ($hour >= 13 && $hour < 17) {
             $greeting = 'Good Afternoon';
             $borderColor = 'border-yellow-500';
             $bgColor = 'bg-yellow-50';
             $textColor = 'text-yellow-700';
-            $icon = '<i class="fa-solid fa-sun text-yellow-500"></i>'; // afternoon sun
+            $icon = '<i class="fa-solid fa-sun text-yellow-500" style="padding-right: 5px;"></i>'; // afternoon sun
         } elseif ($hour >= 17 && $hour < 21) {
             $greeting = 'Good Evening';
             $borderColor = 'border-orange-500';
             $bgColor = 'bg-orange-50';
             $textColor = 'text-orange-700';
-            $icon = '<i class="fa-solid fa-city text-orange-500"></i>'; // evening city
+            $icon = '<i class="fa-solid fa-city text-orange-500" style="padding-right: 5px;"></i>'; // evening city
         } else {
             $greeting = 'Good Night';
             $borderColor = 'border-indigo-500';
             $bgColor = 'bg-indigo-50';
             $textColor = 'text-indigo-700';
-            $icon = '<i class="fa-solid fa-moon text-indigo-500"></i>'; // night moon
+            $icon = '<i class="fa-solid fa-moon text-indigo-500" style="padding-right: 5px;"></i>'; // night moon
         }
 
         $username = ucwords(strtolower(Auth::user()->name));
