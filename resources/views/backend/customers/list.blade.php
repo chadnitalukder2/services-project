@@ -64,7 +64,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    # ID</th>
+                                    SI</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Name</th>
@@ -92,10 +92,14 @@
                         </thead>
                         <tbody id="customersTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($customers->isNotEmpty())
+                                @php
+                                    $si = $customers->count();
+                                @endphp
                                 @foreach ($customers as $customer)
                                     <tr class="border-b" id="customer-row-{{ $customer->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $customer->id }}</td>
+                                            {{ $si-- }}
+                                        </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $customer->name }}</td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">

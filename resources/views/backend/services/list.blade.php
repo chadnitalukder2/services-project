@@ -104,7 +104,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    # ID</th>
+                                    SI</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Service Name</th>
@@ -130,6 +130,9 @@
                         </thead>
                         <tbody id="servicesTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($services->isNotEmpty())
+                            @php
+                                $si = $services->count();
+                            @endphp
                                 @foreach ($services as $service)
                                     <td class="hidden" id="service-description-{{ $service->id }}">
                                         {{ $service->description }}
@@ -137,7 +140,7 @@
                                     <tr class="border-b" id="service-row-{{ $service->id }}">
 
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $service->id }}
+                                            {{ $si-- }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $service->name }}

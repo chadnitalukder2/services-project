@@ -136,10 +136,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
-                                        class="flex items-center hover:text-gray-700">
-                                        ID <i class="fas fa-sort ml-1 text-xs"></i>
-                                    </a>
+                                  SI
                                 </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -185,9 +182,12 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                             @php
+                                $si = $invoices->count();
+                            @endphp
                             @foreach ($invoices as $invoice)
                                 <tr class="hover:bg-gray-50 text-sm">
-                                    <td class="px-6 py-4"> #{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</td>
+                                    <td class="px-6 py-4"> {{ $si-- }}</td>
                                     <td class="px-6 py-4">{{ $invoice->customer->name }}</td>
                                     <td class="px-6 py-4"> #{{ str_pad($invoice->order_id, 4, '0', STR_PAD_LEFT) }}
                                     </td>

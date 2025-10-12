@@ -90,7 +90,7 @@
 
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    # ID</th>
+                                    SI</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Title</th>
@@ -117,13 +117,16 @@
                         </thead>
                         <tbody id="expensesTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($expenses->isNotEmpty())
+                               @php
+                                    $si = $expenses->count();
+                                @endphp
                                 @foreach ($expenses as $expense)
                                     <td class="hidden" id="expense-description-{{ $expense->id }}">
                                         {{ $expense->description }}
                                     </td>
                                     <tr class="border-b" id="expense-row-{{ $expense->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $expense->id }}
+                                            {{ $si-- }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $expense->title }}

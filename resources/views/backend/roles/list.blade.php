@@ -26,7 +26,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Role ID</th>
+                                    SI </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Role Name</th>
@@ -47,10 +47,13 @@
                         </thead>
                         <tbody id="rolesTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($roles->isNotEmpty())
+                            @php
+                                $si = $roles->count();
+                            @endphp
                                 @foreach ($roles as $role)
                                     <tr class="border-b" id="role-row-{{ $role->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $role->id }}
+                                            {{ $si-- }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900 capitalize">
                                             {{ $role->name }}</td>

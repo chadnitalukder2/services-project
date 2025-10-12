@@ -17,14 +17,15 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="text" name="from_date" id="from_date" value="{{ request('from_date') }}" autocomplete="off"
-                            placeholder="dd-mm-yyyy"
+                        <input type="text" name="from_date" id="from_date" value="{{ request('from_date') }}"
+                            autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                        <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}"   placeholder="dd-mm-yyyy" autocomplete="off"
+                        <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}"
+                            placeholder="dd-mm-yyyy" autocomplete="off"
                             class="w-full px-3 text-sm py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
@@ -72,10 +73,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
-                                        class="flex items-center hover:text-gray-700">
-                                        ID <i class="fas fa-sort ml-1 text-xs"></i>
-                                    </a>
+                                    SI
                                 </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -97,7 +95,7 @@
                                         <i class="fas fa-sort ml-1 text-xs"></i>
                                     </a>
                                 </th>
-                                
+
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <!-- sort total amount from invoices -->
@@ -131,11 +129,14 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                            @php
+                                $si = $customers->count();
+                            @endphp
                             @foreach ($customers as $customer)
                                 <tr class="hover:bg-gray-50">
                                     <td>
                                         <div class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            #{{ $customer->id }}
+                                            {{ $si-- }}
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -155,7 +156,7 @@
                                             {{ $customer->orders_count ?? 0 }}
                                         </div>
                                     </td>
-                               
+
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">
                                             @if ($settings->currency_position == 'left')

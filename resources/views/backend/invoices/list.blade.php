@@ -80,9 +80,13 @@
                     <table class="min-w-full divide-y divide-gray-200 text-sm">
                         <thead class="bg-gray-50">
                             <tr>
+                                 <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    SI</th>
+
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID</th>
+                                    Order ID</th>
                                 
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -113,10 +117,16 @@
                         </thead>
                         <tbody id="invoiceTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($invoices->isNotEmpty())
+                            @php
+                                $si= $invoices->count();
+                            @endphp
                                 @foreach ($invoices as $invoice)
                                     <tr class="border-b" id="invoice-row-{{ $invoice->id }}">
+                                          <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                            {{ $si-- }}
+                                        </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            #{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}
+                                            #{{ str_pad($invoice->order_id, 4, '0', STR_PAD_LEFT) }}
                                         </td>
                                        
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">

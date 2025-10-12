@@ -26,7 +26,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    # ID</th>
+                                    SI</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Name</th>
@@ -43,10 +43,13 @@
                         </thead>
                         <tbody id="serviceCategoryTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($serviceCategory->isNotEmpty())
+                             @php
+                                $si = $serviceCategory->count();
+                            @endphp
                                 @foreach ($serviceCategory as $category)
                                     <tr class="border-b" id="category-row-{{ $category->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $category->id }}
+                                            {{ $si-- }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $category->name }}

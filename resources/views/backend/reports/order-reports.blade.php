@@ -80,12 +80,14 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
-                        <input type="text" id="from_date" name="from_date" value="{{ request('from_date') }}" autocomplete="off" placeholder="dd-mm-yyyy"
+                        <input type="text" id="from_date" name="from_date" value="{{ request('from_date') }}"
+                            autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
-                        <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}" autocomplete="off" placeholder="dd-mm-yyyy"
+                        <input type="text" id="to_date" name="to_date" value="{{ request('to_date') }}"
+                            autocomplete="off" placeholder="dd-mm-yyyy"
                             class="w-full px-3 text-sm py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:border-gray-900 focus:ring-gray-900">
                     </div>
                     <div class="flex items-end space-x-2">
@@ -129,6 +131,9 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    SI
+                                </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}"
@@ -183,9 +188,15 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                            @php
+                                $si = $orders->count();
+                            @endphp
                             @foreach ($orders as $order)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#{{ $order->id }}
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#
+                                        {{ $si-- }}
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#
+                                        {{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {{ $order->customer->name ?? '' }}</td>
@@ -237,6 +248,7 @@
                         </tbody>
                         <tfoot class="bg-gray-100 text-sm font-semibold">
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -389,42 +401,44 @@
         }
     </style>
     <script>
-       function exportToCSV() {
-        const table = document.querySelector('table');
-        if (!table) return;
+        function exportToCSV() {
+            const table = document.querySelector('table');
+            if (!table) return;
 
-        let csvData = [];
+            let csvData = [];
 
-        // Headers
-        const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
-        csvData.push(headers);
+            // Headers
+            const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+            csvData.push(headers);
 
-        // Body rows
-        table.querySelectorAll('tbody tr').forEach(row => {
-            const rowData = Array.from(row.querySelectorAll('td')).map(td => {
-                let text = td.textContent.trim();
-                text = text.replace(/[^\d.,-]/g, '');
-                return text;
+            // Body rows
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const rowData = Array.from(row.querySelectorAll('td')).map(td => {
+                    let text = td.textContent.trim();
+                    text = text.replace(/[^\d.,-]/g, '');
+                    return text;
+                });
+                csvData.push(rowData);
             });
-            csvData.push(rowData);
-        });
 
-        // Footer rows (optional)
-        table.querySelectorAll('tfoot tr').forEach(row => {
-            const rowData = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
-            csvData.push(rowData);
-        });
+            // Footer rows (optional)
+            table.querySelectorAll('tfoot tr').forEach(row => {
+                const rowData = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
+                csvData.push(rowData);
+            });
 
-        // Convert to CSV string with quotes
-        const csvString = csvData.map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
+            // Convert to CSV string with quotes
+            const csvString = csvData.map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
 
-        // Create blob and download
-        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `order-report-${new Date().toISOString().split('T')[0]}.csv`;
-        link.click();
-    }
+            // Create blob and download
+            const blob = new Blob([csvString], {
+                type: 'text/csv;charset=utf-8;'
+            });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `order-report-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
 
         function printTable() {
             const printContent = document.createElement('div');
@@ -449,7 +463,7 @@
             setTimeout(() => document.body.removeChild(printContent), 1000);
         }
 
-                 //date picker
+        //date picker
         document.addEventListener('DOMContentLoaded', function() {
             const dateInputFrom = document.getElementById('from_date');
             const dateInputTo = document.getElementById('to_date');

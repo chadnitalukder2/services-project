@@ -132,6 +132,9 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    SI</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Order ID</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -161,8 +164,15 @@
                         </thead>
                         <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($orders->isNotEmpty())
+                            @php
+                                $si = $orders->count();
+                            @endphp
                                 @foreach ($orders as $order)
                                     <tr id="order-row-{{ $order->id }}" class="border-b">
+                                                                                <td
+                                            class="px-6 py-4 text-left text-sm font-medium {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
+                                            {{ $si-- }}
+                                        </td>
                                         <td
                                             class="px-6 py-4 text-left text-sm font-medium {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
                                             #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
@@ -245,7 +255,7 @@
                         </tbody>
                         <tfoot class="bg-gray-100">
                             <tr>
-                                <td colspan="5" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total
+                                <td colspan="6" class="px-6 text-sm py-3 text-right font-bold text-gray-900">Total
                                     Order
                                     Amount:</td>
                                 <td class="px-6 py-3 text-sm text-left font-bold text-gray-900">

@@ -27,7 +27,7 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    User ID</th>
+                                    SI</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Username</th>
@@ -53,10 +53,13 @@
                         </thead>
                         <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($users->isNotEmpty())
+                             @php
+                                $si = $users->count();
+                            @endphp
                                 @foreach ($users as $user)
                                     <tr class="border-b" id="user-row-{{ $user->id }}">
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $user->id }}
+                                            {{ $si-- }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $user->name }}
