@@ -220,7 +220,7 @@
                                     </td>
                                     <td
                                         class="px-6 py-4 capitalize 
-                                            @if ($invoice->status == 'paid') text-green-600
+                                            @if ($invoice->status == 'paid') text-green-600 bg
                                             @elseif($invoice->status == 'due') text-red-600
                                             @elseif($invoice->status == 'partial') text-yellow-500
                                             @else text-gray-900 @endif">

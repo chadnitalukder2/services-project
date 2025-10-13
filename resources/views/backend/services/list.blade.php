@@ -575,7 +575,7 @@
                             const errors = xhr.responseJSON.errors;
 
                             if (errors.category_id) {
-                                const el = document.getElementById('edit_category-error'); // ✅ correct
+                                const el = document.getElementById('edit_category-error');
                                 el.textContent = errors.category_id[0];
                                 el.classList.remove('hidden');
                             }

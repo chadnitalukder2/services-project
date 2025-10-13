@@ -190,7 +190,7 @@
                                         @endif
                                     </td>
                                     <td
-                                        class="px-6 py-4 whitespace-nowrap text-sm {{ $service->status == 'active' ? 'text-green-500' : 'text-red-500' }}">
+                                        class="px-4 py-0.5 mt-3.5 whitespace-nowrap  inline-flex text-xs leading-5 font-semibold rounded-full {{ $service->status == 'active' ? 'bg-green-100 text-green-800 ' : 'bg-red-100 text-red-800' }}">
                                         {{ ucfirst($service->status) }}</td>
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
                                         {{ \Carbon\Carbon::parse($service->created_at)->format('d M, Y') }}</td>

@@ -104,7 +104,7 @@ class ServicesController extends Controller implements HasMiddleware
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:service_categories,id',
+            'category_id' => 'nullable|exists:service_categories,id',
             'unit_price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'status' => 'required|string|in:active,inactive',

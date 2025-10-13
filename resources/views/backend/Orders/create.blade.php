@@ -66,10 +66,10 @@
                                     <select id="status" name="status"
                                         class="block text-sm w-full p-2.5 border-gray-300 rounded-md shadow-sm  focus:border-gray-900 focus:ring-gray-900">
                                         <option value="">Select a status</option>
-                                        <option value="pending" selected>Pending</option>
-                                        <option value="approved">Approved</option>
-                                        <option value="cancelled">Cancelled</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="approved" selected>Approved</option>
                                         <option value="done">Done</option>
+                                        <option value="cancelled">Cancelled</option>
                                     </select>
                                 </div>
                             </div>
