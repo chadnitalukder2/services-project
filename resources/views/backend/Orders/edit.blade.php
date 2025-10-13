@@ -363,9 +363,9 @@
                         <input type="hidden" id="hidden_due_amount" name="due_amount"
                             value="{{ $order->invoice->due_amount ?? 0 }}">
 
-                        <div class="text-right md:pt-[18px]" style="text-align: -webkit-right;">
+                        <div class="text-center justify-center flex md:justify-end md:pt-[18px]">
                             <button type="submit" id="submit-order-btn"
-                                class="bg-gray-800 hover:bg-gray-700 text-base font-medium rounded-md px-11 py-2 text-white flex items-center justify-center gap-2">
+                                class="bg-gray-800 hover:bg-gray-700 text-sm md:text-base font-medium rounded-md px-11 py-2 text-white flex items-center justify-center gap-2">
                                 <span id="submit-order-text">Update Order</span>
                                 <span id="submit-order-loading" class="hidden">Updating...</span>
                             </button>
