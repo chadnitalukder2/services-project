@@ -74,7 +74,7 @@ class OrderController extends Controller implements HasMiddleware
 
     public function create()
     {
-        $customers = Customer::all();
+       $customers = Customer::orderBy('created_at', 'desc')->get();
         $services = Services::where('status', 'active')->orderBy('created_at', 'desc')->get();
         $serviceCategories = ServiceCategory::orderBy('created_at', 'desc')->get();
         return view('backend.orders.create', compact('customers', 'services', 'serviceCategories'));
@@ -175,7 +175,7 @@ class OrderController extends Controller implements HasMiddleware
     public function edit($id)
     {
         $order = Order::with(['orderItems.service', 'invoice'])->findOrFail($id);
-        $customers = Customer::all();
+        $customers = Customer::orderBy('created_at', 'desc')->get();
         $services = Services::where('status', 'active')->orderBy('created_at', 'desc')->get();
         $serviceCategories = ServiceCategory::orderBy('created_at', 'desc')->get();
         // Decode custom fields if they exist

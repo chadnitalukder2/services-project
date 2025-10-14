@@ -139,7 +139,7 @@
                             <div class="my-3 flex flex-wrap gap-3">
                                 <div class="flex-1 min-w-[200px]">
                                     <select id="service_select"
-                                        class="block  w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                        class="block w-full text-sm bg-white border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <option value="">Select a service to add</option>
                                         @foreach ($services as $service)
                                             <option value="{{ $service->id }}" data-name="{{ $service->name }}"
@@ -1383,16 +1383,61 @@
         });
         //select============================
         document.addEventListener('DOMContentLoaded', function() {
-            new TomSelect("#customer_id", {
-                placeholder: "Select a customer",
-                allowEmptyOption: true
+            const element = document.getElementById('customer_id');
+            const choices = new Choices(element, {
+                searchEnabled: true,
+                itemSelectText: '',
+                shouldSort: false,
+                allowHTML: true
             });
+
+            const wrapper = element.closest('.choices');
+            wrapper.classList.add('w-full', 'bg-white', 'text-sm', 'border', 'border-gray-300', 'rounded-md',
+                'shadow-sm');
         });
         document.addEventListener('DOMContentLoaded', function() {
-            new TomSelect("#service_select", {
-                placeholder: "Select a service",
-                allowEmptyOption: true,
+            const element = document.getElementById('service_select');
+            const choices = new Choices(element, {
+                searchEnabled: true,
+                itemSelectText: '',
+                shouldSort: false,
+                allowHTML: true
             });
+
+            const wrapper = element.closest('.choices');
+            wrapper.classList.add('w-full', 'bg-white', 'text-sm', 'border', 'border-gray-300', 'rounded-md',
+                'shadow-sm');
         });
     </script>
+
+    <style>
+        /* Override Choices.js default styles */
+        .choices__inner {
+            border: 1px solid #d1d5db !important;
+            border-radius: 0.375rem !important;
+            padding: 0px 10px !important;
+            min-height: 2.5rem !important;
+            background-color: #fff !important;
+            box-shadow: none !important;
+            display: flex;
+            align-items: center;
+        }
+
+        /* When focused */
+        .is-focused .choices__inner {
+            border: 1px solid #353638 !important;
+            box-shadow: none !important;
+        }
+
+        /* The text inside */
+        .choices__inner .choices__list--single {
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        /* Placeholder text color */
+        .choices__inner .choices__item--placeholder {
+            color: #9ca3af;
+        }
+    </style>
 </x-app-layout>
