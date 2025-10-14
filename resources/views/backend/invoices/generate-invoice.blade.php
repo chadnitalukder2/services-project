@@ -18,7 +18,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'DejaVu Sans', sans-serif;
             background: #fff;
             color: #333;
             padding: 50px 50px 0px 50px;
@@ -44,7 +44,7 @@
         }
 
         .company-name {
-             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'DejaVu Sans', sans-serif;
             font-size: 28px;
             font-weight: 600;
             letter-spacing: 5px;
@@ -55,31 +55,35 @@
 
         .company-tagline {
             font-size: 10px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'DejaVu Sans', sans-serif;
             letter-spacing: 2.5px;
             text-transform: uppercase;
             color: #2d2d2d;
             font-weight: 500;
         }
 
-        /* Client Info Section */
+        /* Client Info Section - Using table instead of display:table */
         .client-info {
-            display: table;
             width: 100%;
             margin-bottom: 10px;
         }
 
+        .client-info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
         .client-left {
-            display: table-cell;
             width: 50%;
             vertical-align: top;
+            padding-right: 20px;
         }
 
         .client-right {
-            display: table-cell;
             width: 50%;
             vertical-align: top;
             text-align: right;
+            padding-left: 20px;
         }
 
         .info-label {
@@ -102,82 +106,95 @@
             margin-bottom: 2px;
         }
 
-        /* Event Cards Container */
+        /* Event Cards Container - Full width table layout */
         .event-cards-container {
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .event-card {
-            display: inline-block;
-            width: calc(18.58% - 10px);
-            min-width: 100px;
-            border: 1px solid #ddd;
-            /* border-left: 2px solid #181818; */
-            border-radius: 6px;
-            padding: 8px 10px;
-            box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
-            background: #f6f6f673;
-            position: relative;
             margin-bottom: 15px;
-            margin-right: 15px;
-            vertical-align: top;
+            width: 100%;
         }
 
-        .event-card:nth-child(5n) {
-            margin-right: 0;
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #000;
         }
 
-        .event-card-header {
-            margin-bottom: 6px;
-            border-bottom: 1px solid #e0e0e0;
+        .events-table thead {
+            background: #000;
         }
 
-        .event-name {
+        .events-table th {
+            padding: 8px 10px;
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            border-right: 1px solid #fff;
+        }
+
+        .events-table th:last-child {
+            border-right: none;
+        }
+
+        .events-table td {
+            padding: 8px 10px;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
             font-size: 10px;
+            color: #333;
+        }
+
+        .events-table td:last-child {
+            border-right: none;
+        }
+
+        .events-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .event-name-cell {
             font-weight: 700;
             color: #000;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 3px;
-        }
-
-        .event-card-body {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .event-detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             font-size: 10px;
+            letter-spacing: 0.5px;
         }
 
-        .event-label {
-            font-size: 9px;
-            text-transform: capitalize;
-            color: #545454;
-            font-weight: 700;
-        }
-
-        .event-value {
-            font-size: 11px;
-            color: #333;
+        .event-date-cell {
             font-weight: 600;
+            color: #333;
+        }
+
+        .event-time-cell {
+            font-weight: 600;
+            color: #333;
         }
 
         /* Day/Night badge */
         .day-night-badge {
-            font-size: 9px;
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 8px;
             font-weight: 700;
-            text-transform: capitalize;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #666;
+            border-radius: 3px;
+            margin-left: 5px;
         }
 
-      
+        .day-night-badge.day {
+            background: #f0f0f0;
+            color: #000;
+            border: 1px solid #000;
+        }
+
+        /* .day-night-badge.night {
+            background: #000;
+            color: #fff;
+            border: 1px solid #000;
+        } */
 
         /* Services Table */
         .services-table {
@@ -230,42 +247,63 @@
             color: #000;
         }
 
-        /* Summary Section */
-        .summary-section {
-            float: right;
-            width: 300px;
+        /* Summary Section - Using table instead of float */
+        .summary-wrapper {
+            width: 100%;
             margin-top: 10px;
         }
 
-        .summary-row {
-            display: table;
+        .summary-wrapper-table {
             width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-spacer {
+            width: 60%;
+        }
+
+        .summary-section {
+            width: 40%;
+            vertical-align: top;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-row {
+            width: 100%;
+        }
+
+        .summary-row td {
             padding: 8px 12px;
             border-bottom: 1px solid #e0e0e0;
         }
 
         .summary-label {
-            display: table-cell;
             text-align: left;
             font-size: 10px;
             text-transform: uppercase;
             color: #666;
             letter-spacing: 0.5px;
             font-weight: 600;
+            width: 60%;
         }
 
         .summary-value {
-            display: table-cell;
             text-align: right;
             font-size: 12px;
             color: #000;
             font-weight: 600;
+            width: 40%;
         }
 
-        .total-row {
+        .total-row td {
             background: #333;
             color: #fff;
             margin-top: 5px;
+            padding: 10px 12px;
         }
 
         .total-row .summary-label {
@@ -282,33 +320,32 @@
         /* Clear float */
         .clearfix {
             clear: both;
+            height: 0;
+            line-height: 0;
         }
 
         /* Bottom Section - Fixed at bottom */
         .bottom-section {
             position: absolute;
-            bottom: 110px;
+            bottom: 50px;
             left: 55px;
             right: 50px;
-            padding-top: 15px;
-            border-top: 2px solid #e0e0e0;
+            padding-top: 30px;
             background: #fff;
         }
 
-        .bottom-content {
-            display: table;
+        .bottom-content-table {
             width: 100%;
+            border-collapse: collapse;
         }
 
         .terms-left {
-            display: table-cell;
             width: 60%;
             vertical-align: top;
             padding-right: 20px;
         }
 
         .signature-right {
-            display: table-cell;
             width: 40%;
             vertical-align: top;
             text-align: right;
@@ -332,16 +369,13 @@
         }
 
         .contact-info {
-            display: flex;
-            gap: 20px;
             margin-top: 8px;
         }
 
         .contact-item {
-            display: flex;
-            align-items: center;
             font-size: 9px;
             color: #333;
+            margin-bottom: 5px;
         }
 
         .contact-label {
@@ -388,23 +422,26 @@
 
         <!-- Client Information -->
         <div class="client-info">
-            <div class="client-left">
-                <div class="info-label">To</div>
-                <div class="info-value">
-                    <p>{{ $customer->name }}</p>
-                    <p>{{ $customer->phone }}</p>
-                </div>
-                <div class="info-label">Location</div>
-                <div class="info-value">{{ $customer->address ?? 'Customer Address' }}</div>
-            </div>
-            <div class="client-right">
-                <div class="info-value">INV - {{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</div>
-                <div class="info-label">Date</div>
-                <div class="info-value">{{ \Carbon\Carbon::parse($todayDate ?? now())->format('d/m/Y') }}</div>
-                <div class="info-label">Event Date</div>
-                <div class="info-value">{{ \Carbon\Carbon::parse($order->event_time ?? now())->format('d-m-Y') }}
-                </div>
-            </div>
+            <table class="client-info-table">
+                <tr>
+                    <td class="client-left">
+                        <div class="info-label">To</div>
+                        <div class="info-value">
+                            <p>{{ $customer->name }}</p>
+                            <p>{{ $customer->phone }}</p>
+                        </div>
+                        <div class="info-label">Location</div>
+                        <div class="info-value">{{ $customer->address ?? 'Customer Address' }}</div>
+                    </td>
+                    <td class="client-right">
+                        <div class="info-value">INV - {{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</div>
+                        <div class="info-label">Date</div>
+                        <div class="info-value">{{ \Carbon\Carbon::parse($todayDate ?? now())->format('d/m/Y') }}</div>
+                        <div class="info-label">Event Date</div>
+                        <div class="info-value">{{ \Carbon\Carbon::parse($order->event_time ?? now())->format('d-m-Y') }}</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <!-- Event Cards Section -->
@@ -421,30 +458,36 @@
 
         @if (!empty($customFields))
             <div class="event-cards-container">
-                @foreach ($customFields as $index => $field)
-                    @php
-                        $eventTime = $field['event_time'] ?? '';
-                        $hour = $eventTime ? (int) date('H', strtotime($eventTime)) : 12;
-                        $timeOfDay = $hour >= 18 || $hour < 6 ? 'Night' : 'Day';
-                        $badgeClass = $hour >= 18 || $hour < 6 ? 'night' : 'day';
-                    @endphp
-                    <div class="event-card">
-                        <div class="event-card-header">
-                            <div class="event-name">{{ $field['event_name'] ?? 'Event' }} ( <span class="day-night-badge {{ $badgeClass }}">{{ $timeOfDay }}</span>)</div>
-                        </div>
-                        <div class="event-card-body">
-                            <div class="event-detail-row">
-                                <span class="event-label"> Date : </span>
-                                <span class="event-value">{{ $field['event_date'] ?? '-' }}</span>
-                            </div>
-                            <div class="event-detail-row">
-                                <span class="event-label"> Time : </span>
-                                <span class="event-value">{{ $field['event_time'] ?? '-' }}</span>
-                            </div>
-                          
-                        </div>
-                    </div>
-                @endforeach
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">SL</th>
+                            <th style="width: 35%;">Event Name</th>
+                            <th style="width: 20%;">Event Date</th>
+                            <th style="width: 20%;">Event Time</th>
+                            <th style="width: 20%;">Day/Night</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($customFields as $index => $field)
+                            @php
+                                $eventTime = $field['event_time'] ?? '';
+                                $hour = $eventTime ? (int) date('H', strtotime($eventTime)) : 12;
+                                $timeOfDay = $hour >= 18 || $hour < 6 ? 'Night' : 'Day';
+                                $badgeClass = $hour >= 18 || $hour < 6 ? 'day' : 'day';
+                            @endphp
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td class="event-name-cell">{{ $field['event_name'] ?? 'Event' }}</td>
+                                <td class="event-date-cell">{{ $field['event_date'] ?? '-' }}</td>
+                                <td class="event-time-cell">{{ $field['event_time'] ?? '-' }}</td>
+                                <td>
+                                    <span class="day-night-badge {{ $badgeClass }}">{{ $timeOfDay }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         @endif
 
@@ -489,61 +532,70 @@
         </table>
 
         <!-- Summary Section -->
-        <div class="summary-section">
-            <div class="summary-row">
-                <div class="summary-label">Sub Total</div>
-                <div class="summary-value">
-                    @if ($settings && $settings->currency_position == 'left')
-                        {{ $settings->currency ?? '৳' }}{{ number_format($order->subtotal ?? 0, 0) }}
-                    @else
-                        {{ number_format($order->subtotal ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
-                    @endif
-                </div>
-            </div>
-            @if (($order->discount_amount ?? 0) > 0)
-                <div class="summary-row">
-                    <div class="summary-label">Discount</div>
-                    <div class="summary-value">
-                        @if ($settings && $settings->currency_position == 'left')
-                            -{{ $settings->currency ?? '৳' }}{{ number_format($order->discount_amount ?? 0, 0) }}
-                        @else
-                            -{{ number_format($order->discount_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
-                        @endif
-                    </div>
-                </div>
-            @endif
-            @if (($invoice->amount ?? 0) > 0)
-                <div class="summary-row">
-                    <div class="summary-label">Total Amount</div>
-                    <div class="summary-value">
-                        @if ($settings && $settings->currency_position == 'left')
-                            {{ $settings->currency ?? '৳' }}{{ number_format($invoice->amount ?? 0, 0) }}
-                        @else
-                            {{ number_format($invoice->amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
-                        @endif
-                    </div>
-                </div>
-            @endif
-            <div class="summary-row">
-                <div class="summary-label">Paid Amount</div>
-                <div class="summary-value">
-                    @if ($settings && $settings->currency_position == 'left')
-                        {{ $settings->currency ?? '৳' }} {{ number_format($invoice->paid_amount ?? 0, 0) }}
-                    @else
-                        {{ number_format($invoice->paid_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
-                    @endif
-                </div>
-            </div>
-            <div class="summary-row total-row">
-                <div class="summary-label">Due Amount</div>
-                <div class="summary-value">
-                    @if ($settings && $settings->currency_position == 'left')
-                        {{ $settings->currency ?? '৳' }}{{ number_format($invoice->due_amount ?? 0, 0) }}
-                    @else
-                        {{ number_format($invoice->due_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
-                    @endif
-                </div>
-            </div>
+        <div class="summary-wrapper">
+            <table class="summary-wrapper-table">
+                <tr>
+                    <td class="summary-spacer"></td>
+                    <td class="summary-section">
+                        <table class="summary-table">
+                            <tr class="summary-row">
+                                <td class="summary-label">Sub Total</td>
+                                <td class="summary-value">
+                                    @if ($settings && $settings->currency_position == 'left')
+                                        {{ $settings->currency ?? '৳' }}{{ number_format($order->subtotal ?? 0, 0) }}
+                                    @else
+                                        {{ number_format($order->subtotal ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                    @endif
+                                </td>
+                            </tr>
+                            @if (($order->discount_amount ?? 0) > 0)
+                                <tr class="summary-row">
+                                    <td class="summary-label">Discount</td>
+                                    <td class="summary-value">
+                                        @if ($settings && $settings->currency_position == 'left')
+                                            -{{ $settings->currency ?? '৳' }}{{ number_format($order->discount_amount ?? 0, 0) }}
+                                        @else
+                                            -{{ number_format($order->discount_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (($invoice->amount ?? 0) > 0)
+                                <tr class="summary-row">
+                                    <td class="summary-label">Total Amount</td>
+                                    <td class="summary-value">
+                                        @if ($settings && $settings->currency_position == 'left')
+                                            {{ $settings->currency ?? '৳' }}{{ number_format($invoice->amount ?? 0, 0) }}
+                                        @else
+                                            {{ number_format($invoice->amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+                            <tr class="summary-row">
+                                <td class="summary-label">Paid Amount</td>
+                                <td class="summary-value">
+                                    @if ($settings && $settings->currency_position == 'left')
+                                        {{ $settings->currency ?? '৳' }} {{ number_format($invoice->paid_amount ?? 0, 0) }}
+                                    @else
+                                        {{ number_format($invoice->paid_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr class="total-row">
+                                <td class="summary-label">Due Amount</td>
+                                <td class="summary-value">
+                                    @if ($settings && $settings->currency_position == 'left')
+                                        {{ $settings->currency ?? '৳' }}{{ number_format($invoice->due_amount ?? 0, 0) }}
+                                    @else
+                                        {{ number_format($invoice->due_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <!-- Clear float -->
@@ -553,29 +605,31 @@
 
     <!-- Bottom Section - Fixed at bottom of page -->
     <div class="bottom-section">
-        <div class="bottom-content">
-            <div class="terms-left">
-                <div class="section-title">Terms & Conditions</div>
-                <div class="terms-content">
-                    {{ $settings->message ?? 'The due amount is expected to be paid on the last event day. No delivery will be made without payment. Delivery time for photos and videos is at least 30 Working days.' }}
-                </div>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <span class="contact-label">Address:</span>
-                        <span>{{ $settings->address ?? '711 West World Shopping City Zinda Bazar' }}</span>
+        <table class="bottom-content-table">
+            <tr>
+                <td class="terms-left">
+                    <div class="section-title">Terms & Conditions</div>
+                    <div class="terms-content">
+                        {{ $settings->message ?? 'The due amount is expected to be paid on the last event day. No delivery will be made without payment. Delivery time for photos and videos is at least 30 Working days.' }}
                     </div>
-                    <div class="contact-item">
-                        <span class="contact-label">Phone:</span>
-                        <span>{{ $settings->phone ?? '01715183373' }}</span>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-label">Address:</span>
+                            {{ $settings->address ?? '711 West World Shopping City Zinda Bazar' }}
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Phone:</span>
+                            {{ $settings->phone ?? '01715183373' }}
+                        </div>
                     </div>
-                </div>
-            </div>
+                </td>
 
-            <div class="signature-right">
-                <div class="signature-line"></div>
-                <div class="signature-label">Authorized Signature</div>
-            </div>
-        </div>
+                <td class="signature-right">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Authorized Signature</div>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </body>
