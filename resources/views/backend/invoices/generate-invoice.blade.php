@@ -89,7 +89,7 @@
         .info-label {
             font-size: 9px;
             text-transform: uppercase;
-            color: #666;
+            color: #484848;
             margin-bottom: 3px;
             font-weight: 600;
             letter-spacing: 0.8px;
@@ -285,7 +285,7 @@
             text-align: left;
             font-size: 10px;
             text-transform: uppercase;
-            color: #666;
+            color: #484848;
             letter-spacing: 0.5px;
             font-weight: 600;
             width: 60%;
@@ -332,6 +332,7 @@
             right: 50px;
             padding-top: 30px;
             background: #fff;
+            page-break-inside: avoid;
         }
 
         .bottom-content-table {
@@ -420,6 +421,21 @@
             <div class="company-tagline">PHOTOGRAPHY & ALL EVENT MANAGEMENT</div>
         </div>
 
+           @php
+            $customFields = [];
+            if (isset($order->custom_fields)) {
+                if (is_string($order->custom_fields)) {
+                    $customFields = json_decode($order->custom_fields, true) ?? [];
+                } elseif (is_array($order->custom_fields)) {
+                    $customFields = $order->custom_fields;
+                }
+            }
+            $firstEventDate =
+                !empty($customFields) && isset($customFields[0]['event_date'])
+                    ? $customFields[0]['event_date']
+                    : \Carbon\Carbon::parse($order->event_time ?? now())->format('d-m-Y');
+        @endphp
+
         <!-- Client Information -->
         <div class="client-info">
             <table class="client-info-table">
@@ -438,23 +454,15 @@
                         <div class="info-label">Date</div>
                         <div class="info-value">{{ \Carbon\Carbon::parse($todayDate ?? now())->format('d/m/Y') }}</div>
                         <div class="info-label">Event Date</div>
-                        <div class="info-value">{{ \Carbon\Carbon::parse($order->event_time ?? now())->format('d-m-Y') }}</div>
+                        <div class="info-value">
+                           {{ $firstEventDate }}</div>
                     </td>
                 </tr>
             </table>
         </div>
 
         <!-- Event Cards Section -->
-        @php
-            $customFields = [];
-            if (isset($order->custom_fields)) {
-                if (is_string($order->custom_fields)) {
-                    $customFields = json_decode($order->custom_fields, true) ?? [];
-                } elseif (is_array($order->custom_fields)) {
-                    $customFields = $order->custom_fields;
-                }
-            }
-        @endphp
+     
 
         @if (!empty($customFields))
             <div class="event-cards-container">
@@ -555,7 +563,8 @@
                                         @if ($settings && $settings->currency_position == 'left')
                                             -{{ $settings->currency ?? '৳' }}{{ number_format($order->discount_amount ?? 0, 0) }}
                                         @else
-                                            -{{ number_format($order->discount_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                            -{{ number_format($order->discount_amount ?? 0, 0) }}
+                                            {{ $settings->currency ?? '৳' }}
                                         @endif
                                     </td>
                                 </tr>
@@ -567,7 +576,8 @@
                                         @if ($settings && $settings->currency_position == 'left')
                                             {{ $settings->currency ?? '৳' }}{{ number_format($invoice->amount ?? 0, 0) }}
                                         @else
-                                            {{ number_format($invoice->amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                            {{ number_format($invoice->amount ?? 0, 0) }}
+                                            {{ $settings->currency ?? '৳' }}
                                         @endif
                                     </td>
                                 </tr>
@@ -576,9 +586,11 @@
                                 <td class="summary-label">Paid Amount</td>
                                 <td class="summary-value">
                                     @if ($settings && $settings->currency_position == 'left')
-                                        {{ $settings->currency ?? '৳' }} {{ number_format($invoice->paid_amount ?? 0, 0) }}
+                                        {{ $settings->currency ?? '৳' }}
+                                        {{ number_format($invoice->paid_amount ?? 0, 0) }}
                                     @else
-                                        {{ number_format($invoice->paid_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                        {{ number_format($invoice->paid_amount ?? 0, 0) }}
+                                        {{ $settings->currency ?? '৳' }}
                                     @endif
                                 </td>
                             </tr>
@@ -588,7 +600,8 @@
                                     @if ($settings && $settings->currency_position == 'left')
                                         {{ $settings->currency ?? '৳' }}{{ number_format($invoice->due_amount ?? 0, 0) }}
                                     @else
-                                        {{ number_format($invoice->due_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                                        {{ number_format($invoice->due_amount ?? 0, 0) }}
+                                        {{ $settings->currency ?? '৳' }}
                                     @endif
                                 </td>
                             </tr>
