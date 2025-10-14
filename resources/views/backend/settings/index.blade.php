@@ -97,10 +97,10 @@
 
                     <!-- Message -->
                     <div class="mb-6 mt-6">
-                        <label class="text-base font-medium">Message</label>
+                        <label class="text-base font-medium">Terms & Conditions</label>
                         <textarea name="message" rows="4"
                             class="block mt-3 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
-                            placeholder="Enter your site message...">{{ old('message', $setting->message ?? '') }}</textarea>
+                          >{{ old('message', $setting->message ?? '') }}</textarea>
                     </div>
 
                     <!-- Submit Button -->

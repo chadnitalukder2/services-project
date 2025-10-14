@@ -131,7 +131,8 @@
                         <tbody id="servicesTableBody" class="bg-white divide-y divide-gray-200">
                             @if ($services->isNotEmpty())
                             @php
-                                $si = $services->count();
+                                // $si = $services->count();
+                                 $si = 1;
                             @endphp
                                 @foreach ($services as $service)
                                     <td class="hidden" id="service-description-{{ $service->id }}">
@@ -140,7 +141,7 @@
                                     <tr class="border-b" id="service-row-{{ $service->id }}">
 
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                            {{ $si-- }}
+                                            {{ $si++ }}
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             {{ $service->name }}
@@ -202,7 +203,7 @@
                                 </tr>
                             @endif
                         </tbody>
-                        <tfoot class="bg-gray-50">
+                        {{-- <tfoot class="bg-gray-50">
                             <tr>
                                 <td colspan="3" class="px-6 py-3 text-right text-sm font-bold text-gray-700">
                                     Total:
@@ -219,7 +220,7 @@
                                 </td>
                                 <td colspan="3"></td>
                             </tr>
-                        </tfoot>
+                        </tfoot> --}}
                     </table>
                 </div>
 

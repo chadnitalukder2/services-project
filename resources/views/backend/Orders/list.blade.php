@@ -624,10 +624,10 @@
                         row.className = 'border';
 
                         row.innerHTML = `
-                <td class="px-4 py-3 text-sm font-medium  text-gray-900">${index + 1}</td>
-                <td class="px-4 py-3 text-sm text-gray-900">${field.event_name || '-'}</td>
-                <td class="px-4 py-3 text-sm text-gray-900">${field.event_date || '-'}</td>
-                <td class="px-4 py-3 text-sm text-gray-900">${field.event_time || '-'}</td>
+                    <td class="px-4 py-3 text-sm font-medium  text-gray-900">${index + 1}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${field.event_name || '-'}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${field.event_date || '-'}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${field.event_time || '-'}</td>
                 `;
 
                         customFieldsTableBody.appendChild(row);

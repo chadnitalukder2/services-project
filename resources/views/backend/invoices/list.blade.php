@@ -189,6 +189,9 @@
                                         </td>
                                         <td
                                             class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium flex gap-5 items-center">
+                                            <a href="{{ route('invoices.view', $invoice->id) }}" class="hover:text-orange-500 text-orange-600" title="View">
+                                                <i class="fas fa-eye" style="  font-size: 20px"></i>
+                                            </a>
                                             <a href="{{ route('invoices.generate', $invoice->id) }}" target="_blank"
                                                 class="hover:text-orange-500 text-orange-600" style="  font-size: 20px" title="Download">
                                                 <i class="fas fa-download"></i>

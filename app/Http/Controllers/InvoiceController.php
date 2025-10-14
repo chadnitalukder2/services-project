@@ -120,9 +120,13 @@ class InvoiceController extends Controller implements HasMiddleware
 
     public function viewInvoice($id)
     {
-        $invoice = Invoice::findOrFail($id);
-        $setting = Setting::getSettings();
-        return view('backend.invoices.generate-invoice', compact('invoice', 'setting'));
+       $invoice = Invoice::findOrFail($id);
+        $todayDate = Carbon::now()->format('d-m-Y');
+        $customer = Customer::find($invoice->customer_id);
+        $order = Order::with('orderItems.service', 'service')->find($invoice->order_id);
+        $orderItems = $order->orderItems;
+
+        return view('backend.invoices.generate-invoice', compact('invoice', 'todayDate', 'customer', 'order', 'orderItems'));
     }
 
     public function generateInvoice($id, $action = 'view')

@@ -171,11 +171,12 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                              @php
-                                $si = $services->count();
+                                // $si = $services->count();
+                                    $si = 1;
                             @endphp
                             @foreach ($services as $service)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $si-- }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $si++ }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $service->name }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -197,7 +198,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot class="bg-gray-100 font-bold">
+                        {{-- <tfoot class="bg-gray-100 font-bold">
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -212,7 +213,7 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                        </tfoot>
+                        </tfoot> --}}
                     </table>
                 @else
                     <div class="text-center py-12">

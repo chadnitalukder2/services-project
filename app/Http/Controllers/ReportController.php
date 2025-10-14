@@ -118,7 +118,7 @@ class ReportController extends Controller implements HasMiddleware
         }
 
         $sort = $request->get('sort', 'id');
-        $order = $request->get('order', 'desc');
+        $order = $request->get('order', 'asc');
 
         $services = $query->orderBy($sort, $order)->paginate(15);
 

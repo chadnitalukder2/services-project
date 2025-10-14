@@ -47,7 +47,7 @@ class ServicesController extends Controller implements HasMiddleware
         }
 
         // Handle sorting and status filtering
-        $sort = $request->get('sort', 'desc');
+        $sort = $request->get('sort', 'asc');
 
         if ($sort === 'active') {
             $query->where('status', 'active')->orderBy('created_at', 'desc');

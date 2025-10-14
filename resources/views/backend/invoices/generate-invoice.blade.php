@@ -17,517 +17,567 @@
             box-sizing: border-box;
         }
 
-        html,
         body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 13px;
-            line-height: 1.4;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #fff;
-            padding: 50px;
+            color: #333;
+            padding: 50px 50px 0px 50px;
+            font-size: 12px;
+            line-height: 1.4;
             position: relative;
         }
 
-        .wrapper {
-            min-height: calc(100vh - 100px);
-            position: relative;
-            padding-bottom: 150px;
-        }
-
-        .container {
-            width: 100%;
+        .invoice-container {
             max-width: 100%;
             margin: 0 auto;
+            position: relative;
             background: #fff;
+            min-height: calc(297mm - 50px);
         }
 
-        /* Header */
+        /* Header Section */
         .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
             border-bottom: 2px solid #333;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .header-content {
-            display: table;
-            width: 100%;
-        }
-
-        .header-left {
-            display: table-cell;
-            vertical-align: bottom;
-            width: 60%;
-        }
-
-        .header-right {
-            display: table-cell;
-            vertical-align: bottom;
-            width: 40%;
-            text-align: right;
-        }
-
-        .invoice-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .company-logo {
-            max-width: 65px;
-            max-height: 65px;
         }
 
         .company-name {
-            font-size: 24px;
-            padding-top: 12px;
-            font-weight: bold;
-            margin-bottom: 5px
-            color: #333;
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            color: #000;
         }
 
-        /* Invoice Details */
-        .invoice-info {
+        .company-tagline {
+            font-size: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #2d2d2d;
+            font-weight: 500;
+        }
+
+        /* Client Info Section */
+        .client-info {
             display: table;
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
         }
 
-        .invoice-details {
+        .client-left {
             display: table-cell;
             width: 50%;
             vertical-align: top;
         }
 
-        .invoice-status {
+        .client-right {
             display: table-cell;
             width: 50%;
             vertical-align: top;
             text-align: right;
         }
 
-        .detail-row {
-            margin-bottom: 6px;
-        }
-
-        .detail-label {
-            font-weight: bold;
-            display: inline-block;
-            width: 100px;
-        }
-
-        .status-badge {
-            background: #f0f0f0;
-            border: 1px solid #333;
-            padding: 5px 15px;
-            font-size: 11px;
-            font-weight: bold;
+        .info-label {
+            font-size: 9px;
             text-transform: uppercase;
-            display: inline-block;
+            color: #666;
+            margin-bottom: 3px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
         }
 
-        .status-paid {
-            background: #333;
-            color: #fff;
-        }
-
-        /* Billing Section */
-        .billing-section {
-            display: table;
-            width: 100%;
-            margin-bottom: 25px;
-        }
-
-        .billing-from,
-        .billing-to {
-            display: table-cell;
-            width: 50%;
-            vertical-align: top;
-            padding-right: 20px;
-        }
-
-        .billing-to {
-            padding-right: 0;
-            padding-left: 20px;
-        }
-
-        .billing-title {
-            font-size: 14px;
-            font-weight: bold;
+        .info-value {
+            font-size: 12px;
+            color: #000;
             margin-bottom: 10px;
-            text-transform: uppercase;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
+            font-weight: 500;
         }
 
-        .billing-content p {
+        .info-value p {
+            margin-bottom: 2px;
+        }
+
+        /* Event Cards Container */
+        .event-cards-container {
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .event-card {
+            display: inline-block;
+            width: calc(18.58% - 10px);
+            min-width: 100px;
+            border: 1px solid #ddd;
+            /* border-left: 2px solid #181818; */
+            border-radius: 6px;
+            padding: 8px 10px;
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+            background: #f6f6f673;
+            position: relative;
+            margin-bottom: 15px;
+            margin-right: 15px;
+            vertical-align: top;
+        }
+
+        .event-card:nth-child(5n) {
+            margin-right: 0;
+        }
+
+        .event-card-header {
+            margin-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .event-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 3px;
         }
 
-        .company-name-billing {
-            font-weight: bold;
-            font-size: 13px;
+        .event-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        /* Items Table */
-        .items-table {
+        .event-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+        }
+
+        .event-label {
+            font-size: 9px;
+            text-transform: capitalize;
+            color: #545454;
+            font-weight: 700;
+        }
+
+        .event-value {
+            font-size: 11px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* Day/Night badge */
+        .day-night-badge {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+            color: #666;
+        }
+
+      
+
+        /* Services Table */
+        .services-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        .items-table th {
+        .services-table thead {
             background: #333;
-            color: #fff;
-            padding: 10px 8px;
+        }
+
+        .services-table th {
+            padding: 10px 12px;
             text-align: left;
-            font-weight: bold;
-            font-size: 12px;
+            font-size: 9px;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #fff;
         }
 
-        .items-table th:last-child {
+        .services-table th:last-child {
             text-align: right;
         }
 
-        .items-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
+        .services-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+            font-size: 11px;
         }
 
-        .items-table td:last-child {
+        .services-table td:last-child {
             text-align: right;
+            font-weight: 600;
         }
 
-        .items-table tbody tr:last-child td {
+        .services-table td:nth-child(3),
+        .services-table td:nth-child(4) {
+            text-align: center;
+        }
+
+        .services-table tbody tr:last-child td {
             border-bottom: 1px solid #333;
         }
 
         .service-name {
-            font-weight: bold;
-            margin-bottom: 2px;
+            font-weight: 600;
+            color: #000;
         }
 
-        .service-description {
-            font-size: 10px;
-            color: #666;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        /* Summary */
+        /* Summary Section */
         .summary-section {
             float: right;
             width: 300px;
             margin-top: 10px;
-            margin-bottom: 30px;
+        }
+
+        .summary-row {
+            display: table;
+            width: 100%;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-label {
+            display: table-cell;
+            text-align: left;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .summary-value {
+            display: table-cell;
+            text-align: right;
+            font-size: 12px;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .total-row {
+            background: #333;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .total-row .summary-label {
+            color: #fff;
+            font-size: 11px;
+        }
+
+        .total-row .summary-value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* Clear float */
+        .clearfix {
             clear: both;
         }
 
-        .summary-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .summary-table td {
-            padding: 8px 12px;
-            border-bottom: 1px solid #eee;
-            font-size: 12px;
-        }
-
-        .summary-table td:first-child {
-            font-weight: bold;
-        }
-
-        .summary-table td:last-child {
-            text-align: right;
-        }
-
-        .total-row td {
-            background: #f9f9f9;
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
-            font-weight: bold;
-            font-size: 14px;
-            padding: 12px;
-        }
-
-        .due-row td {
-            color: #d32f2f;
-            font-weight: bold;
-        }
-
-        .discount-row td {
-            color: #272827;
-        }
-
-        /* Signature Section - Fixed position */
-        .signature-section {
+        /* Bottom Section - Fixed at bottom */
+        .bottom-section {
             position: absolute;
-            bottom: 150px;
-            right: 0px;
-        }
-
-        .signature-line {
-            border-top: 2px solid #333;
-            width: 200px;
-            margin-bottom: 8px;
-        }
-
-        .signature-label {
-            text-align: center;
-            font-weight: bold;
-            font-size: 12px;
-            color: #333;
-        }
-
-        /* Footer - Fixed at bottom */
-        .footer {
-            position: absolute;
-            bottom: 60px;
-            left: 0;
-            right: 0;
-            padding: 20px 10px;
-            text-align: center;
-            border-top: 1px solid #eee;
+            bottom: 110px;
+            left: 55px;
+            right: 50px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
             background: #fff;
         }
 
-        .footer-message {
-            font-size: 12px;
-            margin-bottom: 8px;
-            font-weight: bold;
-          font-style: italic;
-        }
-
-        .footer-note {
-            font-size: 11px;
-            color: #666;
-            font-style: italic;
-        }
-
-        /* Clear floats */
-        .clearfix::after {
-            content: "";
+        .bottom-content {
             display: table;
-            clear: both;
+            width: 100%;
         }
 
-        /* Responsive adjustments for DomPDF */
+        .terms-left {
+            display: table-cell;
+            width: 60%;
+            vertical-align: top;
+            padding-right: 20px;
+        }
+
+        .signature-right {
+            display: table-cell;
+            width: 40%;
+            vertical-align: top;
+            text-align: right;
+            padding-left: 20px;
+        }
+
+        .section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .terms-content {
+            font-size: 9px;
+            line-height: 1.5;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            font-size: 9px;
+            color: #333;
+        }
+
+        .contact-label {
+            font-weight: 700;
+            margin-right: 5px;
+            color: #333;
+            text-transform: uppercase;
+            font-size: 8px;
+        }
+
+        /* Signature */
+        .signature-line {
+            border-top: 2px solid #333;
+            width: 180px;
+            margin: 30px 0 8px auto;
+        }
+
+        .signature-label {
+            text-align: right;
+            margin-right: 23px;
+            font-weight: 600;
+            font-size: 9px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         @media print {
-            .wrapper {
-                width: 100%;
+            body {
+                padding: 50px 50px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="container">
+    <div class="invoice-container">
 
-            <!-- Header -->
-            <div class="header">
-                <div class="header-content">
-                    <div class="header-left">
-                        <div class="invoice-title">INVOICE</div>
+        <!-- Header -->
+        <div class="header">
+            <div class="company-name">{{ strtoupper($settings->title ?? 'WEDDING DRAMATIC') }}</div>
+            <div class="company-tagline">PHOTOGRAPHY & ALL EVENT MANAGEMENT</div>
+        </div>
+
+        <!-- Client Information -->
+        <div class="client-info">
+            <div class="client-left">
+                <div class="info-label">To</div>
+                <div class="info-value">
+                    <p>{{ $customer->name }}</p>
+                    <p>{{ $customer->phone }}</p>
+                </div>
+                <div class="info-label">Location</div>
+                <div class="info-value">{{ $customer->address ?? 'Customer Address' }}</div>
+            </div>
+            <div class="client-right">
+                <div class="info-value">INV - {{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</div>
+                <div class="info-label">Date</div>
+                <div class="info-value">{{ \Carbon\Carbon::parse($todayDate ?? now())->format('d/m/Y') }}</div>
+                <div class="info-label">Event Date</div>
+                <div class="info-value">{{ \Carbon\Carbon::parse($order->event_time ?? now())->format('d-m-Y') }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Cards Section -->
+        @php
+            $customFields = [];
+            if (isset($order->custom_fields)) {
+                if (is_string($order->custom_fields)) {
+                    $customFields = json_decode($order->custom_fields, true) ?? [];
+                } elseif (is_array($order->custom_fields)) {
+                    $customFields = $order->custom_fields;
+                }
+            }
+        @endphp
+
+        @if (!empty($customFields))
+            <div class="event-cards-container">
+                @foreach ($customFields as $index => $field)
+                    @php
+                        $eventTime = $field['event_time'] ?? '';
+                        $hour = $eventTime ? (int) date('H', strtotime($eventTime)) : 12;
+                        $timeOfDay = $hour >= 18 || $hour < 6 ? 'Night' : 'Day';
+                        $badgeClass = $hour >= 18 || $hour < 6 ? 'night' : 'day';
+                    @endphp
+                    <div class="event-card">
+                        <div class="event-card-header">
+                            <div class="event-name">{{ $field['event_name'] ?? 'Event' }} ( <span class="day-night-badge {{ $badgeClass }}">{{ $timeOfDay }}</span>)</div>
+                        </div>
+                        <div class="event-card-body">
+                            <div class="event-detail-row">
+                                <span class="event-label"> Date : </span>
+                                <span class="event-value">{{ $field['event_date'] ?? '-' }}</span>
+                            </div>
+                            <div class="event-detail-row">
+                                <span class="event-label"> Time : </span>
+                                <span class="event-value">{{ $field['event_time'] ?? '-' }}</span>
+                            </div>
+                          
+                        </div>
                     </div>
-                    <div class="header-right">
-                        @if (isset($settings) && $settings->logo)
-                            <img src="{{ public_path('storage/' . $settings->logo) }}" alt="Logo" class="company-logo">
+                @endforeach
+            </div>
+        @endif
+
+        <!-- Services Table -->
+        <table class="services-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">No</th>
+                    <th style="width: 45%;">Services</th>
+                    <th style="width: 12%;">Qty</th>
+                    <th style="width: 18%;">Unit Price</th>
+                    <th style="width: 20%;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($orderItems ?? [] as $item)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>
+                            <div class="service-name">{{ $item->service->name ?? 'Service Name' }}</div>
+                        </td>
+                        <td>{{ $item->quantity ?? 1 }}</td>
+                        <td>
+                            @if ($settings && $settings->currency_position == 'left')
+                                {{ $settings->currency ?? '৳' }}
+                                {{ number_format($item->service->unit_price ?? 0, 2) }}
+                            @else
+                                {{ number_format($item->service->unit_price ?? 0, 2) }}
+                                {{ $settings->currency ?? '' }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($settings?->currency_position == 'left')
+                                {{ $settings->currency ?? '৳' }} {{ number_format($item->subtotal ?? 0, 2) }}
+                            @else
+                                {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <div class="summary-row">
+                <div class="summary-label">Sub Total</div>
+                <div class="summary-value">
+                    @if ($settings && $settings->currency_position == 'left')
+                        {{ $settings->currency ?? '৳' }}{{ number_format($order->subtotal ?? 0, 0) }}
+                    @else
+                        {{ number_format($order->subtotal ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                    @endif
+                </div>
+            </div>
+            @if (($order->discount_amount ?? 0) > 0)
+                <div class="summary-row">
+                    <div class="summary-label">Discount</div>
+                    <div class="summary-value">
+                        @if ($settings && $settings->currency_position == 'left')
+                            -{{ $settings->currency ?? '৳' }}{{ number_format($order->discount_amount ?? 0, 0) }}
                         @else
-                            <div class="company-name">{{ $settings->title ?? 'Company Name' }}</div>
+                            -{{ number_format($order->discount_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
                         @endif
                     </div>
                 </div>
-            </div>
-
-            <!-- Invoice Information -->
-            <div class="invoice-info" style="margin-bottom: 25px;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td style="width: 33%; font-weight: bold;">Invoice #:</td>
-                        <td style="width: 67%;">
-                            {{ str_pad($invoice->id ?? '001', 4, '0', STR_PAD_LEFT) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold; padding: 4px 0;">Date:</td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($todayDate ?? now())->format('d M, Y') }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold;">Expiry Date:</td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($invoice->expiry_date ?? now()->addDays(30))->format('d M, Y') }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold;">Status:</td>
-                        <td style="padding: 4px 0; text-transform: capitalize;">
-                            {{ $invoice->status ?? 'Pending' }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- Billing Information -->
-            <div class="billing-section">
-                <div class="billing-from">
-                    <div class="billing-title">From</div>
-                    <div class="billing-content">
-                        <p class="company-name-billing">{{ $settings->title ?? 'Company Name' }}</p>
-                        <p>{{ $settings->address ?? 'Company Address' }}</p>
-                        <p>{{ $settings->phone ?? '+1 234 567 890' }}</p>
-                        <p>{{ $settings->email ?? 'info@company.com' }}</p>
+            @endif
+            @if (($invoice->amount ?? 0) > 0)
+                <div class="summary-row">
+                    <div class="summary-label">Total Amount</div>
+                    <div class="summary-value">
+                        @if ($settings && $settings->currency_position == 'left')
+                            {{ $settings->currency ?? '৳' }}{{ number_format($invoice->amount ?? 0, 0) }}
+                        @else
+                            {{ number_format($invoice->amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                        @endif
                     </div>
                 </div>
-                <div class="billing-to">
-                    <div class="billing-title">Bill To</div>
-                    <div class="billing-content">
-                        <p class="company-name-billing">{{ $customer->name ?? 'Customer Name' }}</p>
-                        <p>{{ $customer->address ?? 'Customer Address' }}</p>
-                        <p>{{ $customer->phone ?? 'Customer Phone' }}</p>
-                        <p>{{ $customer->email ?? 'Customer Email' }}</p>
-                    </div>
+            @endif
+            <div class="summary-row">
+                <div class="summary-label">Paid Amount</div>
+                <div class="summary-value">
+                    @if ($settings && $settings->currency_position == 'left')
+                        {{ $settings->currency ?? '৳' }} {{ number_format($invoice->paid_amount ?? 0, 0) }}
+                    @else
+                        {{ number_format($invoice->paid_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
+                    @endif
                 </div>
             </div>
-
-            <!-- Items Table -->
-            <table class="items-table">
-                <thead>
-                    <tr>
-                        <th style="width: 2%;">No</th>
-                        <th style="width: 50%;">Services</th>
-                        <th style="width: 15%; text-align:center">Qty</th>
-                        <th style="width: 17.5%; text-align:center">Unit Price</th>
-                        <th style="width: 17.5%;" class="text-right">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($orderItems ?? [] as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>
-                                <div class="service-name">{{ $item->service->name ?? 'Service Name' }}</div>
-                            </td>
-                            <td class="text-center">{{ $item->quantity ?? 1 }}</td>
-                            <td style="text-align:center">
-                                @if ($settings && $settings->currency_position == 'left')
-                                    {{ $settings->currency ?? '৳' }}
-                                    {{ number_format($item->service->unit_price ?? 0, 2) }}
-                                @else
-                                    {{ number_format($item->service->unit_price ?? 0, 2) }}
-                                    {{ $settings->currency ?? '' }}
-                                @endif
-                            </td>
-                            <td class="text-right">
-                                @if ($settings?->currency_position == 'left')
-                                    {{ $settings->currency ?? '৳' }} {{ number_format($item->subtotal ?? 0, 2) }}
-                                @else
-                                    {{ number_format($item->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <!-- Summary -->
-            <div class="summary-section">
-                <table class="summary-table">
-                    <tr>
-                        <td>Subtotal</td>
-                        <td>
-                            @if ($settings && $settings->currency_position == 'left')
-                                {{ $settings->currency ?? '৳' }} {{ number_format($order->subtotal ?? 0, 2) }}
-                            @else
-                                {{ number_format($order->subtotal ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                            @endif
-                        </td>
-                    </tr>
-                    @if (($order->discount_amount ?? 0) > 0)
-                        <tr class="discount-row">
-                            <td>Discount</td>
-                            <td>
-                                @if ($settings && $settings->currency_position == 'left')
-                                    -{{ $settings->currency ?? '৳' }} {{ number_format($order->discount_amount ?? 0, 2) }}
-                                @else
-                                    -{{ number_format($order->discount_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                                @endif
-                            </td>
-                        </tr>
+            <div class="summary-row total-row">
+                <div class="summary-label">Due Amount</div>
+                <div class="summary-value">
+                    @if ($settings && $settings->currency_position == 'left')
+                        {{ $settings->currency ?? '৳' }}{{ number_format($invoice->due_amount ?? 0, 0) }}
+                    @else
+                        {{ number_format($invoice->due_amount ?? 0, 0) }} {{ $settings->currency ?? '৳' }}
                     @endif
-                    <tr class="total-row">
-                        <td>Total Amount</td>
-                        <td>
-                            @if ($settings && $settings->currency_position == 'left')
-                                {{ $settings->currency ?? '৳' }} {{ number_format($invoice->amount ?? 0, 2) }}
-                            @else
-                                {{ number_format($invoice->amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Paid Amount</td>
-                        <td>
-                            @if ($settings && $settings->currency_position == 'left')
-                                {{ $settings->currency ?? '৳' }} {{ number_format($invoice->paid_amount ?? 0, 2) }}
-                            @else
-                                {{ number_format($invoice->paid_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                            @endif
-                        </td>
-                    </tr>
-                    @if (($invoice->due_amount ?? 0) > 0)
-                        <tr>
-                            <td>Amount Due</td>
-                            <td style="font-weight: bold">
-                                @if ($settings && $settings->currency_position == 'left')
-                                    {{ $settings->currency ?? '৳' }} {{ number_format($invoice->due_amount ?? 0, 2) }}
-                                @else
-                                    {{ number_format($invoice->due_amount ?? 0, 2) }} {{ $settings->currency ?? '৳' }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endif
-                </table>
-            </div>
-
-            <!-- Clear float -->
-            <div style="clear: both;"></div>
-
-        </div>
-
-        <!-- Signature Section - Above Footer -->
-        <div class="signature-section">
-            <div class="signature-line"></div>
-            <p class="signature-label">Authorized Signature</p>
-        </div>
-
-        <!-- Footer - Fixed at bottom -->
-        <div class="footer">
-            <div class="footer-message">
-                Thank you for your business!
-            </div>
-            <div class="footer-note">
-                {{ $settings->message ?? '' }}
+                </div>
             </div>
         </div>
+
+        <!-- Clear float -->
+        <div class="clearfix"></div>
 
     </div>
+
+    <!-- Bottom Section - Fixed at bottom of page -->
+    <div class="bottom-section">
+        <div class="bottom-content">
+            <div class="terms-left">
+                <div class="section-title">Terms & Conditions</div>
+                <div class="terms-content">
+                    {{ $settings->message ?? 'The due amount is expected to be paid on the last event day. No delivery will be made without payment. Delivery time for photos and videos is at least 30 Working days.' }}
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-label">Address:</span>
+                        <span>{{ $settings->address ?? '711 West World Shopping City Zinda Bazar' }}</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Phone:</span>
+                        <span>{{ $settings->phone ?? '01715183373' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signature-right">
+                <div class="signature-line"></div>
+                <div class="signature-label">Authorized Signature</div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
