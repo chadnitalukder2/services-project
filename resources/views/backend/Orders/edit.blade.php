@@ -34,7 +34,7 @@
                             <div class="my-3 flex flex-wrap gap-3 items-start">
                                 <div class="flex-1  min-w-[200px]">
                                     <select id="customer_id" name="customer_id"
-                                        class="block text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                        class="block text-sm  w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <option value="" class="bg-gray-100">Select a customer</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}"
@@ -139,7 +139,7 @@
                             <div class="my-3 flex flex-wrap gap-3">
                                 <div class="flex-1 min-w-[200px]">
                                     <select id="service_select"
-                                        class="block p-2.5 w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
+                                        class="block  w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                         <option value="">Select a service to add</option>
                                         @foreach ($services as $service)
                                             <option value="{{ $service->id }}" data-name="{{ $service->name }}"
@@ -1379,6 +1379,19 @@
             flatpickr(dateInputExpiry, {
                 dateFormat: "d-m-Y",
                 allowInput: true
+            });
+        });
+        //select============================
+        document.addEventListener('DOMContentLoaded', function() {
+            new TomSelect("#customer_id", {
+                placeholder: "Select a customer",
+                allowEmptyOption: true
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            new TomSelect("#service_select", {
+                placeholder: "Select a service",
+                allowEmptyOption: true,
             });
         });
     </script>
