@@ -66,7 +66,7 @@
                     <!-- Logo -->
                     <div class="mb-4 mt-6">
                         <label class="text-base font-medium">Logo</label>
-                        <div class="flex flex-col md:flex-row gap-5 items-start md:items-center">
+                        <div class="flex mt-2 flex-col md:flex-row gap-5 items-start md:items-center">
                             <input type="file" name="logo" id="logoInput"
                                 class="block text-sm p-2.5 w-full md:w-1/2 border border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
                                 accept="image/*">
@@ -98,7 +98,7 @@
                     <!-- Message -->
                     <div class="mb-6 mt-6">
                         <label class="text-base font-medium">Terms & Conditions</label>
-                        <textarea name="message" rows="4"
+                        <textarea name="message" rows="6"
                             class="block mt-3 text-sm p-2.5 w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900"
                           >{{ old('message', $setting->message ?? '') }}</textarea>
                     </div>
