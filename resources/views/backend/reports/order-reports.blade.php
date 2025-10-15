@@ -193,7 +193,7 @@
                             @endphp
                             @foreach ($orders as $order)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {{ $si-- }}
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#
                                         {{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
