@@ -216,29 +216,29 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         @if ($settings->currency_position == 'left')
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                             {{ number_format($order->subtotal, 2) }}
                                         @else
                                             {{ number_format($order->subtotal, 2) }}
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         @if ($settings->currency_position == 'left')
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                             {{ number_format($order->discount_amount, 2) }}
                                         @else
                                             {{ number_format($order->discount_amount, 2) }}
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         @if ($settings->currency_position == 'left')
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                             {{ number_format($order->total_amount, 2) }}
                                         @else
                                             {{ number_format($order->total_amount, 2) }}
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-900">
@@ -256,31 +256,31 @@
                                 <td class="px-6 py-3 text-right">Total:</td>
                                 <td class="px-6 py-3">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? '৳' }}
+                                        {{ $settings->currency ?? 'TK' }}
                                         {{ number_format($orders->sum('subtotal'), 2) }}
                                     @else
                                         {{ number_format($orders->sum('subtotal'), 2) }}
-                                        {{ $settings->currency ?? '৳' }}
+                                        {{ $settings->currency ?? 'TK' }}
                                     @endif
 
                                 </td>
                                 <td class="px-6 py-3">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? '৳' }}
+                                        {{ $settings->currency ?? 'TK' }}
                                         {{ number_format($orders->sum('discount_amount'), 2) }}
                                     @else
                                         {{ number_format($orders->sum('discount_amount'), 2) }}
-                                        {{ $settings->currency ?? '৳' }}
+                                        {{ $settings->currency ?? 'TK' }}
                                     @endif
 
                                 </td>
                                 <td class="px-6 py-3">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? '৳' }}
+                                        {{ $settings->currency ?? 'TK' }}
                                         {{ number_format($orders->sum('total_amount'), 2) }}
                                     @else
                                         {{ number_format($orders->sum('total_amount'), 2) }}
-                                        {{ $settings->currency ?? '৳' }}
+                                        {{ $settings->currency ?? 'TK' }}
                                     @endif
 
                                 </td>

@@ -151,11 +151,11 @@
                                         </td>
                                         <td class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                             @if ($settings->currency_position == 'left')
-                                                {{ $settings->currency ?? '৳' }}
+                                                {{ $settings->currency ?? 'TK' }}
                                                 {{ number_format($service->unit_price, 2) }}
                                             @else
                                                 {{ number_format($service->unit_price, 2) }}
-                                                {{ $settings->currency ?? '৳' }}
+                                                {{ $settings->currency ?? 'TK' }}
                                             @endif
 
                                         </td>
@@ -213,9 +213,9 @@
                                         $totalServiceAmount = $services->sum('unit_price');
                                     @endphp
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalServiceAmount, 2) }}
+                                        {{ $settings->currency ?? 'TK' }} {{ number_format($totalServiceAmount, 2) }}
                                     @else
-                                        {{ number_format($totalServiceAmount, 2) }} {{ $settings->currency ?? '৳' }}
+                                        {{ number_format($totalServiceAmount, 2) }} {{ $settings->currency ?? 'TK' }}
                                     @endif
                                 </td>
                                 <td colspan="3"></td>

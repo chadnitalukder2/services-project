@@ -183,11 +183,11 @@
                                         {{ $service->category->name ?? '---' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         @if ($settings->currency_position == 'left')
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                             {{ number_format($service->unit_price, 2) }}
                                         @else
                                             {{ number_format($service->unit_price, 2) }}
-                                            {{ $settings->currency ?? '৳' }}
+                                            {{ $settings->currency ?? 'TK' }}
                                         @endif
                                     </td>
                                     <td
@@ -205,9 +205,9 @@
                                 <td class="px-6 py-4 text-right text-sm text-gray-700">Total</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalPrice, 2) }}
+                                        {{ $settings->currency ?? 'TK' }} {{ number_format($totalPrice, 2) }}
                                     @else
-                                        {{ number_format($totalPrice, 2) }} {{ $settings->currency ?? '৳' }}
+                                        {{ number_format($totalPrice, 2) }} {{ $settings->currency ?? 'TK' }}
                                     @endif
                                 </td>
                                 <td></td>

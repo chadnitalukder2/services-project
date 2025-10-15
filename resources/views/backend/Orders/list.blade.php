@@ -216,11 +216,11 @@
                                         <td
                                             class="px-6 py-4 text-left whitespace-nowrap text-sm font-medium {{ $order->status === 'done' ? 'text-gray-500' : 'text-gray-900' }}">
                                             @if ($settings->currency_position == 'left')
-                                                {{ $settings->currency ?? '৳' }}
+                                                {{ $settings->currency ?? 'TK' }}
                                                 {{ number_format($order->total_amount, 2) }}
                                             @else
                                                 {{ number_format($order->total_amount, 2) }}
-                                                {{ $settings->currency ?? '৳' }}
+                                                {{ $settings->currency ?? 'TK' }}
                                             @endif
                                         </td>
                                         <td
@@ -263,9 +263,9 @@
                                     Amount:</td>
                                 <td class="px-6 py-3 text-sm text-left font-bold text-gray-900">
                                     @if ($settings->currency_position == 'left')
-                                        {{ $settings->currency ?? '৳' }} {{ number_format($totalOrderAmount, 2) }}
+                                        {{ $settings->currency ?? 'TK' }} {{ number_format($totalOrderAmount, 2) }}
                                     @else
-                                        {{ number_format($totalOrderAmount, 2) }} {{ $settings->currency ?? '৳' }}
+                                        {{ number_format($totalOrderAmount, 2) }} {{ $settings->currency ?? 'TK' }}
                                     @endif
                                 </td>
                                 <td colspan="2"></td>
@@ -440,7 +440,7 @@
                                     <td colspan="3" class="px-4 text-sm text-right font-semibold"
                                         style="padding-top:5px; padding-bottom: 15px">Total Amount:</td>
                                     <td class="px-4  text-right  font-bold text-sm" id="modalTotalAmount">0.00
-                                        {{ $settings->currency ?? '৳' }}</td>
+                                        {{ $settings->currency ?? 'TK' }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -576,7 +576,7 @@
                 document.getElementById('modalStatus').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(
                     1);
                 //currency
-                const currency = "{{ $settings->currency ?? '৳' }}";
+                const currency = "{{ $settings->currency ?? 'TK' }}";
                 const currencyPosition = "{{ $settings->currency_position ?? 'right' }}"; // left or right
                 const totalAmount = parseFloat(order.total_amount).toFixed(2);
 
@@ -585,7 +585,7 @@
                     `${currency} ${totalAmount}` :
                     `${totalAmount} ${currency}`;
 
-                //document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} ৳`;
+                //document.getElementById('modalTotalAmount').textContent = `${parseFloat(order.total_amount).toFixed(2)} TK`;
 
                 document.getElementById('modalSubtotal').textContent = `${parseFloat(order.subtotal).toFixed(2)}`;
                 document.getElementById('modalDiscount').textContent = `- ${parseFloat(order.discount_amount).toFixed(2)}`;

@@ -122,32 +122,32 @@
                         <tr>
                             <td class="px-6 py-4 text-sm text-gray-900">
                                 @if ($settings->currency_position == 'left')
-                                    {{ $settings->currency ?? '৳' }}
+                                    {{ $settings->currency ?? 'TK' }}
                                     {{ number_format($orders, 2) }}
                                 @else
                                      {{ number_format($orders, 2) }}
-                                    {{ $settings->currency ?? '৳' }}
+                                    {{ $settings->currency ?? 'TK' }}
                                 @endif
                                
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-900">
                                 @if ($settings->currency_position == 'left')
-                                    {{ $settings->currency ?? '৳' }}
+                                    {{ $settings->currency ?? 'TK' }}
                                      {{ number_format($expenses, 2) }}
                                 @else
                                      {{ number_format($expenses, 2) }}
-                                    {{ $settings->currency ?? '৳' }}
+                                    {{ $settings->currency ?? 'TK' }}
                                 @endif
                                
                             </td>
                             <td
                                 class="px-6 py-4 font-bold text-sm {{ $profitLoss >= 0 ? 'text-green-600' : 'text-red-600' }}">
                                 @if ($settings->currency_position == 'left')
-                                    {{ $settings->currency ?? '৳' }}
+                                    {{ $settings->currency ?? 'TK' }}
                                     {{ number_format($profitLoss, 2) }}
                                 @else
                                     {{ number_format($profitLoss, 2) }}
-                                    {{ $settings->currency ?? '৳' }}
+                                    {{ $settings->currency ?? 'TK' }}
                                 @endif
                             </td>
                         </tr>

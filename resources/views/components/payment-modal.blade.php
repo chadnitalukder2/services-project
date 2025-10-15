@@ -168,9 +168,20 @@
         document.getElementById('invoiceId').value = invoice.id;
         document.getElementById('modalOrderId').textContent = '#' + padOrderId(invoice.order_id);
         document.getElementById('modalCustomerName').textContent = invoice.customer_name;
-        document.getElementById('modalTotalAmount').textContent = parseFloat(invoice.amount).toFixed(2) + '৳';
-        document.getElementById('modalPaidAmount').textContent = parseFloat(invoice.paid_amount).toFixed(2) + '৳';
-        document.getElementById('modalDueAmount').textContent = parseFloat(invoice.due_amount).toFixed(2) + '৳';
+
+        const currency = "{{ $settings->currency ?? 'TK' }}";
+        const currencyPosition = "{{ $settings->currency_position ?? 'left' }}";
+        const amount = parseFloat(invoice.amount).toFixed(2);
+        const paid_amount = parseFloat(invoice.paid_amount).toFixed(2);
+        const due_amount = parseFloat(invoice.due_amount).toFixed(2);
+
+        const formattedAmount = currencyPosition === 'left' ? currency + ' ' + amount : amount + ' ' + currency;
+        const formattedPaidAmount = currencyPosition === 'left' ? currency + ' ' + paid_amount : paid_amount + ' ' + currency;
+        const formattedDueAmount = currencyPosition === 'left' ? currency + ' ' + due_amount : due_amount + ' ' + currency;
+
+        document.getElementById('modalTotalAmount').textContent = formattedAmount;
+        document.getElementById('modalPaidAmount').textContent = formattedPaidAmount
+        document.getElementById('modalDueAmount').textContent = formattedDueAmount
 
         document.getElementById('modalCurrentStatus').textContent = invoice.status || 'due';
         document.getElementById('modalCurrentPaymentMethod').textContent = invoice.payment_method || 'Not set';
@@ -326,7 +337,8 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    showNotification(response.message || 'Payment updated successfully!',
+                    showNotification(response.message ||
+                        'Payment updated successfully!',
                         'success');
                     location.reload();
                 },
@@ -338,5 +350,4 @@
             });
         });
     });
-
 </script>
