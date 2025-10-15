@@ -421,7 +421,7 @@
             <div class="company-tagline">PHOTOGRAPHY & ALL EVENT MANAGEMENT</div>
         </div>
 
-           @php
+        @php
             $customFields = [];
             if (isset($order->custom_fields)) {
                 if (is_string($order->custom_fields)) {
@@ -431,9 +431,7 @@
                 }
             }
             $firstEventDate =
-                !empty($customFields) && isset($customFields[0]['event_date'])
-                    ? $customFields[0]['event_date']
-                    : \Carbon\Carbon::parse($order->event_time ?? now())->format('d-m-Y');
+                !empty($customFields) && isset($customFields[0]['event_date']) ? $customFields[0]['event_date'] : '';
         @endphp
 
         <!-- Client Information -->
@@ -446,23 +444,26 @@
                             <p>{{ $customer->name }}</p>
                             <p>{{ $customer->phone }}</p>
                         </div>
-                        <div class="info-label">Location</div>
-                        <div class="info-value">{{ $customer->address ?? 'Customer Address' }}</div>
+                        @if (!empty($customer->address))
+                            <div class="info-label">Location</div>
+                            <div class="info-value">{{ $customer->address }}</div>
+                        @endif
                     </td>
                     <td class="client-right">
                         <div class="info-value">INV - {{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }}</div>
                         <div class="info-label">Date</div>
                         <div class="info-value">{{ \Carbon\Carbon::parse($todayDate ?? now())->format('d/m/Y') }}</div>
-                        <div class="info-label">Event Date</div>
-                        <div class="info-value">
-                           {{ $firstEventDate }}</div>
+                        @if ($firstEventDate)
+                            <div class="info-label">Event Date</div>
+                            <div class="info-value">{{ $firstEventDate }}</div>
+                        @endif
                     </td>
                 </tr>
             </table>
         </div>
 
         <!-- Event Cards Section -->
-     
+
 
         @if (!empty($customFields))
             <div class="event-cards-container">

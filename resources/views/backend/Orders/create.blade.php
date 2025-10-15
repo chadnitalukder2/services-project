@@ -30,7 +30,7 @@
                         <div class="mb-6">
                             <label for="customer_id" class="text-base font-medium">Customer <span
                                     class="text-red-500">*</span></label>
-                            <div class="my-3 flex flex-wrap gap-3 items-start">
+                            <div class="mt-3 flex flex-wrap gap-3 items-start">
                                 <!-- Select -->
                                 <div class="flex-1 min-w-[200px]">
                                     <select id="customer_id" name="customer_id"
@@ -40,8 +40,8 @@
                                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                         @endforeach
                                     </select>
-                                    <p id="customer_id_error" class="text-red-500 text-xs mt-1"></p>
                                 </div>
+
 
                                 <!-- Add Customer Button -->
                                 <button type="button" x-data=""
@@ -55,6 +55,7 @@
                                     Add Customer
                                 </button>
                             </div>
+                            <p id="customer_id_error" class="text-red-500 text-sm mt-1"></p>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 sm:gap-3 lg:gap-6">
@@ -901,7 +902,7 @@
                             window.dispatchEvent(new CustomEvent('close-modal', {
                                 detail: 'create-customer'
                             }));
-                            window.reload
+                            window.location.reload()
 
                             customerForm.reset();
 
@@ -1040,12 +1041,14 @@
 
             // 1. Customer validation
             const customer = document.getElementById('customer_id');
+            const customerError = document.getElementById('customer_id_error');
+
             if (customer.value === '') {
-                const customerError = document.createElement('p');
-                customerError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 customerError.textContent = 'Customer is required';
-                customer.parentElement.appendChild(customerError);
+                customerError.classList.remove('hidden');
                 valid = false;
+            } else {
+                customerError.classList.add('hidden');
             }
 
             // Order Date
@@ -1119,7 +1122,6 @@
             // 4. Services validation (at least one)
             const servicesTbody = document.getElementById('services_tbody');
             const serviceError = document.getElementById('service-error');
-            console.log('Number of services:', servicesTbody.children.length);
             if (servicesTbody.children.length === 0) {
                 e.preventDefault();
                 serviceError.textContent = 'Please add at least one service.';
@@ -1339,11 +1341,12 @@
                 'shadow-sm');
         });
     </script>
-      <style>
+    <style>
         /* Override Choices.js default styles */
         .choices {
             margin-bottom: 0px !important;
         }
+
         .choices__inner {
             border: 1px solid #d1d5db !important;
             border-radius: 0.375rem !important;

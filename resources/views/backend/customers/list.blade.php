@@ -224,7 +224,7 @@
                             <div>
                                 <label for="customer_phone" class="block text-base font-medium">Phone
                                     <span class="text-red-500">*</span></label>
-                                <input type="number" id="customer_phone" name="phone"
+                                <input type="text" id="customer_phone" name="phone"
                                     class="mt-2 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>
@@ -295,7 +295,7 @@
                             <div>
                                 <label for="edit_customer_phone" class="block text-base font-medium">Phone
                                     <span class="text-red-500">*</span></label>
-                                <input type="number" id="edit_customer_phone" name="phone"
+                                <input type="text" id="edit_customer_phone" name="phone"
                                     class="mt-2 text-sm block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
                                 <div id="edit-phone-error" class="text-red-500 text-sm mt-1 hidden"></div>
                             </div>

@@ -31,7 +31,7 @@
                         <div class="mb-6">
                             <label for="customer_id" class="text-base font-medium">Customer <span
                                     class="text-red-500">*</span></label>
-                            <div class="my-3 flex flex-wrap gap-3 items-start">
+                            <div class="mt-3 flex flex-wrap gap-3 items-start">
                                 <div class="flex-1  min-w-[200px]">
                                     <select id="customer_id" name="customer_id"
                                         class="block text-sm  w-full border-gray-300 rounded-md shadow-sm focus:border-gray-900 focus:ring-gray-900">
@@ -43,7 +43,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <p id="customer_id_error" class="text-red-500 text-xs mt-1"></p>
+
                                 </div>
 
                                 <button type="button" x-data=""
@@ -57,6 +57,7 @@
                                     Add Customer
                                 </button>
                             </div>
+                            <p id="customer_id_error" class="text-red-500 text-sm mt-1"></p>
                         </div>
 
                         {{-- status --}}
@@ -650,7 +651,7 @@
                             window.dispatchEvent(new CustomEvent('close-modal', {
                                 detail: 'create-customer'
                             }));
-
+                            window.location.reload()
                             customerForm.reset();
 
                             const customerSelect = document.getElementById('customer_id');
@@ -1116,12 +1117,14 @@
 
             // 1. Customer validation
             const customer = document.getElementById('customer_id');
+            const customerError = document.getElementById('customer_id_error');
+
             if (customer.value === '') {
-                const customerError = document.createElement('p');
-                customerError.classList.add('text-red-500', 'text-sm', 'mt-1');
                 customerError.textContent = 'Customer is required';
-                customer.parentElement.appendChild(customerError);
+                customerError.classList.remove('hidden');
                 valid = false;
+            } else {
+                customerError.classList.add('hidden');
             }
 
             // 2. Order Date validation
