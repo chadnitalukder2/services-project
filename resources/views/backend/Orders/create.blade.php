@@ -681,7 +681,8 @@
                 noServicesDiv.style.display = 'none';
 
                 // Reset select
-                serviceSelect.selectedIndex = 0;
+                // serviceSelect.selectedIndex = 0;
+                serviceChoices.setChoiceByValue('');
             });
 
             function addServiceToTable(service) {
@@ -1327,9 +1328,11 @@
             wrapper.classList.add('w-full', 'bg-white', 'text-sm', 'border', 'border-gray-300', 'rounded-md',
                 'shadow-sm');
         });
+        let serviceChoices;
+
         document.addEventListener('DOMContentLoaded', function() {
             const element = document.getElementById('service_select');
-            const choices = new Choices(element, {
+            serviceChoices = new Choices(element, { // Change 'choices' to 'serviceChoices'
                 searchEnabled: true,
                 itemSelectText: '',
                 shouldSort: false,
@@ -1342,6 +1345,18 @@
         });
     </script>
     <style>
+        .choices__item--disabled {
+            opacity: 0.5;
+            background-color: rgb(128, 11, 11) !important;
+            color: #999 !important;
+            pointer-events: none;
+        }
+
+        .choices__list--dropdown .choices__item--disabled {
+            background-color: #1e62eb !important;
+            text-decoration: line-through;
+        }
+
         /* Override Choices.js default styles */
         .choices {
             margin-bottom: 0px !important;

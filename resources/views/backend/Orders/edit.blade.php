@@ -825,7 +825,8 @@
                 noServicesDiv.style.display = 'none';
 
                 // Reset select
-                serviceSelect.selectedIndex = 0;
+                // serviceSelect.selectedIndex = 0;
+                serviceChoices.setChoiceByValue('');
             }
 
             function addServiceToTable(service) {
@@ -1398,9 +1399,11 @@
             wrapper.classList.add('w-full', 'bg-white', 'text-sm', 'border', 'border-gray-300', 'rounded-md',
                 'shadow-sm');
         });
+        let serviceChoices;
+
         document.addEventListener('DOMContentLoaded', function() {
             const element = document.getElementById('service_select');
-            const choices = new Choices(element, {
+            serviceChoices = new Choices(element, { // Change 'choices' to 'serviceChoices'
                 searchEnabled: true,
                 itemSelectText: '',
                 shouldSort: false,
